@@ -1,0 +1,17 @@
+{  
+  "name": "studern",
+  "version": "1.0.0",
+  "description": "## Start the server",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "daisyui": "^5.0.9"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["studern", "tailwindcss", "daisyui"],
+  "author": "Studern"
+}

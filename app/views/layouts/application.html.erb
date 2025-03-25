@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render 'includes/components/head' %>
+  </head>
+
+  <body>
+    <% if notice %>
+      <p class="notice"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
+    <main class="container mx-auto mt-28 px-5 flex">
+      <%= yield %>
+    </main>
+
+  </body>
+</html>
