@@ -302,7 +302,7 @@ bundle add tailwindcss-rails
 rails tailwindcss:install
 ```
 
-### Add Daisy UI
+### Add Daisy UI (Node dependency)
 
 To add Daisy UI, the following **Node** command can be used:
 
@@ -321,6 +321,26 @@ Then the following code was added to the `app/assets/tailwind/application.css` f
 @source "../../../app/views/**/*";
 
 @plugin "daisyui";
+```
+
+### Add Daisy UI (Bundle file)
+
+To add Daisy UI, the following **Ruby** command can be used:
+
+```bash
+curl -sLo app/assets/tailwind/daisyui.js https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
+```
+
+Then the following code was added to the `app/assets/tailwind/application.css` file:
+
+```css
+@import "tailwindcss" source(none);
+@source "../../../public/*.html";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../app/javascript/**/*.js";
+@source "../../../app/views/**/*";
+
+@plugin "./daisyui.js";
 ```
 
 ## Sidekiq Setup for Background Jobs
