@@ -4,6 +4,7 @@
 @source "../../../app/javascript/**/*.js";
 @source "../../../app/views/**/*";
 
+@plugin "./daisyui.js";
 @plugin "daisyui" {
     themes: ["light"];
     styled: true;
