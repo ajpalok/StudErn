@@ -6,50 +6,72 @@
   id="page-title"
   aria-labelledby="page-title">Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "control_units/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
-  </div>
+<div class="max-w-80 w-full block py-5 mx-auto">
+  <img src="/assets/img/icons/StudErn-LOGO.svg" alt="Logo" class="w-25 mb-[25px] mx-auto" />
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "control_units/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :Date_Of_Birth %><br />
-    <%= f.date_field :dob, autocomplete: "date-of-birth" %>
-  </div>
+    <div class="flex flex-col my-5 border-1 border-solid border-[#c3c4c7] bg-white py-[26px] px-[24px]">
+      <p class="block">
+        <%= f.label :name, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.text_field :name, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autofocus: true, autocomplete: "name" %>
+      </p>
+ 
+      <p class="block">
+        <%= f.label :nid, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.text_field :nid, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "nid" %>
+      </p>
+ 
+      <p class="block">
+        <%= f.label :Date_Of_Birth, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.date_field :dob, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "date-of-birth" %>
+      </p>
 
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address, autocomplete: "address" %>
-  </div>
+      <p class="block">
+        <%= f.label :address, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.text_field :address, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "address" %>
+      </p>
 
-  <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone, autocomplete: "phone", type:"tel" %>
-  </div>
+      <p class="block">
+        <%= f.label :phone, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.text_field :phone, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "phone" %>
+      </p>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
+      <p class="block">
+        <%= f.label :email, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.email_field :email, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "email" %>
+      </p>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+      <p class="block">
+        <%= f.label :password, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" do %>
+          <%= "Password" %>
+          <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %>
+        <% end %>
+        <%= f.password_field :password, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "new-password" %>
+      </p>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+      <p>
+        <%= f.label :password_confirmation, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.password_field :password_confirmation, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "new-password" %>
+      </p>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "control_units/shared/links" %>
+      <p class="submit flex justify-end">
+        <%= f.submit "Register", class:"btn btn-sm btn-primary" %>
+      </p>
+    </div>
+  <% end %>
+  <p class="fs-[13px] text-gray-600 my-6 px-6">
+    <%= link_to "Log in", new_session_path(resource_name), class:"hover:text-primary" %>
+    <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+    |
+    <%= link_to "Didn't get confirmation mail?", new_confirmation_path(resource_name), class:"hover:text-primary" %>
+    <% end %>
+  </p>
+  <p class="fs-[13px] text-gray-600 my-4 px-6">
+    <%= link_to "← Go to Home", root_path(), class:"hover:text-primary" %>
+  </p>
+  <%#= render "control_units/shared/links" %>
+</div>

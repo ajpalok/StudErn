@@ -4,8 +4,8 @@ class DeviseCreateControlUnits < ActiveRecord::Migration[8.0]
   def change
     create_table :control_units do |t|
       ## Database authenticatable
-      t.string :nid,                null: false
       t.string :name
+      t.string :nid,                null: false
       t.date   :dob
       t.string :address
       t.string :phone,              null: false

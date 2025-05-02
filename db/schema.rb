@@ -12,8 +12,8 @@
 
 ActiveRecord::Schema[8.0].define(version: 2025_03_24_033254) do
   create_table "control_units", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "nid", null: false
     t.string "name"
+    t.string "nid", null: false
     t.date "dob"
     t.string "address"
     t.string "phone", null: false

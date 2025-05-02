@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ControlUnit::ConfirmationsController < Devise::ConfirmationsController
+  layout "authentication"
   # GET /resource/confirmation/new
   # def new
   #   super

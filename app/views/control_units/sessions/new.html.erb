@@ -1,26 +1,54 @@
-<h2>Log in</h2>
+<% content_for :title, "Sign up" %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<h2 class="sr-only"
+  aria-hidden="true"
+  tabindex="-1"
+  id="page-title"
+  aria-labelledby="page-title">Sign up</h2>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="max-w-80 w-full block py-5 mx-auto">
+  <img src="/assets/img/icons/StudErn-LOGO.svg" alt="Logo" class="w-25 mb-[25px] mx-auto" />
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <%= render "control_units/shared/error_messages", resource: resource %>
+
+    <div class="flex flex-col my-5 border-1 border-solid border-[#c3c4c7] bg-white py-[26px] px-[24px]">
+      <p class="block">
+        <%= f.label :email, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.email_field :email, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autofocus: true, autocomplete: "email" %>
+      </p>
+
+      <p class="block">
+        <%= f.label :password, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" do %>
+          <%= "Password" %>
+        <% end %>
+        <%= f.password_field :password, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "new-password" %>
+      </p>
+
+      <div class="flex flex-row justify-between">
+        <% if devise_mapping.rememberable? %>
+          <p class="submit flex justify-start">
+            <%= f.label :remember_me do %>
+              <%= f.check_box :remember_me %>
+              <%= "Remember me" %>
+            <% end %>
+          </p>
+        <% end %>
+
+        <p class="submit flex justify-end">
+          <%= f.submit "Login", class:"btn btn-sm btn-primary" %>
+        </p>
+      </div>
+        
     </div>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "control_units/shared/links" %>
+  <p class="fs-[13px] text-gray-600 my-6 px-6">
+    <%= link_to "Register", new_registration_path(resource_name), class:"hover:text-primary" %>
+    |
+    <%= link_to "Lost your password?", new_password_path(resource_name), class:"hover:text-primary" %>
+  </p>
+  <p class="fs-[13px] text-gray-600 my-4 px-6">
+    <%= link_to "← Go to Home", root_path(), class:"hover:text-primary" %>
+  </p>
+  <%#= render "control_units/shared/links" %>
+</div>

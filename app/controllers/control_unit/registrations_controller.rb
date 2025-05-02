@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class ControlUnit::RegistrationsController < Devise::RegistrationsController
-  layout 'authentication', only: [:new, :create]
-  before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_account_update_params, only: [:update]
+  layout "authentication", only: [ :new, :create ]
+  layout "control_unit", only: [ :edit, :update, :destroy ]
+  before_action :configure_sign_up_params, only: [ :create ]
+  before_action :configure_account_update_params, only: [ :update ]
 
   # GET /resource/sign_up
   # def new
@@ -43,18 +44,19 @@ class ControlUnit::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender ])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender ])
   end
 
   # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  def after_sign_up_path_for(resource)
+    # super(resource)
+    control_unit_index_path
+  end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

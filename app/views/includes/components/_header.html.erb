@@ -1,0 +1,157 @@
+<%
+    # A simple menu list array
+    menu_list = [
+        1 => {
+            name: "Home",
+            link: "#home"
+        },
+        2 => {
+            name: "Internship",
+            link: "#internship",
+            sub_menu: [
+                1 => {
+                    name: "WebDev Intern",
+                    link: "#webdev_intern"
+                },
+                2 => {
+                    name: "Graphic Design Intern",
+                    link: "#graphic_design_intern"
+                }
+            ]
+        },
+        3 => {
+            name: "Jobs",
+            link: "#jobs",
+            sub_menu: [
+                1 => {
+                    name: "Part Time",
+                    link: "#part_time"
+                },
+                2 => {
+                    name: "Full Time",
+                    link: "#full_time"
+                },
+            ]
+        },
+        4 => {
+            name: "Courses",
+            link: "#courses"
+        },
+        5 => {
+            name: "Contact",
+            link: "#contact"
+        }
+    ]
+
+%>
+
+
+<nav class="shadow-sm">
+    <div class="navbar bg-base-100">
+        <!-- Mobile menu -->
+        <div class="navbar-start">
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 16 16"
+                stroke="currentColor">
+                <use xlink:href="#three-dots" />
+              </svg>
+            </label>
+            <ul tabindex="0"
+              class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a>Home</a></li>
+              <li>
+                <details>
+                  <summary>Internship</summary>
+                  <ul class="p-2">
+                    <li><a>WebDev Intern</a></li>
+                    <li><a>Graphic Design Intern</a></li>
+                  </ul>
+                </details>
+              </li>
+              <li>
+                <details>
+                  <summary>Jobs</summary>
+                  <ul class="p-2">
+                    <li>
+                      <details>
+                        <summary>Part Time</summary>
+                        <ul>
+                          <li><a>WebDev</a></li>
+                          <li><a>Graphic Design</a></li>
+                        </ul>
+                      </details>
+                    </li>
+                    <li>
+                      <details>
+                        <summary>Full Time</summary>
+                        <ul>
+                          <li><a>WebDev</a></li>
+                          <li><a>Graphic Design</a></li>
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+              <li><a>Courses</a></li>
+            </ul>
+          </div>
+          <a class="btn btn-ghost text-xl normal-case gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <use xlink:href="#logo" />
+              </svg>
+              <%= "StudErn" %>
+            </a>          
+        </div>
+
+        <!-- Desktop menu -->
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
+            <li><a>Home</a></li>
+            <li>
+              <details>
+                <summary>Internship</summary>
+                <ul class="p-2">
+                  <li><a>WebDev Intern</a></li>
+                  <li><a>Graphic Design Intern</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>Jobs</summary>
+                <ul class="p-2">
+                  <li>
+                    <details>
+                      <summary>Part Time</summary>
+                      <ul>
+                        <li><a>WebDev</a></li>
+                        <li><a>Graphic Design</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li>
+                    <details>
+                      <summary>Full Time</summary>
+                      <ul>
+                        <li><a>WebDev</a></li>
+                        <li><a>Graphic Design</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li><a>Courses</a></li>
+          </ul>
+        </div>
+
+        <!-- Auth buttons -->
+        <div class="navbar-end gap-2">
+          <%#= link_to "login", new_control_unit_session_path(), class: "btn btn-outline-primary btn-sm" %>
+          <a class="btn btn-outline-primary btn-sm">Login</a>
+          <a class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+    </div>
+</nav>

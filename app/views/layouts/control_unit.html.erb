@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html class="bg-gray-100">
+<html>
   <head>
-    <%= render 'includes/components/head' %>
+    <%= render 'includes/control_unit/components/head' %>
   </head>
 
-  <body>
+  <body class="max-w-7xl mx-auto bg-base-100 text-base-content">
+    <%= render 'includes/control_unit/components/svg' %>
+    <%= render 'includes/control_unit/components/header' %>
 
     <% if notice || alert %>
       <div class="toast toast-top toast-end md:max-w-1/2" id="toast-wrapper">
@@ -21,9 +23,20 @@
       </div>
     <% end %>
 
+    <main class="container mx-auto mt-28 px-5">
 
-    <main>
-      <%= yield %>
+      <% if ControlUnit.roles[current_control_unit.role] != 99 %>
+        <%= yield %>
+      <% else %>
+        <div class="alert alert-error shadow-lg mt-5">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Access Denied: You do not have permission to access this page.</span>
+          </div>
+        </div>
+      <% end %>
     </main>
 
     <% if notice || alert %>

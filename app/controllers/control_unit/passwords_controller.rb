@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ControlUnit::PasswordsController < Devise::PasswordsController
+  layout "authentication", only: [ :new, :edit ]
   # GET /resource/password/new
   # def new
   #   super
@@ -21,11 +22,12 @@ class ControlUnit::PasswordsController < Devise::PasswordsController
   #   super
   # end
 
-  # protected
+  protected
 
-  # def after_resetting_password_path_for(resource)
-  #   super(resource)
-  # end
+  def after_resetting_password_path_for(resource)
+    # super(resource)
+    control_unit_index_path
+  end
 
   # The path used after sending reset password instructions
   # def after_sending_reset_password_instructions_path_for(resource_name)
