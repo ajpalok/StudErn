@@ -98,8 +98,8 @@
             </ul>
           </div>
           <a class="btn btn-ghost text-xl normal-case gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <use xlink:href="#logo" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-37.5 h-16.5" viewBox="0 0 150 67">
+                <use xlink:href="#light-logo" />
               </svg>
               <%= "StudErn" %>
             </a>          
@@ -108,7 +108,7 @@
         <!-- Desktop menu -->
         <div class="navbar-center hidden lg:flex">
           <ul class="menu menu-horizontal px-1">
-            <li><a>Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>
               <details>
                 <summary>Internship</summary>
@@ -149,9 +149,12 @@
 
         <!-- Auth buttons -->
         <div class="navbar-end gap-2">
-          <%#= link_to "login", new_control_unit_session_path(), class: "btn btn-outline-primary btn-sm" %>
-          <a class="btn btn-outline-primary btn-sm">Login</a>
-          <a class="btn btn-primary btn-sm">Sign Up</a>
+          <% if user_signed_in? %>
+            <a class="btn btn-primary btn-sm">Login</a>
+          <% else %>
+            <%= link_to "Register", new_user_registration_path(), class: "btn btn-outline-primary btn-sm" %>
+            <%= link_to "Login", new_user_session_path(), class: "btn btn-primary btn-sm" %>
+          <% end %>
         </div>
     </div>
 </nav>

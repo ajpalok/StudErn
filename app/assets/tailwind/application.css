@@ -19,26 +19,26 @@
     default: true;
     prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
 
-    --color-base-100: #fffafa;                              /* Base surface color of page, used for blank backgrounds */
-    --color-base-200: #faf5fd;                              /* Base color, darker shade, to create elevations */
-    --color-base-300: #eed7fc;                              /* Base color, even more darker shade, to create elevations */
-    --color-base-content: #19231a;                             /* Foreground content color to use on base color */
-    --color-primary: #5A189A;                               /* Primary brand color, The main color of your brand */
-    --color-primary-content: #ffffff;                       /* Foreground content color to use on primary color */
-    --color-secondary: #3C096C;                             /* Secondary brand color, The optional, secondary color of your brand */
-    --color-secondary-content: #fff;                        /* Foreground content color to use on secondary color */
-    --color-accent: #f1bf98;                                 /* Accent brand color, The optional, accent color of your brand */
-    --color-accent-content: #000;            /* Foreground content color to use on accent color */
-    --color-neutral: #E0AAFF;                   /* Neutral dark color, For not-saturated parts of UI */
-    --color-neutral-content: #000;           /* Foreground content color to use on neutral color */
-    --color-info: oklch(70% 0.2 220);                       /* Info color, For informative/helpful messages */
-    --color-info-content: #000;              /* Foreground content color to use on info color */
-    --color-success: rgb(4% 82% 22%);                   /* Success color, For success/safe messages */
-    --color-success-content: #000;           /* Foreground content color to use on success color */
-    --color-warning: oklch(80% 0.25 80);                    /* Warning color, For warning/caution messages */
-    --color-warning-content: oklch(20% 0.05 80);            /* Foreground content color to use on warning color */
-    --color-error: rgb(69% 0% 0%);                       /* Error color, For error/danger/destructive messages */
-    --color-error-content: #fff;              /* Foreground content color to use on error color */
+    --color-base-100: #FAF5F7;                                  /* Base surface color of page, used for blank backgrounds */
+    --color-base-200: #EFE8EB;                                  /* Base color, darker shade, to create elevations */
+    --color-base-300: #D5D1D3;                                  /* Base color, even more darker shade, to create elevations */
+    --color-base-content: #0D0307;                              /* Foreground content color to use on base color */
+    --color-primary: #FE367E;                                   /* Primary brand color, The main color of your brand */
+    --color-primary-content: #FAF5F7;                           /* Foreground content color to use on primary color */
+    --color-secondary: #A7A0A2;                                 /* Secondary brand color, The optional, secondary color of your brand */
+    --color-secondary-content: #0D0307;                         /* Foreground content color to use on secondary color */
+    --color-accent: #4D1183;                                    /* Accent brand color, The optional, accent color of your brand */
+    --color-accent-content: #FAF5F7;                            /* Foreground content color to use on accent color */
+    --color-neutral: #FFB5D0;                                   /* Neutral dark color, For not-saturated parts of UI */
+    --color-neutral-content: #0D0307;                           /* Foreground content color to use on neutral color */
+    --color-info: oklch(70% 0.2 220);                           /* Info color, For informative/helpful messages */
+    --color-info-content: #000;                                 /* Foreground content color to use on info color */
+    --color-success: rgb(4% 82% 22%);                           /* Success color, For success/safe messages */
+    --color-success-content: #000;                              /* Foreground content color to use on success color */
+    --color-warning: oklch(80% 0.25 80);                        /* Warning color, For warning/caution messages */
+    --color-warning-content: oklch(20% 0.05 80);                /* Foreground content color to use on warning color */
+    --color-error: rgb(69% 0% 0%);                              /* Error color, For error/danger/destructive messages */
+    --color-error-content: #FFFFFF;                             /* Foreground content color to use on error color */
 
     /* border radius */
     --radius-selector: 1rem;
@@ -81,20 +81,6 @@
         }
     }
 }
-
-/* .color{
-    color: #10002B;
-    color: #240046;
-    color: #3C096C;
-    color: #5A189A;
-    color: #7B2CBF;
-    color: #9D4EDD;
-    color: #C77DFF;
-    color: #E0AAFF;
-    color: #eed7fc;
-    color: #f9f3fd;
-    color: #fbfafd;
-} */
 
 html {
     @apply font-balooda;

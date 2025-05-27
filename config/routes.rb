@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-    # authenticated :control_unit do
+    authenticated :control_unit do
     #   root to: "control_unit/pages#home", as: :authenticated_root
 
     #   devise_scope :control_unit do
@@ -16,9 +16,9 @@ Rails.application.routes.draw do
 
     # sidekiq web UI
     require "sidekiq/web"
-    mount Sidekiq::Web => "/sidekiq"
+    mount Sidekiq::Web => "control_unit/sidekiq", as: :sidekiq
 
-  # end
+  end
 
 
 
@@ -26,6 +26,28 @@ Rails.application.routes.draw do
   get "/about"=> "public#about"
   get "/contact"=> "public#contact"
 
+
+  devise_for :users,
+              path: "user",
+              path_names:
+              {
+                sign_in: "login",
+                sign_out: "logout",
+                sign_up: "register",
+                # confirmation: 'verification',
+                registration: "account",
+                cancel: "close"
+              },
+              controllers:
+              {
+                sessions: "user/sessions",
+                registrations: "user/registrations",
+                passwords: "user/passwords",
+                confirmations: "user/confirmations"
+                # unlocks: "user/unlocks",
+                # omniauth: "user/omniauth_callbacks"
+              }
+    get "/user/", to: "users#index", as: :user_index
 
   devise_for :control_units,
               path: "control_unit",

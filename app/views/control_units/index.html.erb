@@ -1,7 +1,3 @@
-<%# if authenticated %>
-<% if current_control_unit %>
-    <h1>Welcome, <%= current_control_unit.name %></h1>
-    <p>Your email: <%= current_control_unit.email %></p>
-    <%# logout button %>
-    <%= button_to "Sign out", destroy_control_unit_session_path, method: :delete, class: "btn btn-primary" %>
-<% end %>
+<h1>Welcome, <%= current_control_unit.name %></h1>
+<p>Your email: <%= current_control_unit.email %></p>
+<p>Observe queues of the system <%= link_to "Sidekiq", :sidekiq, class: "btn btn-accent" %>

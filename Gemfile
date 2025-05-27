@@ -61,6 +61,6 @@ gem "redis", ">= 4.0.1"
 
 gem 'psych', '~>4.0.0'
 gem "devise", "~> 4.9"
+gem "devise-i18n", "~> 1.13"
 gem "tailwindcss-rails", "~> 4.2"
-
 gem "sidekiq", "~> 8.0"
