@@ -188,7 +188,8 @@ GEM
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
-    psych (4.0.6)
+    psych (5.2.6)
+      date
       stringio
     puma (6.6.0)
       nio4r (~> 2.0)
@@ -360,7 +361,7 @@ DEPENDENCIES
   kamal
   mysql2 (~> 0.5)
   propshaft
-  psych (~> 4.0.0)
+  psych (~> 5.2.6)
   puma (>= 5.0)
   rails (~> 8.0.1)
   redis (>= 4.0.1)
