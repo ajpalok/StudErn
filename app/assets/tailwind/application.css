@@ -23,12 +23,16 @@
     --color-base-200: #EFE8EB;                                  /* Base color, darker shade, to create elevations */
     --color-base-300: #D5D1D3;                                  /* Base color, even more darker shade, to create elevations */
     --color-base-content: #0D0307;                              /* Foreground content color to use on base color */
-    --color-primary: #FE367E;                                   /* Primary brand color, The main color of your brand */
-    --color-primary-content: #FAF5F7;                           /* Foreground content color to use on primary color */
+    --color-primary: #E90B5B;                                   /* Primary brand color, The main color of your brand */
+    --color-primary-content: #FFFDFE;                           /* Foreground content color to use on primary color */
     --color-secondary: #A7A0A2;                                 /* Secondary brand color, The optional, secondary color of your brand */
     --color-secondary-content: #0D0307;                         /* Foreground content color to use on secondary color */
+    --color-muted: oklch(90% 0.2 336);                          /* Muted color, For less important parts of UI */
+    --color-muted-foreground: oklch(50% 0.3 272);               /* Foreground content color to use on muted color */
+    --color-accent: oklch(60% 0.3 336);                         /* Accent color, For interactive parts of UI */
+
     --color-accent: #4D1183;                                    /* Accent brand color, The optional, accent color of your brand */
-    --color-accent-content: #FAF5F7;                            /* Foreground content color to use on accent color */
+    --color-accent-content: #FFFDFE;                            /* Foreground content color to use on accent color */
     --color-neutral: #FFB5D0;                                   /* Neutral dark color, For not-saturated parts of UI */
     --color-neutral-content: #0D0307;                           /* Foreground content color to use on neutral color */
     --color-info: oklch(70% 0.2 220);                           /* Info color, For informative/helpful messages */
@@ -67,6 +71,39 @@
     src: url('/fonts/Baloo_Da/BalooDa2-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: medium;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: semi-bold;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: bold;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: extra-bold;
+    font-weight: 800;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-ExtraBold.ttf');
+}
+
+
 @theme {
     --font-balooda: 'Baloo Da 2', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --animate-infinite-scroll: animate-infinite-scroll 25s linear infinite;
@@ -82,10 +119,30 @@
     }
 }
 
-html {
-    @apply font-balooda;
+::selection, ::-moz-selection {
+    @apply bg-[#840ea8] text-[#fff];
 }
 
-.menu li.active {
+.turbo-progress-bar {
+    @apply bg-primary;
+}
+
+html {
+    @apply font-balooda font-semibold text-base-content
+}
+
+.nav-container {
+    @apply fixed sm:relative top-0 left-0 bg-base-200 w-full h-full py-5 px-8 sm:px-16 md:px-30 flex items-center flex-col sm:flex-row sm:justify-between gap-4 transform transition-transform duration-700 overflow-y-auto sm:overflow-y-hidden;
+}
+
+.nav-list {
+    @apply flex items-center flex-col sm:flex-row justify-center gap-4 sm:text-sm md:text-base lg:text-lg font-bold;
+}
+
+.nav-employee-btn {
+    @apply py-5 sm:py-0 bg-base-200 text-base-content flex items-center justify-center w-full sm:w-auto text-center font-bold sm:text-sm md:text-base lg:text-lg transition-colors duration-300;
+}
+
+.active {
     @apply bg-primary text-white;
 }

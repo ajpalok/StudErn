@@ -47,7 +47,8 @@ Rails.application.routes.draw do
                 # unlocks: "user/unlocks",
                 # omniauth: "user/omniauth_callbacks"
               }
-    get "/user/", to: "users#index", as: :user_index
+  get "/user/", to: "users#index", as: :user_index
+  get "/user/profile", to: "users#profile", as: :user_profile
 
   devise_for :control_units,
               path: "control_unit",
@@ -69,8 +70,8 @@ Rails.application.routes.draw do
                 # unlocks: "control_unit/unlocks",
                 # omniauth: "control_unit/omniauth_callbacks"
               }
-
-    get "/control_unit/", to: "control_units#index", as: :control_unit_index
+  get "/control_unit/", to: "control_units#index", as: :control_unit_index
+  get "/control_unit/profile", to: "control_unit#profile", as: :control_unit_profile
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

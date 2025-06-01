@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class ControlUnit::RegistrationsController < Devise::RegistrationsController
-  layout "authentication", only: [ :new, :create ]
-  layout "control_unit", only: [ :edit, :update, :destroy ]
+  layout :layout_by_action
   before_action :configure_sign_up_params, only: [ :create ]
   before_action :configure_account_update_params, only: [ :update ]
 
@@ -62,4 +61,13 @@ class ControlUnit::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  # :layout_by_action is used to determine the layout
+  # based on the action being performed
+  def layout_by_action
+    if (%w[new create].include? action_name)
+      return "authentication"
+    end
+    return "application"
+  end
 end

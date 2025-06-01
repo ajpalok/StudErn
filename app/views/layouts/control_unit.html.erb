@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render 'includes/control_unit/components/head' %>
+    <%= render 'includes/components/head' %>
   </head>
 
   <body class="max-w-7xl mx-auto bg-base-100 text-base-content">
-    <%= render 'includes/control_unit/components/svg' %>
-    <%= render 'includes/control_unit/components/header' %>
+    <%= render 'includes/components/svg' %>
+    <%= render 'includes/components/header' %>
 
     <% if notice || alert %>
-      <div class="toast toast-top toast-end md:max-w-1/2" id="toast-wrapper">
+      <div class="toast toast-top toast-end md:max-w-1/2" data-controller="toast">
         <% if notice %>
-          <div class="alert alert-info" id="toast">
-            <span class="text-wrap"><%= notice %></span>
+          <div class="alert alert-info"
+              data-toast-target="toast">
+            <span class="text-wrap" data-toast-target="message"><%= notice %></span>
           </div>
         <% end %>
         <% if alert %>
-          <div class="alert alert-error" id="toast">
-            <span class="text-wrap"><%= alert %></span>
+          <div class="alert alert-error"
+              data-toast-target="toast">
+            <span class="text-wrap" data-toast-target="message"><%= alert %></span>
           </div>
         <% end %>
       </div>
     <% end %>
+
 
     <main class="container mx-auto mt-5 px-5">
 

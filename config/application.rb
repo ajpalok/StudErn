@@ -53,5 +53,8 @@ module StudErn
 
     # sidekiq configuration
     config.active_job.queue_adapter = :sidekiq
+
+    # allow any host to access the website
+    config.hosts << /.*/
   end
 end

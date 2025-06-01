@@ -4,14 +4,18 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.0]
   def change
     create_table :users do |t|
 
-      t.string   :first_name
-      t.string   :last_name
-      t.string   :phone
-      t.string   :address
-      t.string   :nid
-      t.string   :birth_certificate
-      t.date     :dob
-      t.integer  :account_status, default: 0
+      t.string    :first_name
+      t.string    :last_name
+      t.string    :phone
+      t.string    :address
+      t.date      :dob
+      t.integer   :gender, default: 0
+      t.integer   :account_status, default: 0 # 0: pending, 1: active, 2: suspended, 3: closed
+      t.jsonb     :skills, default: [] # Array of strings for skills ex: ["Ruby", "JavaScript"]
+      t.string    :social_media_accounts, default: {} # JSON object for social media links ex: {"linkedin": "https://linkedin.com/in/username" }
+      t.jsonb     :others, default: ["Portfolio": [], "Certifications": [], "Languages": [], "Awards": [], "Publications": [], "Projects": []] # Array of objects for other information
+      #Ex:- :default =>''
+      t.string    :profile_picture # URL or path to profile picture
 
 
       ## Database authenticatable

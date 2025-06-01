@@ -1,160 +1,98 @@
-<%
-    # A simple menu list array
-    menu_list = [
-        1 => {
-            name: "Home",
-            link: "#home"
-        },
-        2 => {
-            name: "Internship",
-            link: "#internship",
-            sub_menu: [
-                1 => {
-                    name: "WebDev Intern",
-                    link: "#webdev_intern"
-                },
-                2 => {
-                    name: "Graphic Design Intern",
-                    link: "#graphic_design_intern"
-                }
-            ]
-        },
-        3 => {
-            name: "Jobs",
-            link: "#jobs",
-            sub_menu: [
-                1 => {
-                    name: "Part Time",
-                    link: "#part_time"
-                },
-                2 => {
-                    name: "Full Time",
-                    link: "#full_time"
-                },
-            ]
-        },
-        4 => {
-            name: "Courses",
-            link: "#courses"
-        },
-        5 => {
-            name: "Contact",
-            link: "#contact"
-        }
-    ]
+<% 
+navigation_nav_items ||= [
+  { name: 'Find Jobs', path: '#' },
+  { name: 'Find Internships', path: '#' },
+  { name: 'My Jobs', path: '#' },
+  { name: 'E-Learning', path: '#' }
+]
 
+top_right_devise_resource_name ||= 'user'
+resource_name = top_right_devise_resource_name
+resource_signed_in = send("#{resource_name}_signed_in?")
+current_resource = send("current_#{resource_name}") if resource_signed_in
+resource_profile_path = send("#{resource_name}_profile_path") if resource_signed_in
+destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if resource_signed_in
 %>
 
 
-<nav class="shadow-sm">
-    <div class="navbar bg-base-100">
-        <!-- Mobile menu -->
-        <div class="navbar-start">
-          <div class="dropdown">
-            <label tabindex="0" class="btn btn-ghost lg:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 16 16"
-                stroke="currentColor">
-                <use xlink:href="#three-dots" />
-              </svg>
-            </label>
-            <ul tabindex="0"
-              class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a>Home</a></li>
-              <li>
-                <details>
-                  <summary>Internship</summary>
-                  <ul class="p-2">
-                    <li><a>WebDev Intern</a></li>
-                    <li><a>Graphic Design Intern</a></li>
-                  </ul>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary>Jobs</summary>
-                  <ul class="p-2">
-                    <li>
-                      <details>
-                        <summary>Part Time</summary>
-                        <ul>
-                          <li><a>WebDev</a></li>
-                          <li><a>Graphic Design</a></li>
-                        </ul>
-                      </details>
-                    </li>
-                    <li>
-                      <details>
-                        <summary>Full Time</summary>
-                        <ul>
-                          <li><a>WebDev</a></li>
-                          <li><a>Graphic Design</a></li>
-                        </ul>
-                      </details>
-                    </li>
-                  </ul>
-                </details>
-              </li>
-              <li><a>Courses</a></li>
-            </ul>
-          </div>
-          <a class="btn btn-ghost text-xl normal-case gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-37.5 h-16.5" viewBox="0 0 150 67">
-                <use xlink:href="#light-logo" />
-              </svg>
-              <%= "StudErn" %>
-            </a>          
-        </div>
+<header class="w-full" data-controller="mobile-menu">
+  <div class="w-full py-5 px-8 sm:px-16 md:px-30 flex justify-between items-center bg-base-100">
+    <a href="/" class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-25" viewBox="0 0 150 67" fill="none">
+        <use xlink:href="#light-logo"></use>
+      </svg>
+    </a>
+    <div class="flex flex-row gap-2">
+      <button class="btn btn-primary rounded-none sm:hidden"
+              type="button"
+              aria-label="Toggle navigation menu"
+              data-action="click->mobile-menu#open">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="var(--color-base-100)" viewBox="0 0 24 22">
+          <use xlink:href="#icon-hamburger"></use>
+        </svg>
+        <span class="sr-only">Menu for mobile device</span>
+      </button>
 
-        <!-- Desktop menu -->
-        <div class="navbar-center hidden lg:flex">
-          <ul class="menu menu-horizontal px-1">
-            <li><a href="/">Home</a></li>
-            <li>
-              <details>
-                <summary>Internship</summary>
-                <ul class="p-2">
-                  <li><a>WebDev Intern</a></li>
-                  <li><a>Graphic Design Intern</a></li>
-                </ul>
-              </details>
-            </li>
-            <li>
-              <details>
-                <summary>Jobs</summary>
-                <ul class="p-2">
-                  <li>
-                    <details>
-                      <summary>Part Time</summary>
-                      <ul>
-                        <li><a>WebDev</a></li>
-                        <li><a>Graphic Design</a></li>
-                      </ul>
-                    </details>
-                  </li>
-                  <li>
-                    <details>
-                      <summary>Full Time</summary>
-                      <ul>
-                        <li><a>WebDev</a></li>
-                        <li><a>Graphic Design</a></li>
-                      </ul>
-                    </details>
-                  </li>
-                </ul>
-              </details>
-            </li>
-            <li><a>Courses</a></li>
+      <% if resource_signed_in %>
+        <div class="hidden sm:dropdown sm:dropdown-bottom sm:dropdown-end">
+          <div tabindex="0" role="button" class="rounded-full ring-2 ring-primary ring-offset-2 cursor-pointer">
+            <img src="<%= gravatar_url_for(current_resource) %>" alt="User Avatar" class="w-10 h-10 rounded-full object-cover">
+            <span class="sr-only">User Menu</span>
+          </div>
+          <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+            <li><%= link_to 'Profile', resource_profile_path %></li>
+            <li><%= button_to 'Logout', destroy_resource_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" } %></li>
           </ul>
         </div>
-
-        <!-- Auth buttons -->
-        <div class="navbar-end gap-2">
-          <% if user_signed_in? %>
-            <a class="btn btn-primary btn-sm">Login</a>
-          <% else %>
-            <%= link_to "Register", new_user_registration_path(), class: "btn btn-outline-primary btn-sm" %>
-            <%= link_to "Login", new_user_session_path(), class: "btn btn-primary btn-sm" %>
-          <% end %>
-        </div>
+      <% else %>
+        <%= link_to "Register", new_registration_path(resource_name), class: "hidden sm:btn sm:btn-primary sm:btn-md sm:font-xl" %>
+        <%= link_to "Login", new_session_path(resource_name), class: "hidden sm:btn sm:btn-primary sm:btn-outline sm:btn-md sm:font-xl" %>
+      <% end %>
     </div>
-</nav>
+  </div>
+
+  <div class="nav-container translate-x-full sm:translate-x-0"
+       id="sidebar-slab"
+       data-mobile-menu-target="panel">
+    <div aria-label="mobile navbar header" class="w-full flex items-center justify-between flex-wrap sm:hidden">
+      <a href="/" class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-25" viewBox="0 0 150 67" fill="none">
+          <use xlink:href="#light-logo"></use>
+        </svg>
+      </a>
+      <span class="text-lg font-bold">Menu</span>
+
+      <button class="ml-auto btn btn-primary rounded-none sm:hidden"
+              type="button"
+              aria-label="Close navigation menu"
+              data-action="click->mobile-menu#close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="var(--color-base-100)" viewBox="0 0 24 24">
+          <use xlink:href="#icon-close"></use>
+        </svg>
+        <span class="sr-only">Menu for mobile device</span>
+      </button>
+    </div>
+
+    <ul class="nav-list w-full sm:w-auto">
+      <% navigation_nav_items.each do |items| %>
+        <li class="w-full sm:w-auto text-center py-5 sm:py-0 border-b sm:border-0 border-base-300">
+          <%= link_to items[:name], items[:path], class: "nav-link" %>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="flex items-center flex-col sm:hidden justify-center gap-4 font-bold w-full">
+      <% if resource_signed_in %>
+        <%= link_to 'Profile', resource_profile_path, class: "w-full sm:w-auto text-center py-5 sm:py-0 border-b sm:border-0 border-base-300" %>
+        <%= button_to 'Logout', destroy_resource_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "w-full sm:w-auto text-center py-5 sm:py-0 border-b sm:border-0 border-base-300" %>
+      <% else %>
+        <%= link_to "Register", new_registration_path(resource_name), class: "w-full sm:w-auto text-center py-5 sm:py-0 border-b sm:border-0 border-base-300" %>
+        <%= link_to "Login", new_session_path(resource_name), class: "w-full sm:w-auto text-center py-5 sm:py-0 border-b sm:border-0 border-base-300" %>
+      <% end %>
+    </div>
+    
+    <a class="nav-employee-btn" href="">
+      Employers / Post Jobs →
+    </a>
+  </div>
+</header>
