@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
     <%= render 'includes/components/head' %>
   </head>
@@ -8,10 +8,12 @@
     <%= render 'includes/components/svg' %>
     <%= render 'includes/components/header',
                 navigation_nav_items: [
-                    { name: 'Find Jobs', path: "#" },
-                    { name: 'Find Internships', path: "#" },
-                    { name: 'My Jobs', path: "#" },
-                    { name: 'E-Learning', path: "#" }
+                    { name: 'Jobs', path: "#" },
+                    { name: 'Internships', path: "#" },
+                    { name: 'Courses', path: "#" }
+                ],
+                navigation_right_nav_items: [
+                    { name: 'Employers/Post Jobs →', path: "#" }
                 ],
                 top_right_devise_resource_name: 'user'
     %>
@@ -33,7 +35,7 @@
       </div>
     <% end %>
 
-    <main class="container mx-auto mt-5 px-5">
+    <main class="flex-grow">
       <%= yield %>
     </main>
   </body>

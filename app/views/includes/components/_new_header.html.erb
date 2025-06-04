@@ -1,0 +1,36 @@
+<%
+navigation_nav_items ||= [
+  { name: 'Jobs', path: '#' },
+  { name: 'Internships', path: '#' },
+  { name: 'Courses', path: '#' }
+]
+
+navigation_right_nav_items ||= [
+  { name: 'Post Jobs', path: '#' }
+]
+
+if navigation_nav_items.count + navigation_right_nav_items.count > 5
+  raise ArgumentError, "Total navigation items exceed the limit of 5. Please reduce the number of items from either `navigation_nav_items` or `navigation_right_nav_items.`"
+end
+
+if navigation_nav_items.count > 4
+  raise ArgumentError, "Navigation items exceed the limit of 4. Please reduce the number of items in `navigation_nav_items`."
+end
+
+if navigation_right_nav_items.count > 2
+  raise ArgumentError, "Right navigation items exceed the limit of 2. Please reduce the number of items in `navigation_right_nav_items`."
+end
+
+
+top_right_devise_resource_name ||= 'user'
+resource_name = top_right_devise_resource_name
+resource_signed_in = send("#{resource_name}_signed_in?")
+current_resource = send("current_#{resource_name}") if resource_signed_in
+resource_profile_path = send("#{resource_name}_profile_path") if resource_signed_in
+destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if resource_signed_in
+
+
+%>
+
+<header class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60>
+</header>
