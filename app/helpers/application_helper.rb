@@ -20,7 +20,7 @@ module ApplicationHelper
     end
 
     # def og_image(image_url = "")
-    #     base_url = "/assets/img/blog-image.jpg"
+    #     base_url = "/asset/img/blog-image.jpg"
     #     if image_url.empty?
     #         base_url
     #     else
