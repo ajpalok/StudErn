@@ -2,9 +2,14 @@
 
 set -o errexit
 
-echo "bundle install"
+echo "Installing gems..."
 bundle install --quiet
-bin/rails assets:precompile
-bin/rails assets:clean
 
-bin/rails db:migrate
+echo "Precompiling assets..."
+bundle exec rails assets:precompile
+
+echo "Cleaning old assets..."
+bundle exec rails assets:clean
+
+echo "Running database migrations..."
+bundle exec rails db:migrate
