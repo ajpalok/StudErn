@@ -56,6 +56,10 @@ group :development do
   gem "web-console"
 end
 
+group :production do
+  gem "pg"
+end
+
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
 
