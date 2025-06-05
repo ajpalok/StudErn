@@ -1,0 +1,134 @@
+@import "tailwindcss";
+@source "../../../public/*.html";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../app/javascript/**/*.js";
+@source "../../../app/views/**/*";
+
+@plugin "daisyui" {
+    themes: ["light"];
+    styled: true;
+    utils: true;
+    logs: true;
+    styledark: true;
+    logdark: true;
+    utilsdark: true;
+}
+
+@plugin "daisyui/theme"{
+    name: "light";
+    default: true;
+    prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+
+    --color-base-100: #FAF5F7;                                  /* Base surface color of page, used for blank backgrounds */
+    --color-base-200: #EFE8EB;                                  /* Base color, darker shade, to create elevations */
+    --color-base-300: #D5D1D3;                                  /* Base color, even more darker shade, to create elevations */
+    --color-base-content: #0D0307;                              /* Foreground content color to use on base color */
+    --color-primary: #E90B5B;                                   /* Primary brand color, The main color of your brand */
+    --color-primary-content: #FFFDFE;                           /* Foreground content color to use on primary color */
+    --color-secondary: #A7A0A2;                                 /* Secondary brand color, The optional, secondary color of your brand */
+    --color-secondary-content: #0D0307;                         /* Foreground content color to use on secondary color */
+    --color-muted-primary: oklch(90% 0.2 336);                          /* Muted color, For less important parts of UI */
+    --color-muted-accent: oklch(54% 0.12 307.32);               /* Foreground content color to use on muted color */
+    --color-accent: #4D1183;                                    /* Accent brand color, The optional, accent color of your brand */
+    --color-accent-content: #FFFDFE;                            /* Foreground content color to use on accent color */
+    --color-neutral: #FFB5D0;                                   /* Neutral dark color, For not-saturated parts of UI */
+    --color-neutral-content: #0D0307;                           /* Foreground content color to use on neutral color */
+    --color-info: oklch(70% 0.2 220);                           /* Info color, For informative/helpful messages */
+    --color-info-content: #000;                                 /* Foreground content color to use on info color */
+    --color-success: rgb(4% 82% 22%);                           /* Success color, For success/safe messages */
+    --color-success-content: #000;                              /* Foreground content color to use on success color */
+    --color-warning: oklch(80% 0.25 80);                        /* Warning color, For warning/caution messages */
+    --color-warning-content: oklch(20% 0.05 80);                /* Foreground content color to use on warning color */
+    --color-error: rgb(69% 0% 0%);                              /* Error color, For error/danger/destructive messages */
+    --color-error-content: #FFFFFF;                             /* Foreground content color to use on error color */
+
+    /* border radius */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+
+    /* base sizes */
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+
+    /* border size */
+    --border: 1px;
+
+    /* effects */
+    --depth: 1;
+    --noise: 0;
+}
+
+/* custom font face add */
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: medium;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: semi-bold;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: bold;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo Da 2';
+    font-style: extra-bold;
+    font-weight: 800;
+    font-display: swap;
+    src: url('/fonts/Baloo_Da/BalooDa2-ExtraBold.ttf');
+}
+
+
+@theme {
+    --font-balooda: 'Baloo Da 2', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --animate-infinite-scroll: animate-infinite-scroll 25s linear infinite;
+    /* --default-font-family: 'Baloo Da 2', sans-serif; */
+
+    @keyframes animate-infinite-scroll {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+}
+
+::selection, ::-moz-selection {
+    @apply bg-[#840ea8] text-[#fff];
+}
+
+.turbo-progress-bar {
+    @apply bg-primary;
+}
+
+html {
+    @apply font-balooda font-semibold text-base-content
+}
+
+.active {
+    @apply bg-primary text-white;
+}

@@ -3,13 +3,28 @@
 set -o errexit
 
 echo "Installing gems..."
-bundle install --quiet
+# if bundle check is not satisfied, then bundle install
+if ! bundle check; then
+  echo "Installing missing gems..."
+  bundle install --quiet
+else
+  echo "All gems are already installed."
+fi
+
+echo "Installing Foreman..."
+gem install foreman
+
+echo "Stimulus controllers..."
+bundle exec rake stimulus:manifest:update
+
+echo "Running yarn install..."
+yarn install
 
 echo "Precompiling assets..."
-bundle exec rails assets:precompile
+bundle exec rake assets:precompile --trace
 
 echo "Cleaning old assets..."
-bundle exec rails assets:clean
+bundle exec rake assets:clean
 
 echo "Running database migrations..."
 bundle exec rails db:migrate
