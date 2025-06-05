@@ -5,9 +5,6 @@ set -o errexit
 echo "Installing gems..."
 bundle install --quiet
 
-echo "Stimulus controllers..."
-bin/rails stimulus:manifest:update
-
 echo "Precompiling assets..."
 bin/rails assets:precompile
 
