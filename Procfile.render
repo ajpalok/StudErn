@@ -1,3 +1,2 @@
 web: bundle exec rails server -e ${RAILS_ENV:-development}
-css: bundle exec rails tailwindcss:build
 worker: bundle exec sidekiq -C config/sidekiq.yml
