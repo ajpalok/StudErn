@@ -5,11 +5,14 @@ set -o errexit
 echo "Installing gems..."
 bundle install --quiet
 
+echo "Stimulus controllers..."
+bundle exec rails stimulus:manifest:update
+
 echo "Precompiling assets..."
-bin/rails assets:precompile
+bundle exec rails assets:precompile
 
 echo "Cleaning old assets..."
-bin/rails assets:clean
+bundle exec rails assets:clean
 
 echo "Running database migrations..."
-bin/rails db:migrate
+bundle exec rails db:migrate
