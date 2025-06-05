@@ -11,6 +11,9 @@ else
   echo "All gems are already installed."
 fi
 
+echo "Installing Foreman..."
+gem install foreman
+
 echo "Stimulus controllers..."
 bundle exec rake stimulus:manifest:update
 
