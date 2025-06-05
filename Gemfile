@@ -9,7 +9,10 @@ gem "mysql2", "~> 0.5"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+# gem "importmap-rails"
+gem "jsbundling-rails"
+# Use CSS with ESM import maps
+ gem "cssbundling-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -66,6 +69,4 @@ gem "redis", ">= 4.0.1"
 gem 'psych', '~>4.0.0'
 gem "devise", "~> 4.9"
 gem "devise-i18n", "~> 1.13"
-gem "tailwindcss-ruby", "~> 4.1"
-gem "tailwindcss-rails", "~> 4.2"
 gem "sidekiq", "~> 8.0"

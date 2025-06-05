@@ -1,5 +1,19 @@
 {
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:watch": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --watch",
+    "tailwind:build": "tailwindcss -i ./app/assets/tailwind/application.css -o ./app/assets/builds/application.css",
+    "tailwind:watch": "tailwindcss -i ./app/assets/tailwind/application.css -o ./app/assets/builds/application.css --watch"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.16",
+    "@tailwindcss/postcss": "^4.1.8",
+    "postcss": "^8.5.4",
+    "tailwindcss": "^4.1.8"
+  },
   "devDependencies": {
-    "daisyui": "^5.0.43"
+    "daisyui": "^5.0.43",
+    "esbuild": "^0.25.5"
   }
 }
