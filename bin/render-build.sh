@@ -14,6 +14,9 @@ fi
 echo "Stimulus controllers..."
 bundle exec rake stimulus:manifest:update
 
+echo "Running yarn install..."
+yarn install
+
 echo "Precompiling assets..."
 bundle exec rake assets:precompile --trace
 
