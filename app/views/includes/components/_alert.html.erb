@@ -1,0 +1,16 @@
+<% if notice || alert %>
+<div class="toast toast-top toast-end md:max-w-1/2" data-controller="toast">
+    <% if notice %>
+        <div class="alert alert-info"
+            data-toast-target="toast">
+        <span class="text-wrap" data-toast-target="message"><%= notice %></span>
+        </div>
+    <% end %>
+    <% if alert %>
+        <div class="alert alert-error"
+            data-toast-target="toast">
+        <span class="text-wrap" data-toast-target="message"><%= alert %></span>
+        </div>
+    <% end %>
+</div>
+<% end %>

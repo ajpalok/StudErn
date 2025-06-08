@@ -1,7 +1,7 @@
 <%# hero section start %>
-<section class="w-full py-20 md:py-32 lg:py-40 bg-gradient-to-br from-base-100 to-base-300/50">
+<section class="w-full py-20 lg:py-28 bg-gradient-to-br from-base-100 to-base-300/50">
     <div class="container mx-auto px-4 md:px-6">
-        <div class="grid lg:grid-cols-2 gaps-8 lg:gaps-16 items-center">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div class="flex justify-center lg:justify-start row-start-2 lg:row-start-1">
                 <svg class="w-full max-w-md lg:max-w-xl h-auto" viewBox="0 0 327 305" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M298.362 0.107635H239.267V97.9266H298.362V0.107635Z" fill="#E0E0E0" />
@@ -664,7 +664,7 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                     <a class="btn btn-primary btn-md" href="">Make your CV For Free</a>
-                    <a class="btn bg-[hsl(336 43% 97%)] hover:bg-primary hover:text-base-100 btn-md" href="">Contact Us</a>
+                    <a class="btn bg-[hsl(336 43% 97%)] hover:bg-primary hover:text-base-100 btn-md border-primary" href="">Contact Us</a>
                 </div>
             </div>
         </div>
@@ -788,31 +788,370 @@
 </section>
 <%# events section end %>
 
-<%# events section start %>
+<%# jobs section start %>
 <section class="w-full pt-16 md:pt-24">
     <div class="container mx-auto px-4 md:px-6">
-        <div class="flex flex-col items-center justify-center mx-6">
+        <div class="flex flex-col <%#items-center%> justify-center mx-6">
             <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center text-primary mb-12">
-                Current Events
+                What's new today
             </h2>
-            <div class="w-full max-w-screen-md carousel carousel-center space-x-4 p-4">
+            <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-left text-bold mb-6">
+                Freshers Job
+            </h3>
+            <div class="w-full mx-auto carousel carousel-center space-x-4 p-4">
                 <div class="carousel-item">
-                    <img
-                    src="/asset/img/events/Inter_Job_Fair.png"
-                    class="rounded-box w-50 sm:w-sm md:w-md lg:max-w-md" />
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(1).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img
-                    src="/asset/img/events/Mega_Internship_Sprint.png"
-                    class="rounded-box w-50 sm:w-sm md:w-md max-w-md" />
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(2).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                    <img
-                    src="/asset/img/events/Placement_guarenteed_Course.png"
-                    class="rounded-box w-50 sm:w-sm md:w-md lg:max-w-md" />
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(3).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(4).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(5).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(6).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<%# events section end %>
+<%# jobs section end %>
+
+<%# internships section start %>
+<section class="w-full pt-16 md:pt-24">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col <%#items-center%> justify-center mx-6">
+            <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-left text-bold mb-6">
+                Internships
+            </h3>
+            <div class="w-full mx-auto carousel carousel-center space-x-4 p-4">
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(1).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(2).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(3).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(4).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(5).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-wrap items-around justify-center mb-4">
+                            <img src="/asset/img/companies/(6).png" alt="Software Engineer Intern"
+                                class="rounded-lg w-16 h-16 object-contain">
+                            <div class="flex flex-col ml-4">
+                                <h4 class="text-xl font-semibold text-primary">Software Engineer Intern</h4>
+                                <p class="text-sm text-secondary">Tech Innovators</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%# internships section end %>
+
+<%# courses section start %>
+<section class="w-full pt-16 md:pt-24">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="flex flex-col <%#items-center%> justify-center mx-6">
+            <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-left text-bold mb-6">
+                Courses
+            </h3>
+            <div class="w-full mx-auto carousel carousel-center space-x-4 p-4">
+                <div class="carousel-item">
+                    <div class="w-50 sm:w-85 bg-base-100 border rounded-lg p-4 mx-2">
+                        <div class="flex flex-col items-center justify-center mb-4">
+                            <img src="https://placehold.co/800x600/EEE/31343C" alt="Digital Marketing Masterclass"
+                                class="rounded-lg w-64 h-48 mb-4 object-contain">
+                            <h4 class="text-xl font-semibold text-primary">Digital Marketing Masterclass</h4>
+                            <p class="text-sm text-secondary">Tech Innovators</p>
+                        </div>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1" fill="var(--color-primary)" viewBox="0 0 11 12">
+                                <use xlink:href="#icon-location"></use>
+                            </svg>
+                            Remote
+                        </p>
+                        <p class="text-sm text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 mr-1 text-primary" viewBox="0 0 24 24">
+                                <use xlink:href="#icon-job-bag"></use>
+                            </svg>
+                            Full-time
+                        </p>
+                        <a href="#" class="w-full btn btn-primary mt-4">Know More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%# courses section end %>
