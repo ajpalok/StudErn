@@ -12,7 +12,7 @@ gem "puma", ">= 5.0"
 # gem "importmap-rails"
 gem "jsbundling-rails"
 # Use CSS with ESM import maps
- gem "cssbundling-rails"
+gem "cssbundling-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -66,7 +66,7 @@ end
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
 
-gem 'psych', '~>4.0.0'
+gem "psych", "~>4.0.0"
 gem "devise", "~> 4.9"
 gem "devise-i18n", "~> 1.13"
 gem "sidekiq", "~> 8.0"
