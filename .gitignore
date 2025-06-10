@@ -29,12 +29,17 @@
 !/tmp/storage/.keep
 
 # /public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/app/assets/builds/*
-!/app/assets/builds/.keep
+# Ignore sqlite3 database files.
+/db/*.sqlite
+*/*.sqlite
+*/*.sqlite-*
 
 # Ignore node_modules
 /node_modules

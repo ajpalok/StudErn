@@ -7,36 +7,32 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.0]
       t.string    :first_name
       t.string    :last_name
       t.string    :phone
-      t.string    :address
+      t.float     :latitude
+      t.float     :longitude
+      t.string    :career_objective
       t.date      :dob
       t.integer   :gender, default: 0
       t.integer   :account_status, default: 0 # 0: pending, 1: active, 2: suspended, 3: closed
-      t.jsonb     :skills, default: [] # Array of strings for skills ex: ["Ruby", "JavaScript"]
-      t.string    :social_media_accounts, default: {} # JSON object for social media links ex: {"linkedin": "https://linkedin.com/in/username" }
-      t.jsonb     :others, default: ["Portfolio": [], "Certifications": [], "Languages": [], "Awards": [], "Publications": [], "Projects": []] # Array of objects for other information
-      #Ex:- :default =>''
-      t.string    :profile_picture # URL or path to profile picture
 
-
-      ## Database authenticatable
+      # Database authenticatable
       t.string   :email,              null: false, default: ""
       t.string   :encrypted_password, null: false, default: ""
 
-      ## Recoverable
+      # Recoverable
       t.string   :reset_password_token
       t.datetime :reset_password_sent_at
 
-      ## Rememberable
+      # Rememberable
       t.datetime :remember_created_at
 
-      ## Trackable
+      # Trackable
       t.integer  :sign_in_count, default: 0, null: false
       t.datetime :current_sign_in_at
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
 
-      ## Confirmable
+      # Confirmable
       t.string   :confirmation_token
       t.datetime :confirmed_at
       t.datetime :confirmation_sent_at

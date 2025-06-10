@@ -35,3 +35,5 @@
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 <%#= javascript_importmap_tags %>
+
+<%= yield(:custom_head) %>
