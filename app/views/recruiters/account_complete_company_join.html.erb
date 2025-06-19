@@ -1,0 +1,121 @@
+<% content_for :title, "#{"Join #{@company.name} - Recruiter Account Completion"}" %>
+
+<div class="container mx-auto my-6">
+    <div class="bg-white relative shadow rounded-lg w-5/6 md:w-5/6 lg:w-4/6 xl:w-3/6 mx-auto py-12">
+
+        <h1 class="font-bold text-center text-5xl text-gray-900">
+            <%= @company.name %>
+        </h1>
+
+        <% if @company.tagline.present? %>
+        <p class="text-center text-sm text-gray-400 font-medium">
+            <%= @company.tagline %>
+        </p>
+        <% end %>
+
+        <p class="text-center text-gray-600 mt-2">
+            <span>
+                <%= @company.description %>
+            </span>
+        </p>
+
+        <% if @RecruiterPermissionsOnCompany.nil? %>
+        <div class="my-5 px-6">
+            <%# <%= form_for @new_recruiter_permission, url: recruiter_account_complete_company_join_post_path(company_id: @company.id) do |f| %> 
+            <%= form_with model: @new_recruiter_permission, url: recruiter_account_complete_company_join_post_path(company_id: @company.id) do |f| %>
+                <%= f.submit "Join to #{ @company.name }", class: "w-full btn btn-primary" %>
+            <% end %>
+        </div>
+        <% end %>
+
+        <% if @RecruiterPermissionsOnCompany.present? && @RecruiterPermissionsOnCompany.recruiter_status == "pending" %>
+        <div class="my-5 px-6">
+            <button type="button" class="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-900">Join request Pending</button>
+        </div>
+        <% end %>
+
+        <% if @RecruiterPermissionsOnCompany.present? && @RecruiterPermissionsOnCompany.recruiter_status == "approved" %>
+        <div class="my-5 px-6">
+            <button type="button" class="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-900">Join request Pending</button>You are a member of <%= @company.name %></button>
+        </div>
+        <% end %>
+
+        <% if @RecruiterPermissionsOnCompany.present? && @RecruiterPermissionsOnCompany.recruiter_status == "rejected" %>
+        <div class="my-5 px-6">
+            <button type="button" class="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-900">Join request Pending</button>Your request to join <%= @company.name %> has been rejected</button>
+        </div>
+        <% end %>
+
+        <% if @RecruiterPermissionsOnCompany.present? && @RecruiterPermissionsOnCompany.recruiter_status == "blocked" %>
+        <div class="my-5 px-6">
+            <button type="button" class="w-full btn bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-900">Join request Pending</button>Your request to join <%= @company.name %> has been blocked</button>
+        </div>
+        <% end %>
+
+        <div>
+            <div class="my-5 px-6" data-controller="map"
+                     data-map-latitude-value="<%= @latitude %>"
+                     data-map-longitude-value="<%= @longitude %>">
+                <% content_for :custom_head do %>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+                <% end %>
+
+                <div id="error_msg" class="hidden mb-2 alert alert-error alert-outline" data-map-target="errorMsg" role="alert">
+                    <span data-map-target="errorText"></span>
+                </div>
+
+                <div id="mapDiv"
+                     style= "height: 400px;
+                            width: 100%;
+                            border-radius: 8px;
+                            border: 1px solid #ccc;"
+                     data-map-target="map"
+                     data-action="map#fixedLocation"></div>
+            </div>
+        </div>
+
+        <%# <div class="flex justify-between items-center my-5 px-6">
+            <a href="" class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Facebook</a>
+            <a href="" class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Twitter</a>
+            <a href="" class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Instagram</a>
+            <a href="" class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3">Email</a>
+        </div>
+
+        <div class="w-full">
+            <h3 class="font-medium text-gray-900 text-left px-6">Recent activites</h3>
+            <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
+                <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" class="rounded-full h-6 shadow-md inline-block mr-2">
+                        Updated his status
+                        <span class="text-gray-500 text-xs">24 min ago</span>
+                </a>
+
+                <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" class="rounded-full h-6 shadow-md inline-block mr-2">
+                        Added new profile picture
+                        <span class="text-gray-500 text-xs">42 min ago</span>
+                </a>
+
+                <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" class="rounded-full h-6 shadow-md inline-block mr-2">
+                    Posted new article in <span class="font-bold">#Web Dev</span>
+                    <span class="text-gray-500 text-xs">49 min ago</span>
+                </a>
+
+                <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
+                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" class="rounded-full h-6 shadow-md inline-block mr-2">
+                    Edited website settings
+                    <span class="text-gray-500 text-xs">1 day ago</span>
+                </a>
+
+                <a href="#" class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden">
+                    <img src="https://avatars0.githubusercontent.com/u/35900628?v=4" alt="" class="rounded-full h-6 shadow-md inline-block mr-2">
+                    Added new rank
+                    <span class="text-gray-500 text-xs">5 days ago</span>
+                </a>
+                
+            </div>
+        </div> %>
+    </div>
+</div>

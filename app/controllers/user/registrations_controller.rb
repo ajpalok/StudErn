@@ -39,16 +39,38 @@ class User::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :dob, :latitude, :longitude, :phone, :role, :status, :gender, :career_objective ])
+
+    # sanitize gender
+    if params[:user][:gender].present?
+      gender_value = params[:user][:gender].to_s
+      # Only allow integer digits
+      if gender_value.match?(/^\d+$/)
+        params[:user][:gender] = gender_value.to_i
+      else
+        params[:user][:gender] = nil # prevent error by invalid string
+      end
+    end
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:attribute, :nid, :name, :dob, :address, :phone, :role, :status, :gender ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :first_name, :last_name, :dob, :latitude, :longitude, :phone, :role, :status, :gender, :career_objective ])
+
+    # sanitize gender
+    if params[:user][:gender].present?
+      gender_value = params[:user][:gender].to_s
+      # Only allow integer digits
+      if gender_value.match?(/^\d+$/)
+        params[:user][:gender] = gender_value.to_i
+      else
+        params[:user][:gender] = nil # prevent error by invalid string
+      end
+    end
   end
 
   # The path used after sign up.

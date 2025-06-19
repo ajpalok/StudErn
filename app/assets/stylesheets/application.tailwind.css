@@ -117,8 +117,28 @@
     }
 }
 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-base-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d81b60;
+}
+
+/* Custom selection color */
 ::selection, ::-moz-selection {
-    @apply bg-[#840ea8] text-[#fff];
+    @apply bg-[#e91e63] text-[#fff];
 }
 
 .turbo-progress-bar {
@@ -126,7 +146,11 @@
 }
 
 html {
-    @apply font-balooda font-semibold text-base-content
+    @apply font-balooda font-semibold text-base-content;
+    scroll-behavior: smooth;
+    scrollbar-color: var(--color-primary) var(--color-base-100);
+    scrollbar-width: 8px;
+    scrollbar-gutter: stable;
 }
 
 .active {

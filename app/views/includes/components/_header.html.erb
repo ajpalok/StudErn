@@ -27,6 +27,7 @@ resource_name = top_right_devise_resource_name
 resource_signed_in = send("#{resource_name}_signed_in?")
 current_resource = send("current_#{resource_name}") if resource_signed_in
 resource_profile_path = send("#{resource_name}_profile_path") if resource_signed_in
+edit_resource_registration_path = send("edit_#{resource_name}_registration_path") if resource_signed_in
 destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if resource_signed_in
 
 
@@ -71,7 +72,7 @@ destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if
             </div>
             <hr class="my-1 border-t border-secondary" />
             <li>
-              <a>
+              <a href="<%= resource_profile_path %>" aria-label="Profile">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="mr-2 h-4 w-4">
@@ -81,7 +82,7 @@ destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if
               </a>
             </li>
             <li>
-              <a>
+              <a href="<%= edit_resource_registration_path %>" aria-label="Edit Profile">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                   class="mr-2 h-4 w-4">

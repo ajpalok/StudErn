@@ -68,6 +68,6 @@ class ControlUnit::RegistrationsController < Devise::RegistrationsController
     if (%w[new create].include? action_name)
       return "authentication"
     end
-    return "application"
+    return "control_unit"
   end
 end

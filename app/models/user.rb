@@ -11,7 +11,8 @@ class User < ApplicationRecord
   before_save :set_default_account_status, if: :new_record?
 
   # Enums
-  enum :gender, { male: 0, female: 1, other: 2 }
+  enum :gender, { male: 1, female: 2, other: 3 }
+  enum :account_status, { incomplete: 0, complete: 1, suspended: 2, closed: 3 }
 
   # Validations
   validate :firstname_validation
@@ -21,7 +22,6 @@ class User < ApplicationRecord
   validate :career_objective_validation
   validate :dob_validation
   validate :gender_validation
-  validate :account_status_validation
 
   private
   def set_default_account_status
@@ -88,7 +88,7 @@ class User < ApplicationRecord
 
   def career_objective_validation
     if career_objective.blank?
-      return errors.add(:career_objective, "can't be blank")
+      return
     end
     if career_objective.length < 10
       return errors.add(:career_objective, "must be at least 10 characters long")
@@ -103,31 +103,26 @@ class User < ApplicationRecord
 
   def dob_validation
     if dob.blank?
-      return errors.add(:dob, "can't be blank")
+      return errors.add(:base, "Date of Birth can't be blank")
     end
     if dob > Date.today
-      return errors.add(:dob, "can't be in the future")
+      return errors.add(:base, "Date of Birth can't be in the future")
     end
-    if dob < 13.years.ago.to_date
-      return errors.add(:dob, "must be at least 13 years old")
+    if dob > 18.years.ago.to_date
+      return errors.add(:base, "Date of Birth must be at least 18 years old")
     end
   end
 
   def gender_validation
-    if gender.blank?
+    if gender.blank? || gender.nil? || gender.empty?
       return errors.add(:gender, "can't be blank")
     end
-    if gender < 0 || gender > 2
-      return errors.add(:gender, "must be male, female, or other")
-    end
-  end
 
-  def account_status_validation
-    if account_status.blank?
-      return errors.add(:account_status, "can't be blank")
-    end
-    if account_status < 0 || account_status > 3
-      return errors.add(:account_status, "must be pending, active, suspended, or closed")
+    # get the value of the gender enum
+    gender_integer = User.genders[self.gender.to_s].to_i
+    if gender_integer < 1 || gender_integer > 3
+      raise "Gender Value passed: #{self.gender} which's type is #{self.gender.class}"
+      return errors.add(:gender, "must be male, female or other")
     end
   end
 end

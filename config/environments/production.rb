@@ -58,7 +58,7 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   mail_credentials = Rails.application.credentials.dig(:mail)
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:host) || ENV["HOST"] || "localhost" }
+  config.action_mailer.default_url_options = { host: ENV["HOST"] || Rails.application.credentials.dig(:host) || "localhost" }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {

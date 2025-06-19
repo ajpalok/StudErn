@@ -12,7 +12,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.0]
       t.string    :career_objective
       t.date      :dob
       t.integer   :gender, default: 0
-      t.integer   :account_status, default: 0 # 0: pending, 1: active, 2: suspended, 3: closed
+      t.integer   :account_status, default: 0 # 0: incomplete, 1: complete, 2: suspended, 3: closed
 
       # Database authenticatable
       t.string   :email,              null: false, default: ""

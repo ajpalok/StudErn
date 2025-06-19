@@ -13,6 +13,9 @@
     "@hotwired/turbo-rails": "^8.0.16",
     "@tailwindcss/cli": "^4.1.8",
     "@tailwindcss/postcss": "^4.1.8",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^3.2.0",
+    "lodash.debounce": "^4.0.8",
     "postcss": "^8.5.4",
     "swiper": "^11.2.8"
   },

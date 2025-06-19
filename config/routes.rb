@@ -50,6 +50,36 @@ Rails.application.routes.draw do
   get "/user/", to: "users#index", as: :user_index
   get "/user/profile", to: "users#profile", as: :user_profile
 
+  devise_for :recruiters,
+              path: "recruiter",
+              path_names:
+              {
+                sign_in: "login",
+                sign_out: "logout",
+                sign_up: "register",
+                # confirmation: 'verification',
+                registration: "account",
+                cancel: "close"
+              },
+              controllers:
+              {
+                sessions: "recruiter/sessions",
+                registrations: "recruiter/registrations",
+                passwords: "recruiter/passwords",
+                confirmations: "recruiter/confirmations"
+                # unlocks: "recruiter/unlocks",
+                # omniauth: "recruiter/omniauth_callbacks"
+              }
+  get "/recruiter/", to: "recruiters#index", as: :recruiter_index
+  get "/recruiter/profile", to: "recruiters#profile", as: :recruiter_profile
+  get "/recruiter/recruitment-publish", to: "recruiters#recruitment_publish", as: :recruiter_recruitment_publish
+  post "/recruiter/recruitment-publish?company=:company_id", to: "recruiters#recruitment_publish_create", as: :recruiter_recruitment_publish_create
+  get "/recruiter/account_complete", to: "recruiters#account_complete", as: :recruiter_account_complete
+  post "/recruiter/account_complete", to: "recruiters#account_complete_post", as: :recruiter_account_complete_post
+  post "/recruiter/account_complete/company_create", to: "recruiters#account_complete_company_create", as: :recruiter_account_complete_company_create
+  get "/recruiter/account_complete/company/:company_id", to: "recruiters#account_complete_company_join", as: :recruiter_account_complete_company_join
+  post "/recruiter/account_complete/company/:company_id", to: "recruiters#account_complete_company_join_post", as: :recruiter_account_complete_company_join_post
+
   devise_for :control_units,
               path: "control_unit",
               path_names:

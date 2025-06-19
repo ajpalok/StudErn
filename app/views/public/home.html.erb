@@ -676,7 +676,11 @@
 <%# hero section end %>
 
 <%# search section start %>
-<section class="w-full py-16 md:py-24 bg-accent">
+<section class="w-full py-16 md:py-24 bg-accent relative">
+    <span class="absolute overflow-hidden inset-0 opacity-10">
+        <span class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></span>
+        <span class="absolute bottom-0 right-0 w-40 h-40 bg-white rounded-full translate-x-20 translate-y-20"></span>
+    </span>
     <div class="container mx-auto px-4 md:px-6">
         <div class="flex flex-col max-w-screen-xl justify-center mx-auto gap-4">
             <h2 class="text-4xl sm:text-5xl md:text-6xl font-normal leading-tight text-[#E3C4FF]">
@@ -1123,7 +1127,7 @@
 <%# internships section end %>
 
 <%# courses section start %>
-<section class="w-full pt-16 md:pt-24">
+<section class="w-full pt-16 md:pt-24 my-10">
     <div class="container mx-auto px-4 md:px-6">
         <div class="flex flex-col <%#items-center%> justify-center mx-6">
             <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-left text-bold mb-6">

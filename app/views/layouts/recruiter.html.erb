@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <%= render 'includes/components/head' %>
+  </head>
+
+  <body class="max-w-[1920px] mx-auto bg-base-100 text-base-content">
+    <%= render 'includes/components/svg' %>
+    <%= render 'includes/components/header',
+                navigation_nav_items: [
+                    { name: 'Jobs', path: "#" },
+                    { name: 'Internships', path: "#" },
+                    { name: 'Courses', path: "#" }
+                ],
+                navigation_right_nav_items: [
+                    { name: 'Recruiters/Post Jobs →', path: recruiter_recruitment_publish_path }
+                ],
+                top_right_devise_resource_name: 'recruiter'
+    %>
+
+    <%= render 'includes/components/alert' %>
+    <main class="flex-grow">
+      <%= yield %>
+    </main>
+    <%= render 'includes/components/footer' %>
+  </body>
+</html>

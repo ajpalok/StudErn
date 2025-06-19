@@ -7,8 +7,14 @@ import { application } from "./application"
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import MapController from "./map_controller"
+application.register("map", MapController)
+
 import MobileMenuController from "./mobile_menu_controller"
 application.register("mobile-menu", MobileMenuController)
+
+import SearchCompanyToJoinController from "./search_company_to_join_controller"
+application.register("search-company-to-join", SearchCompanyToJoinController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)

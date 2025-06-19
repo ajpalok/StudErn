@@ -1,8 +1,6 @@
 <% content_for :title, "Register to find jobs" %>
 
-
-
-<div class="max-w-80 w-full block py-5 mx-auto">
+<div class="max-w-screen-sm w-full block py-5 mx-auto">
   <img src="/asset/img/icons/StudErn_Light_Long_Logo.svg" alt="Logo" class="w-25 mb-[25px] mx-auto" />
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= render "control_units/shared/error_messages", resource: resource %>
@@ -17,22 +15,47 @@
         <%= f.label :first_name, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
         <%= f.text_field :first_name, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autofocus: true, autocomplete: "first-name" %>
       </p>
- 
 
       <p class="block">
         <%= f.label :last_name, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
         <%= f.text_field :last_name, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "last-name" %>
       </p>
- 
+
+      <%# genders from the enum %>
+      <p class="block">
+        <%= f.label :gender, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.select :gender, User.genders.map { |key, value| [key.titleize, value] }, { prompt: "Select Gender" },
+          class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1" %>
+      </p>
+
       <p class="block">
         <%= f.label :Date_Of_Birth, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
         <%= f.date_field :dob, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "date-of-birth" %>
       </p>
 
-      <p class="block">
-        <%= f.label :address, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
-        <%= f.text_field :address, class:"fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1", autocomplete: "address" %>
-      </p>
+      <div class="block my-5" data-controller="map">
+        <% content_for :custom_head do %>
+          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+          <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+        <% end %>
+        <%= f.label "Current Address", class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+          <%= f.hidden_field :latitude, data: { map_target: "latitude" } %>
+          <%= f.hidden_field :longitude, data: { map_target: "longitude" } %>
+
+        <div id="error_msg" class="hidden mb-2 alert alert-error alert-outline" data-map-target="errorMsg" role="alert">
+          <span data-map-target="errorText"></span>
+        </div>
+
+        <div id="mapDiv" style="height: 400px;
+                width: 90%;
+                border-radius: 8px;
+                border: 1px solid #ccc;" data-map-target="map"></div>
+
+        <button class="btn btn-outline btn-primary mt-2 w-full" type="button" data-map-target="currentLocation" data-action="click->map#getLocation()">
+          Use Current Location
+        </button>
+      </div>
+
 
       <p class="block">
         <%= f.label :phone, class:"fs-[14px] leading-[1.5] inline-block mb-[3px]" %>

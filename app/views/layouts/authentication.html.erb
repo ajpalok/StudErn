@@ -5,55 +5,10 @@
   </head>
 
   <body>
-
-    <% if notice || alert %>
-      <div class="toast toast-top toast-end md:max-w-1/2" data-controller="toast">
-        <% if notice %>
-          <div class="alert alert-info"
-              data-toast-target="toast">
-            <span class="text-wrap" data-toast-target="message"><%= notice %></span>
-          </div>
-        <% end %>
-        <% if alert %>
-          <div class="alert alert-error"
-              data-toast-target="toast">
-            <span class="text-wrap" data-toast-target="message"><%= alert %></span>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-
-
+    <%= render 'includes/components/alert' %>
     <main>
       <%= yield %>
     </main>
-
-    <% if notice || alert %>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const toasts = document.querySelectorAll("#toast");
-          let delay = 0;
-          toasts.forEach((toast) => {
-            const messageElement = toast.querySelector("span");
-            const message = messageElement ? messageElement.innerText : "";
-            const wordCount = message.split(" ").length;
-            const timeout = wordCount * 1000;
-            delay += timeout;
-
-            setTimeout(()=>{
-              toast.style.transition = "opacity 0.5s ease";
-              toast.style.opacity = "0";
-              setTimeout(() => toast.remove(), 500); // Remove the element after fading out
-            }, timeout);
-          });
-
-          setTimeout(() => {
-            document.querySelector("#toast-wrapper").remove();
-          }, delay);
-        });
-    </script>
-    <% end %>
 
   </body>
 </html>
