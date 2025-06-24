@@ -1,7 +1,7 @@
 # class for recruiter_permissions_on_company table
 class RecruiterPermissionsOnCompany < ApplicationRecord
   # table name
-  self.table_name = 'recruiter_permissions_on_company'
+  self.table_name = "recruiter_permissions_on_company"
 
   # Associations
   belongs_to :recruiter
@@ -13,7 +13,7 @@ class RecruiterPermissionsOnCompany < ApplicationRecord
   validate :recruiter_position_validation
 
   # recruiter_id, company_id are unique together
-  validates :recruiter_id, uniqueness: { scope: [:company_id], message: "has already been assigned to this company with the same position" }
+  validates :recruiter_id, uniqueness: { scope: [ :company_id ], message: "has already been assigned to this company with the same position" }
 
   # Enums
   enum :recruiter_status, { pending: 0, approved: 1, rejected: 2, blocked: 3 }
@@ -31,8 +31,7 @@ class RecruiterPermissionsOnCompany < ApplicationRecord
       return errors.add(:recruiter_position, "must be at most 50 characters long")
     end
     if !recruiter_position.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:recruiter_position, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:recruiter_position, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
-
 end

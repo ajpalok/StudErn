@@ -13,6 +13,9 @@ application.register("map", MapController)
 import MobileMenuController from "./mobile_menu_controller"
 application.register("mobile-menu", MobileMenuController)
 
+import RecruitmentController from "./recruitment_controller"
+application.register("recruitment", RecruitmentController)
+
 import SearchCompanyToJoinController from "./search_company_to_join_controller"
 application.register("search-company-to-join", SearchCompanyToJoinController)
 

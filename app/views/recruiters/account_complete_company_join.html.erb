@@ -54,6 +54,7 @@
 
         <div>
             <div class="my-5 px-6" data-controller="map"
+                     data-map-marker_text-value="<%= @company.name %>"
                      data-map-latitude-value="<%= @latitude %>"
                      data-map-longitude-value="<%= @longitude %>">
                 <% content_for :custom_head do %>

@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
-  create_table "active_storage_attachments", force: :cascade do |t|
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_122846) do
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -21,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,13 +33,32 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "companies", force: :cascade do |t|
+  create_table "bkash_payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "payment_from"
+    t.string "payment_id"
+    t.string "trx_id"
+    t.string "trx_status"
+    t.string "amount"
+    t.string "verification_status"
+    t.string "refund_status"
+    t.string "refund_amount"
+    t.string "refund_charge"
+    t.string "refund_id"
+    t.string "refund_reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_bkash_payments_on_payment_id", unique: true
+    t.index ["refund_id"], name: "index_bkash_payments_on_refund_id", unique: true
+    t.index ["trx_id"], name: "index_bkash_payments_on_trx_id", unique: true
+  end
+
+  create_table "companies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "tagline"
     t.string "description"
@@ -48,13 +67,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.string "website"
     t.float "latitude"
     t.float "longitude"
-    t.integer "parent_company_id"
+    t.bigint "parent_company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_company_id"], name: "index_companies_on_parent_company_id"
   end
 
-  create_table "control_units", force: :cascade do |t|
+  create_table "control_units", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "nid", null: false
     t.date "dob"
@@ -83,9 +102,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.index ["reset_password_token"], name: "index_control_units_on_reset_password_token", unique: true
   end
 
-  create_table "recruiter_permissions_on_company", force: :cascade do |t|
-    t.integer "company_id", null: false
-    t.integer "recruiter_id", null: false
+  create_table "recruiter_permissions_on_company", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.bigint "recruiter_id", null: false
     t.string "recruiter_position", null: false
     t.time "recruiter_working_start_time"
     t.time "recruiter_working_end_time"
@@ -106,7 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.index ["recruiter_id"], name: "index_recruiter_permissions_on_company_on_recruiter_id"
   end
 
-  create_table "recruiters", force: :cascade do |t|
+  create_table "recruiters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
@@ -133,7 +152,49 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
     t.index ["reset_password_token"], name: "index_recruiters_on_reset_password_token", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "recruitment_applies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "recruitment_id", null: false
+    t.integer "status", default: 0, null: false
+    t.boolean "has_contacted_yet", default: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recruitment_id"], name: "index_recruitment_applies_on_recruitment_id"
+    t.index ["user_id"], name: "index_recruitment_applies_on_user_id"
+  end
+
+  create_table "recruitments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "recruitment_type", default: 0, null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "experience_level", default: 0, null: false
+    t.integer "work_type", default: 0, null: false
+    t.integer "work_place", default: 0, null: false
+    t.float "latitude", null: false
+    t.float "longitude", null: false
+    t.integer "salary_type", default: 1, null: false
+    t.float "annual_salary_range_start"
+    t.float "annual_salary_range_end"
+    t.integer "number_of_vacancies", default: 1, null: false
+    t.integer "application_collection_status", default: 2
+    t.datetime "application_collection_end_date"
+    t.integer "application_package", default: 0
+    t.integer "application_collection_method", default: 0
+    t.string "application_link"
+    t.string "calling_number"
+    t.bigint "company_id", null: false
+    t.bigint "recruiter_id", null: false
+    t.bigint "bkash_payment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bkash_payment_id"], name: "index_recruitments_on_bkash_payment_id"
+    t.index ["company_id"], name: "index_recruitments_on_company_id"
+    t.index ["recruiter_id"], name: "index_recruitments_on_recruiter_id"
+    t.index ["title"], name: "index_recruitments_on_title"
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
@@ -169,4 +230,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_141114) do
   add_foreign_key "companies", "companies", column: "parent_company_id"
   add_foreign_key "recruiter_permissions_on_company", "companies"
   add_foreign_key "recruiter_permissions_on_company", "recruiters"
+  add_foreign_key "recruitment_applies", "recruitments"
+  add_foreign_key "recruitment_applies", "users"
+  add_foreign_key "recruitments", "bkash_payments"
+  add_foreign_key "recruitments", "companies"
+  add_foreign_key "recruitments", "recruiters"
 end

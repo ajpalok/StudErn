@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
     authenticated :control_unit do
     #   root to: "control_unit/pages#home", as: :authenticated_root
 
@@ -17,7 +16,6 @@ Rails.application.routes.draw do
     # sidekiq web UI
     require "sidekiq/web"
     mount Sidekiq::Web => "control_unit/sidekiq", as: :sidekiq
-
   end
 
 
@@ -72,13 +70,19 @@ Rails.application.routes.draw do
               }
   get "/recruiter/", to: "recruiters#index", as: :recruiter_index
   get "/recruiter/profile", to: "recruiters#profile", as: :recruiter_profile
-  get "/recruiter/recruitment-publish", to: "recruiters#recruitment_publish", as: :recruiter_recruitment_publish
-  post "/recruiter/recruitment-publish?company=:company_id", to: "recruiters#recruitment_publish_create", as: :recruiter_recruitment_publish_create
+
+  # recruiter account complete
   get "/recruiter/account_complete", to: "recruiters#account_complete", as: :recruiter_account_complete
   post "/recruiter/account_complete", to: "recruiters#account_complete_post", as: :recruiter_account_complete_post
   post "/recruiter/account_complete/company_create", to: "recruiters#account_complete_company_create", as: :recruiter_account_complete_company_create
   get "/recruiter/account_complete/company/:company_id", to: "recruiters#account_complete_company_join", as: :recruiter_account_complete_company_join
   post "/recruiter/account_complete/company/:company_id", to: "recruiters#account_complete_company_join_post", as: :recruiter_account_complete_company_join_post
+
+  # recruiter recruitment publish
+  get "/recruiter/recruitment-publish", to: "recruiters#recruitment_publish", as: :recruiter_recruitment_publish
+  post "/recruiter/recruitment-publish", to: "recruiters#recruitment_publish_create", as: :recruiter_recruitment_publish_create
+  get "/recruiter/recruitment-publish/:company_id/:recruitment_id", to: "recruiters#recruitment_publish_complete", as: :recruiter_recruitment_publish_complete
+  # post "/recruiter/recruitment-publish/:company_id/:recruitment_id", to: "recruiters#recruitment_publish_complete_pay", as: :recruiter_recruitment_publish_complete_pay
 
   devise_for :control_units,
               path: "control_unit",

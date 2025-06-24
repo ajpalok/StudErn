@@ -8,6 +8,7 @@ class Recruiter < ApplicationRecord
   # has_many :recruitments, dependent: :destroy
   has_many :recruiter_permissions_on_companies, dependent: :destroy
   has_many :companies, through: :recruiter_permissions_on_companies #this will allow us to get all the companies the recruiter is associated with
+  has_many :recruitments, dependent: :destroy # this will allow us to get all the recruitments the recruiter has published
 
   # Callbacks
   before_save :set_default_account_status, if: :new_record?

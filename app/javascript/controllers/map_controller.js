@@ -5,6 +5,7 @@ import "leaflet-control-geocoder"
 export default class extends Controller {
   static targets = ["latitude", "longitude", "map", "currentLocation", "errorMsg", "errorText"]
   static values = {
+    marker_text: String,
     latitude: Number,
     longitude: Number
   }
@@ -18,14 +19,18 @@ export default class extends Controller {
       this.defaultLocation.lat = parseFloat(this.latitudeTarget.value)
       this.defaultLocation.lng = parseFloat(this.longitudeTarget.value)
     }
+    if (this.hasMarkerTextValue)
+      var markerText = this.markerTextValue
+    else
+      var markerText = null
     if (this.hasLatitudeValue && this.hasLongitudeValue) {
-      this.fixedLocation()
+      this.fixedLocation(markerText)
     } else {
-      this.getLocation()
+      this.getLocation(markerText)
     }
   }
 
-  getLocation() {
+  getLocation(popMsg = "Selected Location") {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -63,7 +68,7 @@ export default class extends Controller {
     }
   }
 
-  fixedLocation() {
+  fixedLocation(popMsg = "Selected Location") {
     const lat = parseFloat(this.latitudeValue || this.defaultLocation.lat)
     const lng = parseFloat(this.longitudeValue || this.defaultLocation.lng)
 
@@ -85,7 +90,7 @@ export default class extends Controller {
       attribution: "&copy; OpenStreetMap for StudErn"
     }).addTo(this.map)
 
-    this.marker = L.marker([lat, lng], { draggable: false }).addTo(this.map)
+    this.marker = L.marker([lat, lng], { draggable: false }).addTo(this.map).bindPopup(popMsg).openPopup()
   }
 
   initializeMap(lat, lng, popMsg = "Selected Location") {

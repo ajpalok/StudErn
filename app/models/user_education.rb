@@ -1,0 +1,2 @@
+class UserEducation < ApplicationRecord
+end

@@ -36,27 +36,151 @@
 
     </div>
     <div class="w-full sm:w-2/3 p-6">
-        <h3 class="text-2xl font-bold mb-4">Post a Recruitment</h3>
-        <%= form_with url: recruiter_recruitment_publish_path(company: @company.id), local: true do |form| %>
-            <div class="mb-4">
-                <%= form.label :title, "Title", class: "block text-gray-700" %>
-                <%= form.text_field :title, class: "w-full p-2 border border-gray-300 rounded" %>
-            </div>
+        <h3 class="text-4xl font-bold mb-4">Post a Recruitment</h3>
+        <%= form_for @recruitment, url: recruiter_recruitment_publish_create_path(company: @company.id), data: { controller: "recruitment" } do |form| %>
+            <%= render "recruiters/shared/error_messages", resource: @recruitment %>
+            <fieldset class="mb-4 border-2 border-gray-300 p-4 rounded-lg">
+                <legend class="block text-gray-700 text-lg">Recruitment Type</legend>
+                <div class="flex flex-row flex-wrap gap-2">
+                    <% Recruitment.recruitment_types.each do |type, _| %>
+                        <div class="flex items-center mb-2">
+                            <%= form.radio_button :recruitment_type, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:recruitment_type]) %>
+                            <%= form.label :recruitment_type, type.humanize, value: type, class: "text-gray-700" %>
+                        </div>
+                    <% end %>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 border-2 border-gray-300 p-4 rounded-lg">
+                <legend class="block text-gray-700 text-lg">Job Details</legend>
+                <div class="mb-4">
+                    <%= form.label :title, "Title", class: "block text-gray-700 text-md" %>
+                    <%= form.text_field :title, class: "w-full p-2 border border-gray-300 rounded", placeholder: "Ex: Software Engineer", required: true, autocomplete: true, autofocus: true %>
+                </div>
+
+                <fieldset class="mb-4">
+                    <legend class="block text-gray-700 text-md">Experience Level</legend>
+                    <div class="flex flex-row flex-wrap gap-2">
+                        <% Recruitment.experience_levels.each do |type, _| %>
+                            <div class="flex items-center mb-2">
+                                <%= form.radio_button :experience_level, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:experience_level]) %>
+                                <%= form.label :experience_level, type.humanize, value: type, class: "text-gray-700" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4">
+                    <legend class="block text-gray-700 text-md">Work Type</legend>
+                    <div class="flex flex-row flex-wrap gap-2">
+                        <% Recruitment.work_types.each do |type, _| %>
+                            <div class="flex items-center mb-2">
+                                <%= form.radio_button :work_type, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:work_type]) %>
+                                <%= form.label :work_type, type.humanize, value: type, class: "text-gray-700" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mb-4">
+                    <legend class="block text-gray-700 text-md">Work Place</legend>
+                    <div class="flex flex-row flex-wrap gap-2">
+                        <% Recruitment.work_places.each do |type, _| %>
+                            <div class="flex items-center mb-2">
+                                <%= form.radio_button :work_place, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:work_place]) %>
+                                <%= form.label :work_place, type.humanize, value: type, class: "text-gray-700" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </fieldset>
+
+                <div class="mb-4">
+                    <%= form.label :number_of_vacancies, "Number of Vacancies", class: "block text-gray-700 text-md" %>
+                    <%= form.number_field :number_of_vacancies, class: "w-full p-2 border border-gray-300 rounded", placeholder: "Enter number of vacancies", required: true, autocomplete: true, value: @recruitment[:number_of_vacancies] || 1, min: 1, step: 1, max: 20 %>
+                </div>
+
+                <div class="mb-4">
+                    <%= form.label :description, "Description", class: "block text-gray-700 text-md" %>
+                    <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded", placeholder: "Key responsibilities: \n 1.\n 2.\n 3.", rows: 5, required: true, autocomplete: true, value: @recruitment[:description] %>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 border-2 border-gray-300 p-4 rounded-lg">
+                <legend class="block text-gray-700 text-lg">Job Location</legend>
+                <div class="mb-10" data-controller="map">
+                    <% content_for :custom_head do %>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+                    <% end %>
+                    <%= form.hidden_field :latitude, value: @company.latitude, data: { map_target: "latitude" } %>
+                    <%= form.hidden_field :longitude, value: @company.longitude, data: { map_target: "longitude" } %>
+
+                    <div id="error_msg" class="hidden mb-2 alert alert-error alert-outline" data-map-target="errorMsg" role="alert">
+                        <span data-map-target="errorText"></span>
+                    </div>
+
+                    <div id="mapDiv" style="height: 400px;
+                            width: 90%;
+                            border-radius: 8px;
+                            border: 1px solid #ccc;" data-map-target="map"></div>
+
+                    <button class="btn btn-outline btn-primary mt-2 w-full" type="button" data-map-target="currentLocation" data-action="click->map#getLocation()">
+                        Use Current Location
+                    </button>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 border-2 border-gray-300 p-4 rounded-lg">
+                <legend class="block text-gray-700 text-lg">Salary Details</legend>
+                <fieldset class="mb-4">
+                    <legend class="block text-gray-700 text-md">Salary Basis</legend>
+                    <div class="flex flex-row flex-wrap gap-2">
+                        <% Recruitment.salary_types.each do |type, _| %>
+                            <div class="flex items-center mb-2">
+                                <%= form.radio_button :salary_type, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:salary_type]), data: { action: "recruitment#toggleSalaryRange" } %>
+                                <%= form.label :salary_type, type.humanize, value: type, class: "text-gray-700" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </fieldset>
+
+                <div class="mb-4 transition-opacity duration-300 opacity-0 hidden" data-recruitment-target="salaryRange">
+                    <%= form.label :annual_salary_range, "Annual Salary Range", class: "block text-gray-700 text-md" %>
+                    <div class="flex flex-row items-center gap-4">
+                        <%= form.text_field :annual_salary_range_start, class: "w-1/2 p-2 border border-gray-300 rounded", placeholder: "Starting range" %>
+                        <span class="text-gray-800 mx-2">-</span>
+                        <%= form.text_field :annual_salary_range_end, class: "w-1/2 p-2 border border-gray-300 rounded", placeholder: "Ending range" %>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="mb-4 border-2 border-gray-300 p-4 rounded-lg">
+                <legend class="block text-gray-700 text-lg">Application Receiving Setup</legend>
+                <fieldset class="mb-4">
+                    <legend class="block text-gray-700 text-md">Application Collection Method</legend>
+                    <div class="flex flex-row flex-wrap gap-2">
+                        <% Recruitment.application_collection_methods.each do |type, _| %>
+                            <div class="flex items-center mb-2">
+                                <%= form.radio_button :application_collection_method, type, class: "mr-2 radio radio-sm radio-accent", checked: (type == @recruitment[:application_collection_method]), data: { action: "recruitment#toggleApplicationLink" } %>
+                                <%= form.label :application_collection_method, type.humanize, value: type, class: "text-gray-700" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </fieldset>
+
+                <div class="mb-4 transition-opacity duration-300 opacity-0 hidden" data-recruitment-target="applicationLink">
+                    <%= form.label :application_link, "Application Receiving Media", class: "block text-gray-700 text-md" %>
+                    <%= form.text_field :application_link, class: "w-full p-2 border border-gray-300 rounded", value: @recruitment[:application_link] %>
+                </div>
+            </fieldset>
 
             <div class="mb-4">
-                <%= form.label :description, "Description", class: "block text-gray-700" %>
-                <%= form.text_area :description, class: "w-full p-2 border border-gray-300 rounded" %>
+                <%= form.label :application_collection_end_date, "Application Collection Closing Date", class: "block text-gray-700 text-md" %>
+                <%= form.date_field :application_collection_end_date, class: "w-full p-2 border border-gray-300 rounded", value: @recruitment[:application_collection_end_date] || Date.today + 30.days %>
             </div>
-
-            <div class="mb-4">
-                <%= form.label :location, "Location", class: "block text-gray-700" %>
-                <%= form.text_field :location, data: { map_target: 'map' }, class: "w-full p-2 border border-gray-300 rounded" %>
-            </div>
-
-            <div id="mapDiv" style="height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc;" data-map-target="map"></div>
 
             <div class="flex justify-end mt-6">
-                <%= form.submit "Publish Recruitment", class: "px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700" %>
+                <%= form.submit "Publish Recruitment", class: "btn btn-primary" %>
             </div>
         <% end %>
 

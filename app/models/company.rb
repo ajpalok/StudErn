@@ -2,8 +2,10 @@ class Company < ApplicationRecord
   # Associations
   has_many :recruiter_permissions_on_companies, dependent: :destroy
   has_many :recruiters, through: :recruiter_permissions_on_companies # this will allow us to get all the recruiters associated with the company
+  has_many :recruitments, dependent: :destroy
+  has_many :recruitment_applies, dependent: :destroy
 
-  # callbacks
+  # Callbacks
   # before_save :attribute_sanitization
 
   # Validations
