@@ -34,7 +34,8 @@ class PublicController < ApplicationController
     @jobs = Recruitment.where(
       recruitment_type: [ "job", "micro_job" ],
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
@@ -44,7 +45,8 @@ class PublicController < ApplicationController
     @jobs = Recruitment.where(
       recruitment_type: "job",
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
@@ -54,7 +56,8 @@ class PublicController < ApplicationController
     @micro_jobs = Recruitment.where(
       recruitment_type: "micro_job",
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
@@ -64,7 +67,8 @@ class PublicController < ApplicationController
     @internships = Recruitment.where(
       recruitment_type: [ "internship", "micro_internship" ],
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
@@ -74,17 +78,19 @@ class PublicController < ApplicationController
     @internships = Recruitment.where(
       recruitment_type: "internship",
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
   end
 
   def micro_internships
-    @micro_internships = MicroRecruitment.where(
+    @micro_internships = Recruitment.where(
       recruitment_type: "micro_internship",
     )
-    .where.not(bkash_payment_id: nil)
+    .joins(:bkash_payment)
+    .where(bkash_payments: { trx_status: "success" })
     .order(created_at: :desc)
 
     # if params are available then filter the objects
@@ -96,10 +102,12 @@ class PublicController < ApplicationController
       return
     end
 
-    @recruitment = Recruitment.find_by(id: params[:recruitment_id])
+    @recruitment = Recruitment.joins(:bkash_payment)
+                             .where(bkash_payments: { trx_status: "success" })
+                             .find_by(id: params[:recruitment_id])
 
     if @recruitment.nil?
-      redirect_to root_path, alert: "Recruitment not found."
+      redirect_to root_path, alert: "Recruitment not found or not available."
     else
       @company = @recruitment.company
       @recruiter = @recruitment.recruiter
@@ -109,6 +117,9 @@ class PublicController < ApplicationController
 
 
   def privacy_policy
+  end
+
+  def map_demo
   end
 
   private

@@ -151,6 +151,26 @@ class Recruitment < ApplicationRecord
     end
   end
 
+  # Helper methods for application eligibility
+  def can_accept_applications?
+    application_collection_status == "open" &&
+    bkash_payment.present? &&
+    bkash_payment.trx_id.present? &&
+    bkash_payment.trx_status == "success" &&
+    application_collection_method == "easy_apply"
+  end
+
+  def user_can_apply?(user)
+    return false unless can_accept_applications?
+    return false unless user.account_status == "complete"
+    return false if recruitment_applies.exists?(user: user)
+    true
+  end
+
+  def application_deadline_passed?
+    application_collection_end_date.present? && application_collection_end_date < Time.current
+  end
+
   private
   def set_first_recruitement_bkash_payment
     return unless Recruitment.last.nil? # Check if this is the first recruitment for the company
@@ -159,7 +179,7 @@ class Recruitment < ApplicationRecord
           payment_from: "recruitment",
           payment_id: "TR0001xx1565072365492",
           trx_id: "free1bkash",
-          trx_status: "Completed",
+          trx_status: "success",
           amount: 0.0)
       self.application_collection_status = 1 # Set application collection status to open for the first recruitment
     rescue ActiveRecord::RecordInvalid => e

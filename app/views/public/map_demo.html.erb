@@ -1,0 +1,125 @@
+<% content_for :title, "Map Component Demo" %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Map Component Demo</h1>
+      <p class="text-gray-600">Showcasing the enhanced map component with OpenStreetMap API</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- Basic Map Example -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Basic Map</h2>
+        <p class="text-sm text-gray-600 mb-4">Simple map with current location detection</p>
+        
+        <%= form_with url: "#", local: true do |form| %>
+          <%= render 'includes/components/map', 
+              form: form,
+              required: false,
+              show_address: false,
+              instructions: false %>
+        <% end %>
+      </div>
+
+      <!-- Advanced Map Example -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Advanced Map</h2>
+        <p class="text-sm text-gray-600 mb-4">Map with address display and validation</p>
+        
+        <%= form_with url: "#", local: true do |form| %>
+          <%= render 'includes/components/map', 
+              form: form,
+              required: true,
+              show_address: true,
+              zoom: 14,
+              height: 'h-80' %>
+        <% end %>
+      </div>
+
+      <!-- Fixed Location Map -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Fixed Location Map</h2>
+        <p class="text-sm text-gray-600 mb-4">Read-only map showing a specific location</p>
+        
+        <%= form_with url: "#", local: true do |form| %>
+          <%= render 'includes/components/map', 
+              form: form,
+              required: false,
+              default_lat: 23.7937,
+              default_lng: 90.4066,
+              zoom: 15,
+              show_address: true,
+              instructions: false %>
+        <% end %>
+      </div>
+
+      <!-- Compact Map -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Compact Map</h2>
+        <p class="text-sm text-gray-600 mb-4">Smaller map for forms with limited space</p>
+        
+        <%= form_with url: "#", local: true do |form| %>
+          <%= render 'includes/components/map', 
+              form: form,
+              required: false,
+              show_address: false,
+              height: 'h-48',
+              instructions: false %>
+        <% end %>
+      </div>
+
+    </div>
+
+    <!-- Usage Instructions -->
+    <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold mb-4">Usage Instructions</h2>
+      
+      <div class="prose max-w-none">
+        <h3>Basic Usage</h3>
+        <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>&lt;%= render 'includes/components/map', 
+    form: form,
+    required: true %&gt;</code></pre>
+
+        <h3>Advanced Usage</h3>
+        <pre class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"><code>&lt;%= render 'includes/components/map', 
+    form: form,
+    required: true,
+    default_lat: 23.7937,
+    default_lng: 90.4066,
+    zoom: 12,
+    show_address: true,
+    height: 'h-64',
+    label: 'Select Location',
+    instructions: true %&gt;</code></pre>
+
+        <h3>Available Options</h3>
+        <ul>
+          <li><strong>form:</strong> The form builder object (required)</li>
+          <li><strong>required:</strong> Whether location selection is required (default: false)</li>
+          <li><strong>default_lat:</strong> Default latitude (default: 23.7937 - Dhaka)</li>
+          <li><strong>default_lng:</strong> Default longitude (default: 90.4066 - Dhaka)</li>
+          <li><strong>zoom:</strong> Initial zoom level (default: 12)</li>
+          <li><strong>show_address:</strong> Show address input field (default: false)</li>
+          <li><strong>height:</strong> Map height CSS class (default: 'h-64')</li>
+          <li><strong>label:</strong> Label for the map (default: 'Location')</li>
+          <li><strong>instructions:</strong> Show usage instructions (default: true)</li>
+        </ul>
+
+        <h3>Features</h3>
+        <ul>
+          <li>✅ OpenStreetMap integration with no API key required</li>
+          <li>✅ Current location detection with GPS</li>
+          <li>✅ Address search and reverse geocoding</li>
+          <li>✅ Draggable markers</li>
+          <li>✅ Comprehensive error handling</li>
+          <li>✅ Loading states and user feedback</li>
+          <li>✅ Form validation integration</li>
+          <li>✅ Responsive design</li>
+          <li>✅ Accessibility features</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> 

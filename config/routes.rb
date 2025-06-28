@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "/about"=> "public#about"
   get "/contact"=> "public#contact"
   post "/contact"=> "public#contact_post", as: :contact_post
+  get "/map-demo", to: "public#map_demo", as: :map_demo
 
   get "/privacy-policy", to: "public#privacy_policy", as: :privacy_policy
 
@@ -50,6 +51,14 @@ Rails.application.routes.draw do
   get "/user/profile", to: "users#profile", as: :user_profile
   get "/user/resume", to: "users#resume", as: :user_resume
   patch "/user/resume", to: "users#resume_update", as: :user_resume_update
+  get "/user/applications", to: "users#applications", as: :user_applications
+  post "/user/recruitment/:recruitment_id/apply", to: "users#apply_to_recruitment", as: :user_apply_to_recruitment
+  patch "/user/application/:application_id/withdraw", to: "users#withdraw_application", as: :user_withdraw_application
+  
+  # Onboarding routes
+  get "/user/onboarding", to: "users#onboarding", as: :user_onboarding
+  patch "/user/onboarding", to: "users#onboarding_update", as: :user_onboarding_update
+  get "/user/onboarding/back", to: "users#onboarding_back", as: :user_onboarding_back
 
   devise_for :recruiters,
               path: "recruiter",

@@ -27,3 +27,6 @@ application.register("search-company-to-join", SearchCompanyToJoinController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)
+
+import OnboardingMapController from "./onboarding_map_controller"
+application.register("onboarding-map", OnboardingMapController)

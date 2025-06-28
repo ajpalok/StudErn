@@ -3,3 +3,60 @@
     <h1>Welcome, <%= current_user.first_name %> <%= current_user.last_name %></h1>
     <p>Your email: <%= current_user.email %></p>
 <% end %>
+
+<% content_for :title, "User Profile" %>
+<% content_for :custom_head do %>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<% end %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h1>
+      
+      <%= form_with model: @user, url: user_profile_path, method: :patch, local: true do |form| %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Basic Information -->
+          <div class="space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900">Basic Information</h2>
+            
+            <div>
+              <%= form.label :first_name, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :first_name, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary" %>
+            </div>
+            
+            <div>
+              <%= form.label :last_name, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :last_name, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary" %>
+            </div>
+            
+            <div>
+              <%= form.label :phone, class: "block text-sm font-medium text-gray-700" %>
+              <%= form.text_field :phone, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary" %>
+            </div>
+          </div>
+          
+          <!-- Location Information -->
+          <div class="space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900">Location</h2>
+            <p class="text-sm text-gray-600">Update your location to get relevant job opportunities</p>
+            
+            <%= render 'includes/components/map', 
+                form: form,
+                required: false,
+                show_address: true,
+                height: 'h-48',
+                instructions: false %>
+          </div>
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="mt-6 flex justify-end">
+          <%= form.submit "Update Profile", class: "bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

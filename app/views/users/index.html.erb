@@ -1,5 +1,86 @@
-<%# if authenticated %>
-<% if user_signed_in? %>
-    <h1>Welcome, <%= current_user.first_name %> <%= current_user.last_name %></h1>
-    <p>Your email: <%= current_user.email %></p>
+<% content_for :title, "My Dashboard" %>
+<% content_for :custom_head do %>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<% end %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-3xl mx-auto px-4">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl font-bold text-primary">
+          <%= current_user.first_name.first.upcase if current_user.first_name %>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">
+            <%= current_user.first_name %> <%= current_user.last_name %>
+          </h1>
+          <p class="text-gray-600"><%= current_user.email %></p>
+          <p class="text-xs text-gray-400">Joined: <%= current_user.created_at.strftime('%B %d, %Y') %></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 class="text-lg font-semibold mb-2">Contact Info</h2>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li><strong>Phone:</strong> <%= current_user.phone.presence || 'Not set' %></li>
+            <li><strong>Gender:</strong> <%= current_user.gender&.humanize || 'Not set' %></li>
+            <li><strong>Date of Birth:</strong> <%= current_user.dob&.strftime('%B %d, %Y') || 'Not set' %></li>
+            <li><strong>Career Objective:</strong> <%= current_user.career_objective.presence || 'Not set' %></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold mb-2">Location</h2>
+          <% if current_user.latitude && current_user.longitude %>
+            <div class="rounded-lg overflow-hidden border border-gray-200 mb-2">
+              <div id="user-dashboard-map" class="w-full h-40"></div>
+            </div>
+            <div class="text-xs text-gray-500">
+              Lat: <%= current_user.latitude %>, Lng: <%= current_user.longitude %>
+            </div>
+          <% else %>
+            <div class="text-gray-400">No location set</div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Change Password', edit_user_registration_path(anchor: 'password'), class: "btn btn-outline btn-sm" %>
+        <%= link_to 'View Applications', user_applications_path, class: "btn btn-accent btn-sm" %>
+        <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "btn btn-error btn-sm" %>
+      </div>
+    </div>
+
+    <!-- Example: Recent Applications (if you have this feature) -->
+    <% if defined?(@applications) && @applications.any? %>
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-lg font-semibold mb-4">Recent Applications</h2>
+        <ul class="divide-y divide-gray-100">
+          <% @applications.each do |app| %>
+            <li class="py-2 flex justify-between items-center">
+              <span>
+                <%= app.recruitment.title %>
+                <span class="text-xs text-gray-400">(<%= app.created_at.strftime('%b %d, %Y') %>)</span>
+              </span>
+              <%= link_to 'View', recruitment_path(app.recruitment), class: "btn btn-xs btn-outline" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%# Map JS for showing user location if available %>
+<% if current_user.latitude && current_user.longitude %>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var map = L.map('user-dashboard-map').setView([<%= current_user.latitude %>, <%= current_user.longitude %>], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([<%= current_user.latitude %>, <%= current_user.longitude %>]).addTo(map);
+    });
+  </script>
 <% end %>

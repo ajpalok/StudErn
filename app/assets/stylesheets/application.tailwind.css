@@ -3,6 +3,7 @@
 @source "../../../app/helpers/**/*.rb";
 @source "../../../app/javascript/**/*.js";
 @source "../../../app/views/**/*";
+@import "leaflet/dist/leaflet.css";
 
 @plugin "daisyui" {
     themes: ["light"];

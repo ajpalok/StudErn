@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   # Associations
   # has_many :recruitments, dependent: :destroy
+  has_many :recruitment_applies, dependent: :destroy
+  has_many :applied_recruitments, through: :recruitment_applies, source: :recruitment
   has_many :user_educations, dependent: :destroy
   has_many :user_work_experiences, dependent: :destroy
   has_many :user_skills, dependent: :destroy
@@ -25,17 +27,30 @@ class User < ApplicationRecord
   enum :account_status, { incomplete: 0, complete: 1, suspended: 2, closed: 3 }
 
   # Validations
-  validate :firstname_validation
-  validate :lastname_validation
-  validate :phone_validation
-  validate :coordinates_validation
-  validate :career_objective_validation
-  validate :dob_validation
-  validate :gender_validation
+  validate :firstname_validation, if: :should_validate_profile?
+  validate :lastname_validation, if: :should_validate_profile?
+  validate :phone_validation, if: :should_validate_profile?
+  validate :coordinates_validation, if: :should_validate_profile?
+  validate :career_objective_validation, if: :should_validate_profile?
+  validate :dob_validation, if: :should_validate_profile?
+  validate :gender_validation, if: :should_validate_profile?
+
+  # Onboarding validations
+  validate :onboarding_step_validation, if: :onboarding_in_progress?
+
+  # Public method for controller usage
+  def set_onboarding_step(step)
+    @onboarding_step = step
+  end
 
   private
   def set_default_account_status
-    self.account_status ||= 0 # Default to pending if not set
+    self.account_status ||= 0 # Default to incomplete if not set
+  end
+
+  def should_validate_profile?
+    # Only validate profile fields if user is confirmed and account is not complete
+    confirmed_at.present? && account_status != "complete"
   end
 
   def firstname_validation
@@ -135,4 +150,70 @@ class User < ApplicationRecord
       errors.add(:gender, "must be male, female or other")
     end
   end
-end
+
+  def onboarding_in_progress?
+    @onboarding_step.present?
+  end
+
+  def onboarding_step_validation
+    case @onboarding_step
+    when 1
+      validate_step_1_fields
+    when 2
+      validate_step_2_fields
+    end
+  end
+
+  def validate_step_1_fields
+    # Step 1: Basic information validation
+    if first_name.blank?
+      errors.add(:first_name, "can't be blank")
+    end
+    
+    if last_name.blank?
+      errors.add(:last_name, "can't be blank")
+    end
+    
+    if phone.blank?
+      errors.add(:phone, "can't be blank")
+    end
+    
+    if gender.blank?
+      errors.add(:gender, "can't be blank")
+    end
+    
+    if dob.blank?
+      errors.add(:dob, "can't be blank")
+    end
+  end
+
+  def validate_step_2_fields
+    # Step 2: Location validation
+    if latitude.blank?
+      errors.add(:latitude, "can't be blank")
+    end
+    
+    if longitude.blank?
+      errors.add(:longitude, "can't be blank")
+    end
+    
+    if latitude.present? && (latitude < -90 || latitude > 90)
+      errors.add(:latitude, "must be between -90 and 90")
+    end
+    
+    if longitude.present? && (longitude < -180 || longitude > 180)
+      errors.add(:longitude, "must be between -180 and 180")
+    end
+  end
+
+  # Helper methods
+  def has_complete_profile?
+    account_status == "complete"
+  end
+
+  def can_apply_to_recruitment?(recruitment)
+    return false unless has_complete_profile?
+    return false if recruitment_applies.exists?(recruitment: recruitment)
+    recruitment.user_can_apply?(self)
+  end
+end 
