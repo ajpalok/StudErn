@@ -1,0 +1,168 @@
+<%= form_with model: user, url: user_resume_update_path, method: :patch do |f| %>
+
+<% if user.errors.any? %>
+<section class="bg-base-100">
+    <div class="w-full max-w-3xl mx-auto sm:p-8">
+        <div class="flex flex-col mb-5 border-l-4 border-l-[var(--color-primary)] border-solid bg-white p-[12px]">
+            <ul>
+                <% user.errors.full_messages.each do |message| %>
+                <li class="mb-1"><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<section class="bg-base-100">
+    <div class="w-full max-w-3xl mx-auto sm:p-8">
+        <div class="bg-white p-8 rounded-lg shadow-md border-base-content/10">
+            <h2 class="text-2xl font-bold text-primary mb-4 flex justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4s-4 1.79-4 4s1.79 4 4 4m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4"/>
+                </svg>
+                Basic Information
+            </h2>
+
+            <div class="mb-6">
+                <div class="my-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <%# <label for="first_name" class="block text-base-content mb-1">First Name</label> %>
+                        <%= f.label :first_name, "First Name", class: "block text-base-content mb-1" %>
+                        <%= f.text_field :first_name, placeholder: "Enter your first name", class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                    <div>
+                        <%= f.label :last_name, "Last Name", class: "block text-base-content mb-1" %>
+                        <%= f.text_field :last_name, placeholder: "Enter your last name", class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                </div>
+
+                <div class="my-2 ">
+                    <%= f.label :career_objective, "Career Objective", class: "block text-base-content mb-1" %>
+                    <%= f.text_area :career_objective, placeholder: "Enter your career objective", class: "w-full rounded-lg border py-2 px-3 field-sizing-fixed", rows:5 %>
+                </div>
+
+                <div class="my-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <%= f.label :email, "Email", class: "block text-base-content mb-1" %>
+                        <%= f.email_field :email, placeholder: "Enter your Email address", class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                    <div>
+                        <%= f.label :phone, "Phone", class: "block text-base-content mb-1" %>
+                        <%= f.telephone_field :phone, placeholder: "Enter your Phone number", class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                </div>
+
+                <div class="mb-10" data-controller="map">
+                    <% content_for :custom_head do %>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+                    <% end %>
+                    <%= f.hidden_field :latitude, value: user.latitude, data: { map_target: "latitude" } %>
+                    <%= f.hidden_field :longitude, value: user.longitude, data: { map_target: "longitude" } %>
+
+                    <div id="error_msg" class="hidden mb-2 alert alert-error alert-outline" data-map-target="errorMsg" role="alert">
+                        <span data-map-target="errorText"></span>
+                    </div>
+
+                    <div id="mapDiv" style="height: 400px;
+                            width: 90%;
+                            border-radius: 8px;
+                            border: 1px solid #ccc;" data-map-target="map"></div>
+
+                    <button class="btn btn-outline btn-primary mt-2 w-full" type="button" data-map-target="currentLocation" data-action="click->map#getLocation()">
+                        Use Current Location
+                    </button>
+                </div>
+            </div>
+
+            <%# <div class="mt-8 flex justify-end">
+                <button class="bg-primary hover:bg-primary/80 text-primary-content px-4 py-2 rounded-lg">Save</button>
+            </div> %>
+        </div>
+    </div>
+</section>
+
+<section class="bg-base-100">
+    <div class="w-full max-w-3xl mx-auto sm:p-8">
+        <div class="bg-white p-8 rounded-lg shadow-md border-base-content/10">
+            <h2 class="text-2xl font-bold text-primary mb-4 flex justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M15.09 12.79a1 1 0 0 0-.086-1.638L15 5.33L14 6v5.15a1 1 0 0 0-.092 1.629l-.378.502a2.48 2.48 0 0 0-.53 1.498v1.222h.815a.88.88 0 0 0 .853-.664l.331-1.336v2h1v-1.21a2.5 2.5 0 0 0-.534-1.505zM8 0L0 4l8 5l8-5z"/>
+                    <path d="M8 10L3 6.67v1.71C3 9.29 5.94 12 8 12s5-2.71 5-3.62V6.67z"/>
+                </svg>
+                Education
+            </h2>
+
+
+            <%= f.fields_for(:user_educations) do |edu_form| %>
+            <div class="mb-6 border border-base-content/50 p-6 rounded-lg">
+                <% if edu_form.object.id.present? %>
+                    <%= edu_form.hidden_field :id %>
+                <% end %>
+
+                <div class="my-2 ">
+                    <%= edu_form.label :institution_name, "Institution Name", class: "block text-base-content mb-1" %>
+                    <%= edu_form.text_field :institution_name, placeholder: "Enter your institution name", class: "w-full rounded-lg border py-2 px-3 field-sizing-fixed" %>
+                </div>
+
+                <div class="my-2 ">
+                    <%= edu_form.label :degree, "Degree", class: "block text-base-content mb-1" %>
+                    <%= edu_form.text_field :degree, placeholder: "Degree, Ex: Bachelor of Computer Science & Engineering", class: "w-full rounded-lg border py-2 px-3 field-sizing-fixed" %>
+                </div>
+
+                <div class="my-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <%= edu_form.label :performance_type, "Performance Type", class: "block text-base-content mb-1" %>
+                        <%= edu_form.select :performance_type, UserEducation.performance_types.keys.map { |type| [type.humanize, type] }, {}, { class: "w-full rounded-lg border py-2 px-3" } %>
+                    </div>
+                    <div>
+                        <%= edu_form.label :performance, "Performance", class: "block text-base-content mb-1" %>
+                        <%= edu_form.text_field :performance, placeholder: "Enter your performance", class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                </div>
+
+                <div class="my-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <%= edu_form.label :start_date, "Start Date", class: "block text-base-content mb-1" %>
+                        <%= edu_form.date_field :start_date, class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                    <div>
+                        <%= edu_form.label :end_date, "End Date", class: "block text-base-content mb-1" %>
+                        <%= edu_form.date_field :end_date, class: "w-full rounded-lg border py-2 px-3" %>
+                    </div>
+                    <div>
+                        <%= edu_form.label :currently_studying, "Currently Studying", class: "block text-base-content mb-1" do %>
+                            <%= edu_form.check_box :currently_studying, {}, true, false %>
+                            <span class="ml-2">Currently Studying</span>
+                        <% end %>
+                    </div>
+                    <% if edu_form.object.id.present? %>
+                    <div>
+                        <%= edu_form.label :_destroy, "Delete", class: "block text-base-content mb-1" do %>
+                            <%= edu_form.check_box :_destroy, {}, true, false %>
+                            <span class="ml-2">Delete</span>
+                        <% end %>
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+            <% end %>
+
+        </div>
+    </div>
+</section>
+
+
+<%# submit %>
+<section class="bg-base-100">
+    <div class="w-full max-w-3xl mx-auto sm:p-8">
+        <div class="bg-white p-8 rounded-lg shadow-md border-base-content/10">
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-primary hover:bg-primary/80 text-primary-content px-4 py-2 rounded-lg">Save</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<% end %>

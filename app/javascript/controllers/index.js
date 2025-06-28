@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AllRecruitmentController from "./all_recruitment_controller"
+application.register("all-recruitment", AllRecruitmentController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -15,6 +18,9 @@ application.register("mobile-menu", MobileMenuController)
 
 import RecruitmentController from "./recruitment_controller"
 application.register("recruitment", RecruitmentController)
+
+import ResumeController from "./resume_controller"
+application.register("resume", ResumeController)
 
 import SearchCompanyToJoinController from "./search_company_to_join_controller"
 application.register("search-company-to-join", SearchCompanyToJoinController)

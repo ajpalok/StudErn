@@ -8,14 +8,16 @@
     <%= render 'includes/components/svg' %>
     <%= render 'includes/components/header',
                 navigation_nav_items: [
-                    { name: 'Dashboard', path: recruiter_index_path },
-                    { name: 'Manage Recruitments', path: "#" },
-                    { name: 'Company Details', path: "#" }
+                    { name: 'Jobs', path: jobs_all_path },
+                    { name: 'Internships', path: internships_all_path }
                 ],
                 navigation_right_nav_items: [
-                    { name: 'Recruiters/Post Jobs →', path: recruiter_recruitment_publish_path }
+                    { name: 'Build My Resume →', path: user_resume_path }
                 ],
-                top_right_devise_resource_name: 'recruiter'
+                navigation_auth_dropdowns: [
+                    { name: 'Profile', path: user_profile_path, logo: 'icon-user' },
+                    { name: 'Edit Profile', path: edit_user_registration_path, logo: 'icon-settings' }
+                ]
     %>
 
     <%= render 'includes/components/alert' %>

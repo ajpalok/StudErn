@@ -31,6 +31,11 @@ edit_resource_registration_path = send("edit_#{resource_name}_registration_path"
 destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if resource_signed_in
 
 
+navigation_auth_dropdowns ||= [
+  { name: 'Edit Profile', path: edit_resource_registration_path, logo: 'icon-settings' },
+  { name: 'Settings', path: '#', logo: 'icon-settings' }
+]
+
 %>
 
 
@@ -71,26 +76,20 @@ destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if
               </div>
             </div>
             <hr class="my-1 border-t border-secondary" />
-            <li>
-              <a href="<%= resource_profile_path %>" aria-label="Profile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="mr-2 h-4 w-4">
-                  <use xlink:href="#icon-user"></use>
-                </svg>
-                <span>Profile</span>
-              </a>
-            </li>
-            <li>
-              <a href="<%= edit_resource_registration_path %>" aria-label="Edit Profile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="mr-2 h-4 w-4">
-                  <use xlink:href="#icon-settings"></use>
-                </svg>
-                <span>Settings</span>
-              </a>
-            </li>
+            <%# Login Navigation Links %>
+            <% navigation_auth_dropdowns.each do |item| %>
+              <li>
+                <a href="<%= item[:path] %>" aria-label="<%= item[:name] %>">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="mr-2 h-4 w-4">
+                    <use xlink:href="#<%= item[:logo] %>"></use>
+                  </svg>
+                  <span><%= item[:name] %></span>
+                </a>
+              </li>
+            <% end %>
+            <%# Login Navigation Links end %>
             <hr class="my-1 border-t border-secondary" />
             <li>
               <%= button_to destroy_resource_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "flex flex-row", aria_label: "Logout" do %>
@@ -131,7 +130,7 @@ destroy_resource_session_path = send("destroy_#{resource_name}_session_path") if
 
   <div class="
     <%# nav-container %>
-    fixed md:relative top-0 left-0 bg-base-200 w-full h-full transform transition-transform duration-700 overflow-y-auto md:overflow-y-hidden
+    fixed md:relative top-0 left-0 bg-base-200 w-full h-full transform transition-transform duration-700 overflow-y-auto md:overflow-y-hidden z-50
     translate-x-full md:translate-x-0" id="sidebar-slab" data-mobile-menu-target="panel">
     <div class=" container mx-auto px-4 md:px-6 flex items-center flex-col md:flex-row md:justify-between gap-4">
       <div aria-label="mobile navbar header" class="sticky top-0 z-10 px-5 py-4 bg-base-200 w-full flex items-center justify-between flex-wrap md:hidden">

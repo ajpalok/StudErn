@@ -6,6 +6,16 @@ class User < ApplicationRecord
 
   # Associations
   # has_many :recruitments, dependent: :destroy
+  has_many :user_educations, dependent: :destroy
+  has_many :user_work_experiences, dependent: :destroy
+  has_many :user_skills, dependent: :destroy
+  has_many :user_accomplishments, dependent: :destroy
+
+  # Nested attributes
+  accepts_nested_attributes_for :user_educations, allow_destroy: true
+  accepts_nested_attributes_for :user_work_experiences, allow_destroy: true
+  accepts_nested_attributes_for :user_skills, allow_destroy: true
+  accepts_nested_attributes_for :user_accomplishments, allow_destroy: true
 
   # Callbacks
   before_save :set_default_account_status, if: :new_record?
@@ -39,7 +49,7 @@ class User < ApplicationRecord
       return errors.add(:first_name, "must be at most 50 characters long")
     end
     if !first_name.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:first_name, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:first_name, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
 
@@ -54,7 +64,7 @@ class User < ApplicationRecord
       return errors.add(:last_name, "must be at most 50 characters long")
     end
     if !last_name.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:last_name, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:last_name, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
 
@@ -82,7 +92,7 @@ class User < ApplicationRecord
 
   def coordinates_validation
     if latitude.present? && (latitude < -90 || latitude > 90) && longitude.present? && (longitude < -180 || longitude > 180)
-      return errors.add(:base, "Location is not valid.")
+      errors.add(:base, "Location is not valid.")
     end
   end
 
@@ -97,7 +107,7 @@ class User < ApplicationRecord
       return errors.add(:career_objective, "must be at most 500 characters long")
     end
     if !career_objective.match?(/\A[\w.\-#&\*\s]*\z/)
-      return errors.add(:career_objective, "can only contain letters, numbers, spaces, and the characters . - # & *")
+      errors.add(:career_objective, "can only contain letters, numbers, spaces, and the characters . - # & *")
     end
   end
 
@@ -109,7 +119,7 @@ class User < ApplicationRecord
       return errors.add(:base, "Date of Birth can't be in the future")
     end
     if dob > 18.years.ago.to_date
-      return errors.add(:base, "Date of Birth must be at least 18 years old")
+      errors.add(:base, "Date of Birth must be at least 18 years old")
     end
   end
 
@@ -122,7 +132,7 @@ class User < ApplicationRecord
     gender_integer = User.genders[self.gender.to_s].to_i
     if gender_integer < 1 || gender_integer > 3
       raise "Gender Value passed: #{self.gender} which's type is #{self.gender.class}"
-      return errors.add(:gender, "must be male, female or other")
+      errors.add(:gender, "must be male, female or other")
     end
   end
 end

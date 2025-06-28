@@ -42,6 +42,13 @@ class Recruitment < ApplicationRecord
   validate :application_collection_end_date_validation
   validate :application_link_validation, if: -> { application_collection_method == "external_link" || application_collection_method == "email" }
 
+
+  def salary_range
+    if annual_salary_range_start.present? && annual_salary_range_end.present?
+      "#{annual_salary_range_start} - #{annual_salary_range_end} / Year"
+    end
+  end
+
   def annual_salary_range
     if salary_type == "fixed" && (annual_salary_range_start.present? || annual_salary_range_end.present?)
       return errors.add(:base, "Annual salary range is not applicable for fixed salary types")

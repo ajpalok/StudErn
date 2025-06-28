@@ -16,13 +16,13 @@ class Company < ApplicationRecord
   validate :phone_validation
   validate :website_validation
   validate :coordinates_validation
-  
+
   validate :parent_company_validation
 
   validates :name, uniqueness: true
   validates :email, uniqueness: true
   validates :phone, uniqueness: true
-  
+
   private
   def name_validation
     if name.blank? || name.nil? || name.strip.empty?
@@ -35,7 +35,7 @@ class Company < ApplicationRecord
       return errors.add(:name, "must be at most 50 characters long")
     end
     if !name.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:name, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:name, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
 
@@ -50,7 +50,7 @@ class Company < ApplicationRecord
       return errors.add(:tagline, "must be at most 100 characters long")
     end
     if !tagline.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:tagline, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:tagline, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
 
@@ -65,7 +65,7 @@ class Company < ApplicationRecord
       return errors.add(:description, "must be at most 500 characters long")
     end
     if !description.match?(/\A[\w.\-#&\s]*\z/)
-      return errors.add(:description, "can only contain letters, numbers, spaces, and the characters . - # &")
+      errors.add(:description, "can only contain letters, numbers, spaces, and the characters . - # &")
     end
   end
 
@@ -74,7 +74,7 @@ class Company < ApplicationRecord
       return errors.add(:email, "can't be blank")
     end
     # if the email does not contain an @ symbol, return an error
-    unless email.include?('@')
+    unless email.include?("@")
       return errors.add(:email, "must contain an @ symbol")
     end
 
@@ -100,13 +100,13 @@ class Company < ApplicationRecord
     return if website.blank? # optional
     uri = URI.parse(website) rescue nil
     if uri.nil? || !uri.kind_of?(URI::HTTP)
-      return errors.add(:website, "must be a valid URL starting with http:// or https://")
+      errors.add(:website, "must be a valid URL starting with http:// or https://")
     end
   end
 
   def coordinates_validation
     if latitude.present? && (latitude < -90 || latitude > 90) && longitude.present? && (longitude < -180 || longitude > 180)
-      return errors.add(:base, "Location is not valid.")
+      errors.add(:base, "Location is not valid.")
     end
   end
 
@@ -118,7 +118,7 @@ class Company < ApplicationRecord
     end
 
     unless Company.exists?(parent_company_id)
-      return errors.add(:parent_company, "must be a valid company")
+      errors.add(:parent_company, "must be a valid company")
     end
   end
 end

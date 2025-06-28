@@ -1,0 +1,18 @@
+<% content_for :title, "Resume" %>
+<% content_for :description, "Create a professional resume to showcase your skills and experience." %>
+
+<section class="w-full pt-6 md:pt-12 bg-base-100">
+    <div class="container mx-auto px-4 md:px-6">
+        <h1 class="text-3xl font-bold text-accent font-headline">
+            Build Your Resume
+        </h1>
+
+        <p class="text-md text-base-content/80 mt-2 mb-6">
+            Create a professional resume to showcase your skills and experience and use it to any application you want to apply.
+        </p>
+    </div>
+</section>
+
+<%= turbo_frame_tag "resume_form" do %>
+    <%= render "users/resume_form", user: current_user %>
+<% end %>

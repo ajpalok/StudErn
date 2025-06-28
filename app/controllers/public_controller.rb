@@ -1,5 +1,5 @@
 class PublicController < ApplicationController
-  before_action :redirect_if_user_signed_in, only: [:home]
+  before_action :redirect_if_user_signed_in, only: [ :home ]
 
   def home
   end
@@ -8,6 +8,107 @@ class PublicController < ApplicationController
   end
 
   def contact
+    @contact = Contactform.new
+  end
+
+  def contact_post
+    unless params[:contactform].present?
+      flash.now[:alert] = "Please fill out the contact form."
+      render :contact and return
+    end
+    @contact = Contactform.new(params.require(:contactform).permit(
+      :name,
+      :email,
+      :phone,
+      :message
+    ))
+
+    if @contact.save
+      redirect_to root_path, notice: "Thank you for contacting us. We will get back to you soon."
+    else
+      flash.now[:alert] = "Failed to send your message. Please try again."
+    end
+  end
+  def jobs_all
+    # recruitment type job and micro jobs will be here
+    @jobs = Recruitment.where(
+      recruitment_type: [ "job", "micro_job" ],
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def jobs
+    @jobs = Recruitment.where(
+      recruitment_type: "job",
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def micro_jobs
+    @micro_jobs = Recruitment.where(
+      recruitment_type: "micro_job",
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def internships_all
+    @internships = Recruitment.where(
+      recruitment_type: [ "internship", "micro_internship" ],
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def internships
+    @internships = Recruitment.where(
+      recruitment_type: "internship",
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def micro_internships
+    @micro_internships = MicroRecruitment.where(
+      recruitment_type: "micro_internship",
+    )
+    .where.not(bkash_payment_id: nil)
+    .order(created_at: :desc)
+
+    # if params are available then filter the objects
+  end
+
+  def recruitment
+    unless params[:recruitment_id].present? && params[:recruitment_id].match?(/^\d+$/)
+      redirect_to root_path, alert: "Invalid recruitment ID."
+      return
+    end
+
+    @recruitment = Recruitment.find_by(id: params[:recruitment_id])
+
+    if @recruitment.nil?
+      redirect_to root_path, alert: "Recruitment not found."
+    else
+      @company = @recruitment.company
+      @recruiter = @recruitment.recruiter
+      @bkash_payment = @recruitment.bkash_payment if @recruitment.bkash_payment.present?
+    end
+  end
+
+
+  def privacy_policy
   end
 
   private

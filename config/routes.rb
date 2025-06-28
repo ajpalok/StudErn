@@ -2,17 +2,6 @@ Rails.application.routes.draw do
     authenticated :control_unit do
     #   root to: "control_unit/pages#home", as: :authenticated_root
 
-    #   devise_scope :control_unit do
-    #     get "settings", to: "control_unit/settings#index", as: :settings
-    #     get "settings/profile", to: "control_unit/settings#edit_profile", as: :edit_profile
-    #     put "settings/profile", to: "control_unit/settings#update_profile", as: :update_profile
-    #     get "settings/password", to: "control_unit/settings#edit_password", as: :edit_profile_password
-    #     put "settings/password", to: "control_unit/settings#update_password", as: :update_profile_password
-    #     get "settings/about", to: "control_unit/settings#edit_about", as: :edit_profile_about
-    #     put "settings/about", to: "control_unit/settings#update_about", as: :update_profile_about
-    #   end
-
-
     # sidekiq web UI
     require "sidekiq/web"
     mount Sidekiq::Web => "control_unit/sidekiq", as: :sidekiq
@@ -23,6 +12,18 @@ Rails.application.routes.draw do
   root "public#home"
   get "/about"=> "public#about"
   get "/contact"=> "public#contact"
+  post "/contact"=> "public#contact_post", as: :contact_post
+
+  get "/privacy-policy", to: "public#privacy_policy", as: :privacy_policy
+
+  # All Sort of recruitments
+  get "/jobs/all", to: "public#jobs_all", as: :jobs_all
+  get "/jobs", to: "public#jobs", as: :jobs
+  get "/micro-jobs", to: "public#micro_jobs", as: :micro_jobs
+  get "/internships/all", to: "public#internships_all", as: :internships_all
+  get "/internships", to: "public#internships", as: :internships
+  get "/micro-internships", to: "public#micro_internships", as: :micro_internships
+  get "recruitment/:recruitment_id", to: "public#recruitment", as: :recruitment
 
 
   devise_for :users,
@@ -47,6 +48,8 @@ Rails.application.routes.draw do
               }
   get "/user/", to: "users#index", as: :user_index
   get "/user/profile", to: "users#profile", as: :user_profile
+  get "/user/resume", to: "users#resume", as: :user_resume
+  patch "/user/resume", to: "users#resume_update", as: :user_resume_update
 
   devise_for :recruiters,
               path: "recruiter",

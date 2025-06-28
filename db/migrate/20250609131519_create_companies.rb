@@ -11,7 +11,7 @@ class CreateCompanies < ActiveRecord::Migration[8.0]
       t.float   :longitude
 
       # may have parent company
-      t.references :parent_company, foreign_key: { to_table: :companies }, index: true, :null => true
+      t.references :parent_company, foreign_key: { to_table: :companies }, index: true, null: true
 
       t.timestamps
     end
