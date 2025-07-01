@@ -12,6 +12,9 @@ class ControlUnit < ApplicationRecord
   validate :phone_validation
   before_save :validate_role_change
 
+  # Associations
+  has_many :courses, dependent: :destroy
+
   enum :role, { super_admin: 0, admin: 1, unauthorized: 99 }
 
   # after_initialize :set_default_role, if: :new_record?

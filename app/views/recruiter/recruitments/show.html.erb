@@ -1,0 +1,246 @@
+<% content_for :title, "#{@recruitment.title} - Recruitment Details" %>
+
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="flex items-center space-x-3">
+            <%= link_to "← Back to Recruitments", recruiter_recruitments_path, 
+                class: "text-primary hover:underline" %>
+            <h1 class="text-3xl font-bold text-gray-900"><%= @recruitment.title %></h1>
+          </div>
+          <p class="mt-1 text-gray-600"><%= @recruitment.company.name %></p>
+        </div>
+        <div class="flex items-center gap-3">
+          <%= link_to "Edit", edit_recruiter_recruitment_path(@recruitment), 
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" %>
+          <%= link_to "View Applications", recruiter_recruitment_applications_path(@recruitment), 
+              class: "inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Recruitment Details -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Recruitment Details</h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Title</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.title %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Type</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.recruitment_type.titleize %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Work Type</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.work_type.titleize %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Work Place</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.work_place.titleize %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Experience Level</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.experience_level.titleize %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Vacancies</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.number_of_vacancies %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Salary Type</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @recruitment.salary_type.titleize %></p>
+              </div>
+              
+              <% if @recruitment.salary_range.present? %>
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500">Salary Range</h3>
+                  <p class="mt-1 text-sm text-gray-900"><%= @recruitment.salary_range %></p>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="mt-6">
+              <h3 class="text-sm font-medium text-gray-500">Description</h3>
+              <div class="mt-1 text-sm text-gray-900 prose max-w-none">
+                <%= simple_format(@recruitment.description) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold text-gray-900">Recent Applications</h2>
+              <%= link_to "View All Applications", recruiter_recruitment_applications_path(@recruitment), 
+                  class: "text-sm text-primary hover:underline" %>
+            </div>
+          </div>
+          <div class="p-6">
+            <% if @recent_applications.any? %>
+              <div class="space-y-4">
+                <% @recent_applications.each do |application| %>
+                  <div class="flex items-center justify-between p-4 border border-gray-100 rounded-lg hover:bg-gray-50">
+                    <div class="flex items-center space-x-4">
+                      <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                          <span class="text-sm font-medium text-gray-600">
+                            <%= application.user.first_name&.first&.upcase || 'U' %>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex-1">
+                        <h3 class="font-medium text-gray-900">
+                          <%= application.user.full_name %>
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                          <%= application.user.email %>
+                        </p>
+                        <p class="text-xs text-gray-500">
+                          Applied <%= time_ago_in_words(application.created_at) %> ago
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                        <%= case application.status
+                            when 'pending'
+                              'bg-yellow-100 text-yellow-800'
+                            when 'accepted'
+                              'bg-green-100 text-green-800'
+                            when 'rejected'
+                              'bg-red-100 text-red-800'
+                            when 'withdrawn'
+                              'bg-gray-100 text-gray-800'
+                            else
+                              'bg-gray-100 text-gray-800'
+                            end %>">
+                        <%= application.status.titleize %>
+                      </span>
+                      <%= link_to "View Profile", user_path(application.user), 
+                          class: "text-sm text-primary hover:underline",
+                          target: "_blank" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="text-center py-8">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No applications yet</h3>
+                <p class="mt-1 text-sm text-gray-500">Applications will appear here once candidates apply.</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Status Card -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Status</h3>
+          <div class="space-y-4">
+            <div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                <%= case @recruitment.application_collection_status
+                    when 'open'
+                      'bg-green-100 text-green-800'
+                    when 'draft'
+                      'bg-yellow-100 text-yellow-800'
+                    when 'close'
+                      'bg-red-100 text-red-800'
+                    else
+                      'bg-gray-100 text-gray-800'
+                    end %>">
+                <%= @recruitment.application_collection_status.titleize %>
+              </span>
+            </div>
+            
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Applications</h4>
+              <p class="text-2xl font-bold text-gray-900"><%= @applications_count %></p>
+            </div>
+            
+            <% if @recruitment.application_collection_end_date.present? %>
+              <div>
+                <h4 class="text-sm font-medium text-gray-500">Application Deadline</h4>
+                <p class="text-sm text-gray-900">
+                  <%= @recruitment.application_collection_end_date.strftime("%B %d, %Y") %>
+                </p>
+                <p class="text-xs text-gray-500">
+                  <%= time_ago_in_words(@recruitment.application_collection_end_date) %> from now
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div class="space-y-3">
+            <%= link_to "Edit Recruitment", edit_recruiter_recruitment_path(@recruitment), 
+                class: "flex items-center p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors" %>
+            <%= link_to "View All Applications", recruiter_recruitment_applications_path(@recruitment), 
+                class: "flex items-center p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors" %>
+            <%= link_to "Public View", recruitment_path(@recruitment), 
+                class: "flex items-center p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors",
+                target: "_blank" %>
+            <%= link_to "Delete Recruitment", recruiter_recruitment_path(@recruitment), 
+                method: :delete,
+                data: { confirm: "Are you sure? This action cannot be undone.", turbo_confirm: "Are you sure? This action cannot be undone." },
+                class: "flex items-center p-3 text-red-700 hover:bg-red-50 rounded-lg transition-colors" %>
+          </div>
+        </div>
+
+        <!-- Company Info -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Company Information</h3>
+          <div class="space-y-3">
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Company Name</h4>
+              <p class="text-sm text-gray-900"><%= @recruitment.company.name %></p>
+            </div>
+            
+            <% if @recruitment.company.tagline.present? %>
+              <div>
+                <h4 class="text-sm font-medium text-gray-500">Tagline</h4>
+                <p class="text-sm text-gray-900"><%= @recruitment.company.tagline %></p>
+              </div>
+            <% end %>
+            
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Contact</h4>
+              <p class="text-sm text-gray-900"><%= @recruitment.company.email %></p>
+              <% if @recruitment.company.phone.present? %>
+                <p class="text-sm text-gray-900"><%= @recruitment.company.phone %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,2 @@
+module ControlUnit::CoursesHelper
+end

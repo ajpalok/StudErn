@@ -8,14 +8,33 @@ class RecruitersController < ApplicationController
   before_action :set_company, only: [ :account_complete_company_join, :account_complete_company_join_post ]
 
   def index
-    # all the companies the recruiter is associated with
+    # all the companies the recruiter is associated with (any status)
     @companies = Company.joins(:recruiter_permissions_on_companies)
-                       .where(recruiter_permissions_on_companies: { recruiter_id: current_recruiter.id, recruiter_status: "approved" })
+                       .where(recruiter_permissions_on_companies: { recruiter_id: current_recruiter.id })
+                       .includes(:recruiter_permissions_on_companies, :recruitments)
                        .select("*")
-    # @companies = RecruiterPermissionsOnCompany
-    #               .where(recruiter_id: current_recruiter.id, recruiter_status: "approved")
-    #               .includes(:company)
-    #               .map(&:company)
+
+    # Get comprehensive statistics
+    @stats = calculate_recruiter_stats
+    
+    # Get recent recruitments - show all recruitments by this recruiter
+    @recent_recruitments = Recruitment.where(recruiter: current_recruiter)
+                                    .includes(:company)
+                                    .order(created_at: :desc)
+                                    .limit(5)
+
+    # Get recent applications
+    @recent_applications = RecruitmentApply.joins(:recruitment)
+                                          .where(recruitments: { recruiter: current_recruiter })
+                                          .includes(:user, recruitment: :company)
+                                          .order(created_at: :desc)
+                                          .limit(5)
+
+    # Get pending join requests
+    @pending_requests = RecruiterPermissionsOnCompany.where(
+      recruiter_id: current_recruiter.id,
+      recruiter_status: "pending"
+    ).includes(:company).limit(3)
   end
 
   def profile
@@ -351,17 +370,20 @@ class RecruitersController < ApplicationController
         }.to_json
 
         response = http.request(request)
+        # here make the parameters url as we will get a signature parameter which sometimes have unsafe characters
+        # so we will use CGI.escape to escape the unsafe characters
         response = JSON.parse(response.body)
 
-        logger.info "Bkash Payment Response: #{response.inspect}"
+        # log the trxID and status
+        logger.info "Bkash Payment TrxID: #{params[:trxID]}, Status: #{params[:status]}"
 
         if response["statusCode"] != "0000"
           redirect_to recruiter_recruitment_publish_complete_path(params[:company_id], params[:recruitment_id]), alert: response["statusMessage"] and return
         end
 
         bkash_payment_check.update(
-          trx_id: params[:trxID],
-          trx_status: params[:status],
+          trx_id: response["trxID"],
+          trx_status: params[:status]
         )
 
         # now update the recruitment with the bkash_payment_id
@@ -549,5 +571,35 @@ class RecruitersController < ApplicationController
     end
 
     # redirect_to recruiter_recruitment_publish_complete_path(company_id: params[:company_id], recruitment_id: params[:recruitment_id]), notice: "Payment processed successfully."
+  end
+
+  def calculate_recruiter_stats
+    # Get all companies the recruiter has access to (any status)
+    accessible_companies = Company.joins(:recruiter_permissions_on_companies)
+                                 .where(recruiter_permissions_on_companies: { 
+                                   recruiter_id: current_recruiter.id
+                                 })
+
+    # Calculate various statistics - show all recruitments by this recruiter
+    total_recruitments = Recruitment.where(recruiter: current_recruiter)
+
+    total_applications = RecruitmentApply.joins(:recruitment)
+                                       .where(recruitments: { recruiter: current_recruiter })
+
+    {
+      total_companies: accessible_companies.count,
+      total_recruitments: total_recruitments.count,
+      active_recruitments: total_recruitments.where(application_collection_status: "open").count,
+      total_applications: total_applications.count,
+      pending_applications: total_applications.where(status: "pending").count,
+      approved_applications: total_applications.where(status: "approved").count,
+      rejected_applications: total_applications.where(status: "rejected").count,
+      this_month_recruitments: total_recruitments.where(created_at: Time.current.beginning_of_month..Time.current.end_of_month).count,
+      this_month_applications: total_applications.where(created_at: Time.current.beginning_of_month..Time.current.end_of_month).count,
+      pending_join_requests: RecruiterPermissionsOnCompany.where(
+        recruiter_id: current_recruiter.id,
+        recruiter_status: "pending"
+      ).count
+    }
   end
 end

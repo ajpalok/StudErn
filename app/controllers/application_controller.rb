@@ -20,9 +20,9 @@ class ApplicationController < ActionController::Base
   def redirect_incomplete_users
     return unless current_user.account_status == "incomplete"
     return unless current_user.confirmed_at.present? # Only redirect if user is confirmed
-    return if controller_name == "users" && action_name.in?(["onboarding", "onboarding_update", "onboarding_back"])
-    return if controller_name == "sessions" && action_name.in?(["destroy"])
-    
+    return if controller_name == "users" && action_name.in?([ "onboarding", "onboarding_update", "onboarding_back" ])
+    return if controller_name == "sessions" && action_name.in?([ "destroy" ])
+
     # Preserve the step parameter if it exists
     step_param = params[:step] ? "?step=#{params[:step]}" : ""
     redirect_to "#{user_onboarding_path}#{step_param}", alert: "Please complete your profile to continue."

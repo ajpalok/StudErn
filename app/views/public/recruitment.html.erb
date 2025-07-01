@@ -87,9 +87,9 @@
                     <h3 class="text-lg text-stone-900">
                         Details of the recruitment
                     </h3>
-                    <p>
-                        <%= @recruitment.description %>
-                    </p>
+                    <div>
+                        <%= simple_format(@recruitment.description) %>
+                    </div>
                 </div>
 
                 <hr class="text-secondary">

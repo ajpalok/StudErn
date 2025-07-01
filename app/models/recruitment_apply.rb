@@ -28,8 +28,8 @@ class RecruitmentApply < ApplicationRecord
   end
 
   def recruitment_must_have_payment_completed
-    unless recruitment.bkash_payment.present? && 
-           recruitment.bkash_payment.trx_id.present? && 
+    unless recruitment.bkash_payment.present? &&
+           recruitment.bkash_payment.trx_id.present? &&
            recruitment.bkash_payment.trx_status == "success"
       errors.add(:base, "This recruitment is not available for applications")
     end
@@ -46,4 +46,4 @@ class RecruitmentApply < ApplicationRecord
       errors.add(:base, "Please complete your profile before applying")
     end
   end
-end 
+end

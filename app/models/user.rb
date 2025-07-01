@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :user_work_experiences, dependent: :destroy
   has_many :user_skills, dependent: :destroy
   has_many :user_accomplishments, dependent: :destroy
+  has_many :course_applications, dependent: :destroy
+  has_many :applied_courses, through: :course_applications, source: :course
 
   # Nested attributes
   accepts_nested_attributes_for :user_educations, allow_destroy: true
@@ -41,6 +43,20 @@ class User < ApplicationRecord
   # Public method for controller usage
   def set_onboarding_step(step)
     @onboarding_step = step
+  end
+
+  def full_name
+    [first_name, last_name].compact.join(' ').strip.presence || email
+  end
+
+  def has_complete_profile?
+    account_status == "complete"
+  end
+
+  def can_apply_to_recruitment?(recruitment)
+    return false unless has_complete_profile?
+    return false if recruitment_applies.exists?(recruitment: recruitment)
+    recruitment.user_can_apply?(self)
   end
 
   private
@@ -121,8 +137,8 @@ class User < ApplicationRecord
     if career_objective.length > 500
       return errors.add(:career_objective, "must be at most 500 characters long")
     end
-    if !career_objective.match?(/\A[\w.\-#&\*\s]*\z/)
-      errors.add(:career_objective, "can only contain letters, numbers, spaces, and the characters . - # & *")
+    if !career_objective.match?(/\A[\w.,\+\-#&\*\s]*\z/)
+      errors.add(:career_objective, "can only contain letters, numbers, spaces, and the characters . , + - # & *")
     end
   end
 
@@ -169,19 +185,19 @@ class User < ApplicationRecord
     if first_name.blank?
       errors.add(:first_name, "can't be blank")
     end
-    
+
     if last_name.blank?
       errors.add(:last_name, "can't be blank")
     end
-    
+
     if phone.blank?
       errors.add(:phone, "can't be blank")
     end
-    
+
     if gender.blank?
       errors.add(:gender, "can't be blank")
     end
-    
+
     if dob.blank?
       errors.add(:dob, "can't be blank")
     end
@@ -192,28 +208,17 @@ class User < ApplicationRecord
     if latitude.blank?
       errors.add(:latitude, "can't be blank")
     end
-    
+
     if longitude.blank?
       errors.add(:longitude, "can't be blank")
     end
-    
+
     if latitude.present? && (latitude < -90 || latitude > 90)
       errors.add(:latitude, "must be between -90 and 90")
     end
-    
+
     if longitude.present? && (longitude < -180 || longitude > 180)
       errors.add(:longitude, "must be between -180 and 180")
     end
   end
-
-  # Helper methods
-  def has_complete_profile?
-    account_status == "complete"
-  end
-
-  def can_apply_to_recruitment?(recruitment)
-    return false unless has_complete_profile?
-    return false if recruitment_applies.exists?(recruitment: recruitment)
-    recruitment.user_can_apply?(self)
-  end
-end 
+end

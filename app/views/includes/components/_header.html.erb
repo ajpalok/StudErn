@@ -151,14 +151,18 @@ navigation_auth_dropdowns ||= [
       <ul class="flex items-center flex-col md:flex-row justify-center gap-4 text-base md:text-lg lg:text-xl font-bold w-full md:w-auto">
         <% navigation_nav_items.each do |items| %>
           <li class="w-full md:w-auto text-center md:text-lg lg:text-xl py-5 md:py-0 border-b md:border-0 border-base-300">
-            <%= link_to items[:name], items[:path], aria_label: items[:name] %>
+            <%= link_to items[:name], items[:path], 
+                class: active_header_link(items[:path]), 
+                aria_label: items[:name] %>
           </li>
         <% end %>
       </ul>
 
       <div class="flex flex-col md:flex-row justify-end md:justify-around items-center gap-5 p-0 md:p-5">
         <% navigation_right_nav_items.each do |items| %>
-          <%= link_to items[:name], items[:path], class: "font-bold md:w-auto md:px-4 md:py-2 rounded-lg text-center md:text-lg lg:text-xl", aria_label: items[:name] %>
+          <%= link_to items[:name], items[:path], 
+              class: "font-bold md:w-auto md:px-4 md:py-2 rounded-lg text-center md:text-lg lg:text-xl #{active_header_link(items[:path])}", 
+              aria_label: items[:name] %>
         <% end %>
       </div>
     </div>

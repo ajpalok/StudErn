@@ -16,7 +16,7 @@ control_unit_1 = ControlUnit.find_or_create_by!(email: "admin@studern.com") do |
   cu.address = "Dhaka, Bangladesh"
   cu.phone = "01712345678"
   cu.password = "12345678"
-  cu.role = 99 # Super admin
+  cu.role = 0 # Super admin
   cu.status = true
   cu.confirmed_at = Time.current
 end
@@ -28,7 +28,7 @@ control_unit_2 = ControlUnit.find_or_create_by!(email: "moderator@studern.com") 
   cu.address = "Chittagong, Bangladesh"
   cu.phone = "01712345679"
   cu.password = "12345678"
-  cu.role = 50 # Moderator
+  cu.role = 1 # Admin
   cu.status = true
   cu.confirmed_at = Time.current
 end
@@ -53,7 +53,7 @@ end
 # Mosfism Company
 company_mosfism = Company.find_or_create_by!(name: "Mosfism") do |c|
   c.tagline = "Creative Digital Agency"
-  c.description = "Mosfism is a creative digital agency focused on branding, web design, and digital marketing. We create meaningful digital experiences that connect brands with their audiences."
+  c.description = "Mosfism is a creative digital agency focused on branding web design and digital marketing. We create meaningful digital experiences that connect brands with their audiences."
   c.email = "hello@mosfism.2haas.com"
   c.phone = "01712345671"
   c.website = "https://mosfism.2haas.com"
@@ -63,9 +63,9 @@ end
 
 # Create additional companies with Faker
 5.times do |i|
-  Company.find_or_create_by!(name: Faker::Company.name) do |c|
-    c.tagline = Faker::Company.catch_phrase
-    c.description = Faker::Company.bs
+  Company.find_or_create_by!(name: Faker::Company.name.gsub(/[^\w.\-#&\s]/, '')) do |c|
+    c.tagline = Faker::Company.catch_phrase.gsub(/[^\w.\-#&\s]/, '')
+    c.description = "A leading technology company focused on innovation and digital transformation. We provide cutting-edge solutions for businesses worldwide."
     c.email = Faker::Internet.email(domain: "#{Faker::Internet.domain_name}")
     c.phone = "01#{rand(100000000..999999999)}"
     c.website = "https://#{Faker::Internet.domain_name}"
@@ -84,9 +84,9 @@ puts "Creating Recruiters..."
 recruiter_abrar = Recruiter.find_or_create_by!(email: "palok1969@gmail.com") do |r|
   r.first_name = "Abrar"
   r.last_name = "Jahin"
-  r.phone = "01712345672"
-  r.gender = rand(1..3)
-  r.account_status = "complete"
+  r.phone = "01521796237"
+  r.gender = 1
+  r.account_status = 1 # complete
   r.password = "12345678"
   r.confirmed_at = Time.current
 end
@@ -97,7 +97,7 @@ recruiter_sumaya = Recruiter.find_or_create_by!(email: "zsumaya0@gmail.com") do 
   r.last_name = "Zaman"
   r.phone = "01712345673"
   r.gender = rand(1..3)
-  r.account_status = "complete"
+  r.account_status = 1 # complete
   r.password = "12345678"
   r.confirmed_at = Time.current
 end
@@ -109,7 +109,7 @@ end
     r.last_name = Faker::Name.last_name
     r.phone = "01#{rand(100000000..999999999)}"
     r.gender = rand(1..3)
-    r.account_status = ["incomplete", "complete", "suspended"].sample
+    r.account_status = [0, 1, 2].sample # incomplete, complete, suspended
     r.password = "12345678"
     r.confirmed_at = Time.current
   end
@@ -126,7 +126,7 @@ RecruiterPermissionsOnCompany.find_or_create_by!(recruiter_id: recruiter_abrar.i
   rpc.recruiter_position = "Senior HR Manager"
   rpc.recruiter_working_start_time = Time.parse("09:00")
   rpc.recruiter_working_end_time = Time.parse("18:00")
-  rpc.recruiter_status = "approved"
+  rpc.recruiter_status = 1 # approved
   rpc.can_manage_jobs = true
   rpc.can_manage_applicants = true
   rpc.can_manage_interviews = true
@@ -144,7 +144,7 @@ RecruiterPermissionsOnCompany.find_or_create_by!(recruiter_id: recruiter_sumaya.
   rpc.recruiter_position = "HR Director"
   rpc.recruiter_working_start_time = Time.parse("08:30")
   rpc.recruiter_working_end_time = Time.parse("17:30")
-  rpc.recruiter_status = "approved"
+  rpc.recruiter_status = 1 # approved
   rpc.can_manage_jobs = true
   rpc.can_manage_applicants = true
   rpc.can_manage_interviews = true
@@ -168,7 +168,7 @@ Recruiter.where.not(id: [recruiter_abrar.id, recruiter_sumaya.id]).each do |recr
     recruiter_position: ["HR Manager", "Talent Acquisition Specialist", "Recruitment Lead", "HR Coordinator"].sample,
     recruiter_working_start_time: Time.parse("#{rand(8..10)}:00"),
     recruiter_working_end_time: Time.parse("#{rand(17..19)}:00"),
-    recruiter_status: ["pending", "approved", "rejected"].sample,
+    recruiter_status: [0, 1, 2].sample, # pending, approved, rejected
     can_manage_jobs: [true, false].sample,
     can_manage_applicants: [true, false].sample,
     can_manage_interviews: [true, false].sample,
@@ -196,10 +196,10 @@ puts "Creating Users..."
     u.phone = "01#{rand(100000000..999999999)}"
     u.latitude = 23.7937 + rand(-0.01..0.01)
     u.longitude = 90.4066 + rand(-0.01..0.01)
-    u.career_objective = Faker::Lorem.paragraph(sentence_count: 3)
+    u.career_objective = Faker::Lorem.paragraph(sentence_count: 3).gsub(/[^\w.\-#&\s]/, '')
     u.dob = Date.new(rand(1990..2005), rand(1..12), rand(1..28))
     u.gender = rand(1..3)
-    u.account_status = ["incomplete", "complete", "suspended"].sample
+    u.account_status = [0, 1, 2].sample # incomplete, complete, suspended
     u.password = "12345678"
     u.confirmed_at = Time.current
   end
@@ -237,13 +237,13 @@ User.all.each do |user|
   rand(0..2).times do
     UserWorkExperience.find_or_create_by!(
       user: user,
-      company_name: Faker::Company.name,
+      company_name: Faker::Company.name.gsub(/[^\w.\-#&\s]/, ''),
       designation: ["Software Engineer", "Marketing Manager", "Sales Executive", "Designer", "Analyst"].sample
     ) do |uwe|
       uwe.start_date = Date.new(rand(2018..2022), rand(1..12), 1)
       uwe.end_date = Date.new(rand(2022..2024), rand(1..12), 1)
       uwe.currently_working = [true, false].sample
-      uwe.job_responsibilities = Faker::Lorem.paragraph(sentence_count: 2)
+      uwe.job_responsibilities = Faker::Lorem.paragraph(sentence_count: 2).gsub(/[^\w.\-#&\s]/, '')
       uwe.employment_type = rand(0..3)
     end
   end
@@ -282,8 +282,8 @@ User.all.each do |user|
       user: user,
       accomplishment_type: rand(0..3),
       accomplishment_url: Faker::Internet.url,
-      accomplishment_name: Faker::Lorem.sentence(word_count: 3),
-      accomplishment_description: Faker::Lorem.paragraph(sentence_count: 2),
+      accomplishment_name: Faker::Lorem.sentence(word_count: 3).gsub(/[^\w.\-#&\s]/, ''),
+      accomplishment_description: Faker::Lorem.paragraph(sentence_count: 2).gsub(/[^\w.\-#&\s]/, ''),
       accomplishment_start_date: Date.new(rand(2020..2023), rand(1..12), 1),
       accomplishment_end_date: Date.new(rand(2023..2024), rand(1..12), 1),
       ongoing: [true, false].sample
@@ -304,7 +304,7 @@ def create_bkash_payment(recruitment_type, amount = nil)
     payment_id: "TR#{rand(100000..999999)}#{Time.current.to_i}",
     trx_id: "BKASH#{rand(100000000..999999999)}",
     trx_status: "success",
-    amount: amount || rand(100..1000),
+    amount: [3850, 4500, 5300].sample,
     verification_status: "verified",
     refund_status: "none",
     refund_amount: "0",
@@ -321,13 +321,13 @@ end
 puts "Creating Recruitments..."
 
 # 2HAAS Recruitments
-recruitment_types = ["job", "internship", "micro_job", "micro_internship"]
-work_types = ["full_time", "part_time", "project", "freelance"]
-work_places = ["on_site", "remote", "hybrid"]
-salary_types = ["fixed", "negotiable", "hourly", "weekly", "monthly", "yearly"]
-experience_levels = ["entry_level", "mid_level", "senior_level", "expert_level"]
-application_packages = ["basic", "standard", "premium"]
-application_collection_methods = ["easy_apply", "external_link", "email"]
+recruitment_types = [0, 1, 2, 3] # job, internship, micro_job, micro_internship
+work_types = [0, 1, 2, 3] # full_time, part_time, project, freelance
+work_places = [0, 1, 2] # on_site, remote, hybrid
+salary_types = [0, 1, 2, 3, 4, 5] # fixed, negotiable, hourly, weekly, monthly, yearly
+experience_levels = [0, 1, 2, 3] # entry_level, mid_level, senior_level, expert_level
+application_packages = [0, 1, 2] # basic, standard, premium
+application_collection_methods = [0, 1, 2] # easy_apply, external_link, email
 
 # Create recruitments for 2HAAS
 5.times do |i|
@@ -337,7 +337,7 @@ application_collection_methods = ["easy_apply", "external_link", "email"]
   recruitment = Recruitment.create!(
     recruitment_type: recruitment_type,
     title: ["Senior Ruby Developer", "Frontend React Developer", "UI/UX Designer", "DevOps Engineer", "Product Manager"].sample,
-    description: Faker::Lorem.paragraph(sentence_count: 5),
+    description: Faker::Lorem.paragraph(sentence_count: 5).gsub(/[^\w.\-#&\s]/, ''),
     experience_level: experience_levels.sample,
     work_type: work_types.sample,
     work_place: work_places.sample,
@@ -347,11 +347,11 @@ application_collection_methods = ["easy_apply", "external_link", "email"]
     annual_salary_range_start: rand(300000..800000),
     annual_salary_range_end: rand(800000..1500000),
     number_of_vacancies: rand(1..5),
-    application_collection_status: "open",
+    application_collection_status: 1, # open
     application_collection_end_date: Date.current + rand(30..90).days,
     application_package: application_packages.sample,
     application_collection_method: application_method,
-    application_link: application_method == "external_link" ? Faker::Internet.url : (application_method == "email" ? Faker::Internet.email : nil),
+    application_link: application_method == 1 ? Faker::Internet.url : (application_method == 2 ? Faker::Internet.email : nil),
     calling_number: "01#{rand(100000000..999999999)}",
     company: company_2haas,
     recruiter: recruiter_abrar
@@ -370,7 +370,7 @@ end
   recruitment = Recruitment.create!(
     recruitment_type: recruitment_type,
     title: ["Creative Designer", "Marketing Specialist", "Content Writer", "SEO Expert", "Social Media Manager"].sample,
-    description: Faker::Lorem.paragraph(sentence_count: 5),
+    description: Faker::Lorem.paragraph(sentence_count: 5).gsub(/[^\w.\-#&\s]/, ''),
     experience_level: experience_levels.sample,
     work_type: work_types.sample,
     work_place: work_places.sample,
@@ -380,11 +380,11 @@ end
     annual_salary_range_start: rand(250000..600000),
     annual_salary_range_end: rand(600000..1200000),
     number_of_vacancies: rand(1..3),
-    application_collection_status: "open",
+    application_collection_status: 1, # open
     application_collection_end_date: Date.current + rand(30..90).days,
     application_package: application_packages.sample,
     application_collection_method: application_method,
-    application_link: application_method == "external_link" ? Faker::Internet.url : (application_method == "email" ? Faker::Internet.email : nil),
+    application_link: application_method == 1 ? Faker::Internet.url : (application_method == 2 ? Faker::Internet.email : nil),
     calling_number: "01#{rand(100000000..999999999)}",
     company: company_mosfism,
     recruiter: recruiter_sumaya
@@ -397,7 +397,7 @@ end
 
 # Create recruitments for other companies
 Company.where.not(id: [company_2haas.id, company_mosfism.id]).each do |company|
-  recruiter_permission = RecruiterPermissionsOnCompany.find_by(company: company, recruiter_status: "approved")
+  recruiter_permission = RecruiterPermissionsOnCompany.find_by(company: company, recruiter_status: 1) # approved
   next unless recruiter_permission
   
   rand(1..3).times do
@@ -406,8 +406,8 @@ Company.where.not(id: [company_2haas.id, company_mosfism.id]).each do |company|
     
     recruitment = Recruitment.create!(
       recruitment_type: recruitment_type,
-      title: Faker::Job.title,
-      description: Faker::Lorem.paragraph(sentence_count: 5),
+      title: Faker::Job.title.gsub(/[^\w.\-#&\s]/, ''),
+      description: Faker::Lorem.paragraph(sentence_count: 5).gsub(/[^\w.\-#&\s]/, ''),
       experience_level: experience_levels.sample,
       work_type: work_types.sample,
       work_place: work_places.sample,
@@ -417,18 +417,18 @@ Company.where.not(id: [company_2haas.id, company_mosfism.id]).each do |company|
       annual_salary_range_start: rand(200000..800000),
       annual_salary_range_end: rand(800000..1500000),
       number_of_vacancies: rand(1..4),
-      application_collection_status: ["open", "close", "draft"].sample,
+      application_collection_status: [0, 1, 2].sample, # close, open, draft
       application_collection_end_date: Date.current + rand(30..90).days,
       application_package: application_packages.sample,
       application_collection_method: application_method,
-      application_link: application_method == "external_link" ? Faker::Internet.url : (application_method == "email" ? Faker::Internet.email : nil),
+      application_link: application_method == 1 ? Faker::Internet.url : (application_method == 2 ? Faker::Internet.email : nil),
       calling_number: "01#{rand(100000000..999999999)}",
       company: company,
       recruiter: recruiter_permission.recruiter
     )
     
     # Create payment for this recruitment (only if status is open)
-    if recruitment.application_collection_status == "open"
+    if recruitment.application_collection_status == 1 # open
       payment = create_bkash_payment("recruitment", rand(100..500))
       recruitment.update!(bkash_payment: payment)
     end
@@ -442,9 +442,9 @@ end
 puts "Creating Recruitment Applications..."
 
 # Create some applications for easy_apply recruitments
-Recruitment.where(application_collection_method: "easy_apply", application_collection_status: "open").each do |recruitment|
+Recruitment.where(application_collection_method: 0, application_collection_status: 1).each do |recruitment| # easy_apply and open
   # Get users with complete profiles
-  eligible_users = User.where(account_status: "complete").sample(rand(1..5))
+  eligible_users = User.where(account_status: 1).sample(rand(1..5)) # complete
   
   eligible_users.each do |user|
     next if RecruitmentApply.exists?(user: user, recruitment: recruitment)
@@ -452,9 +452,9 @@ Recruitment.where(application_collection_method: "easy_apply", application_colle
     RecruitmentApply.create!(
       user: user,
       recruitment: recruitment,
-      status: ["pending", "accepted", "rejected"].sample,
+      status: [0, 1, 2].sample, # pending, accepted, rejected
       has_contacted_yet: [true, false].sample,
-      message: [nil, Faker::Lorem.sentence].sample
+      message: [nil, Faker::Lorem.sentence.gsub(/[^\w.\-#&\s]/, '')].sample
     )
   end
 end

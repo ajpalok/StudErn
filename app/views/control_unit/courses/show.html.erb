@@ -1,0 +1,167 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @course.title %></h1>
+          <p class="mt-2 text-gray-600">Course Details</p>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to "Edit", edit_control_unit_course_path(@course), 
+                      class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+          <%= link_to "Applications", applications_control_unit_course_path(@course), 
+                      class: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+          <%= link_to "Back to Courses", control_unit_courses_path, 
+                      class: "bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Main Content -->
+      <div class="lg:col-span-2">
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Course Information</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Instructor</h3>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.instructor %></p>
+            </div>
+            
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Category</h3>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.category %></p>
+            </div>
+            
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Duration</h3>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.duration %></p>
+            </div>
+            
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Price</h3>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.formatted_price %></p>
+            </div>
+            
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Status</h3>
+              <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                          <%= @course.status == 'published' ? 'bg-green-100 text-green-800' : 
+                              @course.status == 'draft' ? 'bg-gray-100 text-gray-800' : 
+                              @course.status == 'archived' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %>">
+                <%= @course.status_display %>
+              </span>
+            </div>
+            
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Featured</h3>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.featured_display %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Description</h2>
+          <div class="prose max-w-none">
+            <p class="text-gray-700 whitespace-pre-wrap"><%= @course.description %></p>
+          </div>
+        </div>
+
+        <% if @course.syllabus.present? %>
+          <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Syllabus</h2>
+            <div class="prose max-w-none">
+              <p class="text-gray-700 whitespace-pre-wrap"><%= @course.syllabus %></p>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @course.start_date.present? && @course.end_date.present? %>
+          <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Schedule</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Start Date</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @course.start_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">End Date</h3>
+                <p class="mt-1 text-sm text-gray-900"><%= @course.end_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-1">
+        <!-- Course Image -->
+        <% if @course.image_url.present? %>
+          <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Course Image</h3>
+            <%= image_tag @course.image_url, class: "w-full h-48 object-cover rounded-lg" %>
+          </div>
+        <% end %>
+
+        <!-- Statistics -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Statistics</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Total Applications</h4>
+              <p class="mt-1 text-2xl font-semibold text-gray-900"><%= @course.course_applications.count %></p>
+            </div>
+            
+            <% if @course.max_students %>
+              <div>
+                <h4 class="text-sm font-medium text-gray-500">Available Seats</h4>
+                <p class="mt-1 text-2xl font-semibold text-gray-900"><%= @course.available_seats %></p>
+              </div>
+            <% end %>
+            
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Created</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.created_at.strftime("%B %d, %Y") %></p>
+            </div>
+            
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Last Updated</h4>
+              <p class="mt-1 text-sm text-gray-900"><%= @course.updated_at.strftime("%B %d, %Y") %></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Applications</h3>
+          <% if @course_applications.any? %>
+            <div class="space-y-3">
+              <% @course_applications.limit(5).each do |application| %>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-gray-900"><%= application.user.first_name %> <%= application.user.last_name %></p>
+                    <p class="text-xs text-gray-500"><%= application.formatted_applied_at %></p>
+                  </div>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                              <%= application.status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                  application.status == 'approved' ? 'bg-green-100 text-green-800' : 
+                                  application.status == 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800' %>">
+                    <%= application.status_display %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-4">
+              <%= link_to "View All Applications", applications_control_unit_course_path(@course), 
+                          class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
+            </div>
+          <% else %>
+            <p class="text-sm text-gray-500">No applications yet.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  layout "user"
+  layout :resolve_layout
   before_action :authenticate_user!
-  layout "authentication", only: [:onboarding, :onboarding_update]
+  # layout "authentication", only: [:onboarding, :onboarding_update]
 
   def index
   end
@@ -13,19 +13,24 @@ class UsersController < ApplicationController
   def resume
     @user = current_user
 
-    @user.user_educations.build if @user.user_educations.empty?
-    @user.user_skills.build if @user.user_skills.empty?
-    @user.user_work_experiences.build if @user.user_work_experiences.empty?
-    @user.user_accomplishments.build if @user.user_accomplishments.empty?
+    # Load existing records - these will be displayed as editable forms
+    # The form will show all existing records and allow adding new ones
+    # No need to build empty records since we're using dynamic addition via Stimulus
   end
 
   def resume_update
     @user = current_user
 
     if @user.update(user_params)
-      redirect_to user_resume_path, notice: "Resume updated successfully."
+      respond_to do |format|
+        format.html { redirect_to user_resume_path, notice: "Resume updated successfully." }
+        format.json { render json: { success: true, message: "Resume updated successfully." } }
+      end
     else
-      render :resume, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :resume, status: :unprocessable_entity }
+        format.json { render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -111,15 +116,15 @@ class UsersController < ApplicationController
       :career_objective,
       :dob,
       :gender,
-      user_educations_attributes: [ :id, :degree, :institution_name, :performance_type, :performance, :start_date, :end_date, :currently_studying, :_destroy ],
-      user_skills_attributes: [ :id, :skill_name, :skill_level, :_destroy ],
-      user_work_experiences_attributes: [ :id, :designation, :company_name, :start_date, :end_date, :currently_working, :job_responsibilities, :employment_type, :_destroy ],
-      user_accomplishments_attributes: [ :id, :accomplishment_type, :accomplishment_url, :accomplishment_name, :accomplishment_description, :accomplishment_start_date, :accomplishment_end_date, :ongoing, :_destroy ]
+      user_educations_attributes: [:id, :institution_name, :degree, :performance_type, :performance, :start_date, :end_date, :currently_studying, :_destroy],
+      user_skills_attributes: [:id, :skill_name, :skill_level, :user_work_experiences_id, :_destroy],
+      user_work_experiences_attributes: [:id, :company_name, :designation, :start_date, :end_date, :currently_working, :job_responsibilities, :employment_type, :company_id, :_destroy],
+      user_accomplishments_attributes: [:id, :accomplishment_type, :accomplishment_url, :accomplishment_name, :accomplishment_description, :accomplishment_start_date, :accomplishment_end_date, :ongoing, :_destroy]
     )
   end
 
   def onboarding_params
-    params.require(:user).permit(
+    user_params = params.require(:user).permit(
       :first_name,
       :last_name,
       :email,
@@ -129,10 +134,37 @@ class UsersController < ApplicationController
       :career_objective,
       :dob,
       :gender,
-      user_educations_attributes: [ :id, :degree, :institution_name, :performance_type, :performance, :start_date, :end_date, :currently_studying, :_destroy ],
-      user_skills_attributes: [ :id, :skill_name, :skill_level, :_destroy ],
-      user_work_experiences_attributes: [ :id, :designation, :company_name, :start_date, :end_date, :currently_working, :job_responsibilities, :employment_type, :_destroy ],
-      user_accomplishments_attributes: [ :id, :accomplishment_type, :accomplishment_url, :accomplishment_name, :accomplishment_description, :accomplishment_start_date, :accomplishment_end_date, :ongoing, :_destroy ]
+      user_educations_attributes: {},
+      user_skills_attributes: {},
+      user_work_experiences_attributes: {},
+      user_accomplishments_attributes: {}
     )
+    
+    # Handle nested attributes with dynamic keys
+    if params[:user][:user_educations_attributes]
+      user_params[:user_educations_attributes] = params[:user][:user_educations_attributes].permit!
+    end
+    
+    if params[:user][:user_skills_attributes]
+      user_params[:user_skills_attributes] = params[:user][:user_skills_attributes].permit!
+    end
+    
+    if params[:user][:user_work_experiences_attributes]
+      user_params[:user_work_experiences_attributes] = params[:user][:user_work_experiences_attributes].permit!
+    end
+    
+    if params[:user][:user_accomplishments_attributes]
+      user_params[:user_accomplishments_attributes] = params[:user][:user_accomplishments_attributes].permit!
+    end
+    
+    user_params
+  end
+
+  def resolve_layout
+    if %w[onboarding onboarding_update onboarding_back].include?(action_name)
+      "authentication"
+    else
+      "user"
+    end
   end
 end

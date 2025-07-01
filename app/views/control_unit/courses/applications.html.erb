@@ -1,0 +1,123 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Applications for <%= @course.title %></h1>
+          <p class="mt-2 text-gray-600">Manage student applications for this course</p>
+        </div>
+        <div class="flex space-x-3">
+          <%= link_to "Back to Courses", control_unit_courses_path, 
+                      class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Summary -->
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Total Applications</h3>
+          <p class="mt-1 text-2xl font-semibold text-gray-900"><%= @applications.count %></p>
+        </div>
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Pending</h3>
+          <p class="mt-1 text-2xl font-semibold text-yellow-600"><%= @applications.where(status: 'pending').count %></p>
+        </div>
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Approved</h3>
+          <p class="mt-1 text-2xl font-semibold text-green-600"><%= @applications.where(status: 'approved').count %></p>
+        </div>
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Rejected</h3>
+          <p class="mt-1 text-2xl font-semibold text-red-600"><%= @applications.where(status: 'rejected').count %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications List -->
+    <% if @applications.any? %>
+      <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+          <% @applications.each do |application| %>
+            <li>
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                      <div class="h-10 w-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-medium text-gray-700">
+                          <%= application.user.first_name&.first %><%= application.user.last_name&.first %>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <div class="flex items-center">
+                        <h3 class="text-lg font-medium text-gray-900">
+                          <%= application.user.first_name %> <%= application.user.last_name %>
+                        </h3>
+                        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <%= application.status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                        application.status == 'approved' ? 'bg-green-100 text-green-800' : 
+                                        application.status == 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800' %>">
+                          <%= application.status_display %>
+                        </span>
+                      </div>
+                      <div class="mt-1 flex items-center text-sm text-gray-500">
+                        <span class="mr-4">Email: <%= application.user.email %></span>
+                        <span class="mr-4">Applied: <%= application.formatted_applied_at %></span>
+                        <% if application.applied_at %>
+                          <span>Applied: <%= application.applied_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+                        <% end %>
+                      </div>
+                      <% if application.admin_notes.present? %>
+                        <div class="mt-2 text-sm text-gray-600">
+                          <strong>Notes:</strong> <%= application.admin_notes %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <!-- Status Update Form -->
+                    <%= form_with model: application, url: update_application_status_control_unit_course_path(@course, application_id: application), method: :patch, local: true, class: "flex items-center space-x-2" do |form| %>
+                      <%= form.select :status, 
+                          options_for_select([
+                            ['Pending', 'pending'],
+                            ['Approved', 'approved'],
+                            ['Rejected', 'rejected']
+                          ], application.status), 
+                          {}, 
+                          { class: "text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500" } %>
+                      
+                      <%= form.text_field :admin_notes, 
+                          placeholder: "Add notes (optional)", 
+                          value: application.admin_notes,
+                          class: "text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+                      
+                      <%= form.submit "Update", 
+                          class: "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1 px-3 rounded" %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6">
+        <%= paginate @applications %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No applications</h3>
+        <p class="mt-1 text-sm text-gray-500">No students have applied to this course yet.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

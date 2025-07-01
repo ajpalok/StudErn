@@ -157,3 +157,506 @@ html {
 .active {
     @apply bg-primary text-white;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for resume form */
+@layer components {
+  /* Slider styling */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .slider::-webkit-slider-track {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #3b82f6;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+  }
+
+  .slider::-moz-range-track {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  .slider::-moz-range-thumb {
+    background: #3b82f6;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .slider::-moz-range-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+  }
+
+  /* Form field animations */
+  .form-field-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .form-field-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease-out;
+  }
+
+  .form-field-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .form-field-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in;
+  }
+
+  /* Toast animations */
+  .toast-enter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  .toast-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.3s ease-out;
+  }
+
+  .toast-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .toast-exit-active {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease-in;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    transition: width 0.3s ease;
+  }
+
+  /* Custom focus styles */
+  .custom-focus:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3b82f6;
+    ring-offset: 2px;
+  }
+
+  /* Section hover effects */
+  .resume-section {
+    transition: all 0.2s ease;
+  }
+
+  .resume-section:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Button loading state */
+  .btn-loading {
+    position: relative;
+    color: transparent;
+  }
+
+  .btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    .print-break {
+      page-break-before: always;
+    }
+    
+    .resume-section {
+      break-inside: avoid;
+    }
+  }
+}
+
+/* Custom scrollbar */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* Resume Preview Styles */
+.resume-preview .header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 20px;
+}
+
+.resume-preview .header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #1f2937;
+}
+
+.resume-preview .header p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 5px 0;
+}
+
+.resume-preview .section {
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+}
+
+.resume-preview .section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 5px;
+  color: #1f2937;
+}
+
+.resume-preview .item {
+  margin-bottom: 20px;
+  padding-left: 10px;
+  page-break-inside: avoid;
+}
+
+.resume-preview .item-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #1f2937;
+  margin-bottom: 5px;
+}
+
+.resume-preview .item-subtitle {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.resume-preview .item-date {
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.resume-preview .item-description {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.resume-preview .skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  page-break-inside: avoid;
+}
+
+.resume-preview .skill-tag {
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Enhanced page break control for printing */
+.resume-preview .career-objective-section,
+.resume-preview .education-section,
+.resume-preview .work-section,
+.resume-preview .skills-section,
+.resume-preview .accomplishments-section {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.resume-preview .education-item,
+.resume-preview .work-item,
+.resume-preview .accomplishment-item {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  orphans: 2;
+  widows: 2;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-break {
+    page-break-before: always;
+  }
+  
+  .resume-section {
+    break-inside: avoid;
+  }
+  
+  /* A4 specific print styles */
+  @page {
+    size: A4;
+    margin: 20mm 15mm;
+  }
+  
+  .resume-preview .section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+  
+  .resume-preview .item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    orphans: 2;
+    widows: 2;
+  }
+  
+  .resume-preview .skills-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  /* Prevent orphaned section titles */
+  .resume-preview .section-title {
+    page-break-after: avoid;
+  }
+  
+  /* Ensure header doesn't break */
+  .resume-preview .header {
+    page-break-after: avoid;
+  }
+  
+  /* Career objective print styles */
+  .resume-preview .career-objective-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  .resume-preview .career-objective-content {
+    background-color: #f8fafc !important;
+    border-left: 4px solid #3b82f6 !important;
+  }
+}
+
+.resume-preview .career-objective-section {
+  margin: 30px 0;
+  page-break-inside: avoid;
+}
+
+.resume-preview .career-objective-content {
+  background-color: #f8fafc;
+  border-left: 4px solid #3b82f6;
+  padding: 15px 20px;
+  border-radius: 0 8px 8px 0;
+}
+
+.resume-preview .career-objective-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* Two Column Layout */
+.resume-preview .two-column-section {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+}
+
+.resume-preview .column {
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-preview .education-column {
+  page-break-inside: avoid;
+}
+
+.resume-preview .work-column {
+  page-break-inside: avoid;
+}
+
+.resume-preview .section {
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+}
+
+/* Print styles for resume */
+@media print {
+  .resume-preview {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #000;
+    background: white;
+  }
+
+  .resume-preview .header h1 {
+    font-size: 18pt;
+    margin-bottom: 8pt;
+  }
+
+  .resume-preview .header p {
+    font-size: 11pt;
+    margin-bottom: 15pt;
+  }
+
+  .resume-preview .section-title {
+    font-size: 14pt;
+    margin-bottom: 10pt;
+    border-bottom: 2pt solid #3b82f6;
+    padding-bottom: 4pt;
+  }
+
+  .resume-preview .item {
+    margin-bottom: 12pt;
+    page-break-inside: avoid;
+  }
+
+  .resume-preview .item-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 2pt;
+  }
+
+  .resume-preview .item-subtitle {
+    font-size: 11pt;
+    margin-bottom: 2pt;
+  }
+
+  .resume-preview .item-date {
+    font-size: 10pt;
+    color: #6b7280;
+    margin-bottom: 4pt;
+  }
+
+  .resume-preview .item-description {
+    font-size: 10pt;
+    line-height: 1.3;
+    margin-top: 4pt;
+  }
+
+  /* Career objective print styles */
+  .resume-preview .career-objective-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .resume-preview .career-objective-content {
+    background-color: #f8fafc !important;
+    border-left: 4pt solid #3b82f6 !important;
+    padding: 12pt 16pt;
+  }
+
+  .resume-preview .career-objective-content p {
+    font-size: 11pt;
+    font-weight: normal;
+  }
+
+  /* Two column print styles */
+  .resume-preview .two-column-section {
+    display: flex !important;
+    gap: 30pt !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .resume-preview .column {
+    flex: 1 !important;
+    min-width: 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Page break control */
+  .resume-preview .section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .resume-preview .item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

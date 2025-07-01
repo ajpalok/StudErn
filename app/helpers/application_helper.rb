@@ -33,12 +33,34 @@ module ApplicationHelper
     #     I18n.locale
     # end
 
-    # # check current page is same as parameter in nav
-    # def active_header_link(active_page)
-    #     # for header
-    #     return "active" if current_page?(active_page)
-    #     return "" if !current_page?(active_page)
-    # end
+    # Check current page is same as parameter in nav and return appropriate CSS classes
+    def active_header_link(active_page)
+        # for header navigation links
+        is_active = false
+        
+        # Check for exact match first
+        if current_page?(active_page)
+            is_active = true
+        # Check for home page (root path)
+        elsif active_page == "/" && current_page?(root_path)
+            is_active = true
+        # Check for related pages (e.g., being on a job detail page when Jobs nav is active)
+        elsif active_page.include?("/jobs") && (request.path.start_with?("/jobs") || request.path.start_with?("/recruitment"))
+            is_active = true
+        elsif active_page.include?("/internships") && (request.path.start_with?("/internships") || request.path.start_with?("/recruitment"))
+            is_active = true
+        elsif active_page.include?("/search") && request.path.start_with?("/search")
+            is_active = true
+        elsif active_page.include?("/courses") && request.path.start_with?("/courses")
+            is_active = true
+        end
+        
+        if is_active
+            "text-primary font-semibold border-b-2 border-primary pb-1"
+        else
+            "text-base-content hover:text-primary transition-colors duration-200 hover:border-b-2 hover:border-primary/50 pb-1"
+        end
+    end
     
     # # Full Name of the user
     # def full_name(user)
