@@ -1,18 +1,102 @@
-<% content_for :title, "Resume" %>
-<% content_for :description, "Create a professional resume to showcase your skills and experience." %>
+<% content_for :title, "Resume Builder" %>
+<% content_for :description, "Create and manage your professional resume with our modern resume builder." %>
 
-<section class="w-full pt-6 md:pt-12 bg-base-100">
-    <div class="container mx-auto px-4 md:px-6">
-        <h1 class="text-3xl font-bold text-accent font-headline">
-            Build Your Resume
-        </h1>
-
-        <p class="text-md text-base-content/80 mt-2 mb-6">
-            Create a professional resume to showcase your skills and experience and use it to any application you want to apply.
-        </p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50" data-controller="resume-preview">
+  <!-- Header Section -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <div class="p-2 bg-blue-100 rounded-lg">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            Resume Builder
+          </h1>
+          <p class="text-gray-600 mt-1">Create a professional resume to showcase your skills and experience</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button type="button" data-action="click->resume-preview#printResume" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Print Resume
+          </button>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
 
-<%= turbo_frame_tag "resume_form" do %>
-    <%= render "users/resume_form", user: current_user %>
-<% end %>
+  <!-- Progress Indicator -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span class="ml-2 text-sm font-medium text-gray-900" data-progress-text>0% Complete</span>
+            </div>
+          </div>
+          <div class="flex-1 ml-6">
+            <div class="w-full bg-gray-200 rounded-full h-2" data-progress-bar>
+              <div class="bg-green-500 h-2 rounded-full transition-all duration-300 ease-out" data-progress-fill style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <%= turbo_frame_tag "resume_form" do %>
+      <%= render "users/resume_form", user: current_user %>
+    <% end %>
+  </div>
+
+  <!-- Success Toast -->
+  <div id="success-toast" class="fixed top-4 right-4 z-50 hidden" data-resume-preview-target="toast">
+    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
+      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+      </svg>
+      <span>Resume updated successfully!</span>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div id="preview-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden" data-resume-preview-target="modal">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium text-gray-900">Resume Preview</h3>
+          <button data-action="click->resume-preview#closePreview" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="preview-content" class="bg-white p-6 border rounded-lg max-h-96 overflow-y-auto" data-resume-preview-target="content" style="
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+        ">
+          <!-- Preview content will be populated here -->
+        </div>
+        <div class="flex justify-end mt-4 space-x-3">
+          <button data-action="click->resume-preview#closePreview" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+            Close
+          </button>
+          <button data-action="click->resume-preview#printResume" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+            Print Resume
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

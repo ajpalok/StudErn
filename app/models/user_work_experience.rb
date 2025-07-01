@@ -1,18 +1,11 @@
 class UserWorkExperience < ApplicationRecord
   # Associations
-  belongs_to :user, dependent: :destroy # dependent destroy ensures that if a user is deleted, their work experiences are also deleted
+  belongs_to :user # Remove dependent: :destroy from belongs_to
   belongs_to :company, optional: true # Optional association to allow work experiences without a company
+  has_many :user_skills, dependent: :nullify
 
   # Enums for employment types
   enum :employment_type, { full_time: 0, part_time: 1, project: 2, freelance: 3 }
-
-  # Attributes
-  attribute :company_name, :string
-  attribute :designation, :string
-  attribute :start_date, :date
-  attribute :end_date, :date
-  attribute :currently_working, :boolean, default: false
-  attribute :job_responsibilities, :text
 
   # Validations
   validates :company_name, presence: true, length: { minimum: 2, maximum: 100 }

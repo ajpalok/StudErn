@@ -52,6 +52,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  
+  # Fake data generation for development and testing
+  gem "faker"
 end
 
 group :development do
@@ -70,3 +73,4 @@ gem "psych", "~>4.0.0"
 gem "devise", "~> 4.9"
 gem "devise-i18n", "~> 1.13"
 gem "sidekiq", "~> 8.0"
+gem "kaminari", "~> 1.2"

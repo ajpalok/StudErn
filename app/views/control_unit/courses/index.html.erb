@@ -1,0 +1,93 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Course Management</h1>
+    <%= link_to "Create New Course", new_control_unit_course_path, 
+                class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+
+  <% if @courses.any? %>
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul class="divide-y divide-gray-200">
+        <% @courses.each do |course| %>
+          <li>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <% if course.image_url.present? %>
+                      <%= image_tag course.image_url, class: "h-12 w-12 rounded-lg object-cover" %>
+                    <% else %>
+                      <div class="h-12 w-12 bg-gray-300 rounded-lg flex items-center justify-center">
+                        <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="ml-4">
+                    <div class="flex items-center">
+                      <h3 class="text-lg font-medium text-gray-900">
+                        <%= link_to course.title, control_unit_course_path(course), class: "hover:text-blue-600" %>
+                      </h3>
+                      <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                  <%= course.status == 'published' ? 'bg-green-100 text-green-800' : 
+                                      course.status == 'draft' ? 'bg-gray-100 text-gray-800' : 
+                                      course.status == 'archived' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %>">
+                        <%= course.status_display %>
+                      </span>
+                      <% if course.featured? %>
+                        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                          Featured
+                        </span>
+                      <% end %>
+                    </div>
+                    <div class="mt-1 flex items-center text-sm text-gray-500">
+                      <span class="mr-4">Instructor: <%= course.instructor %></span>
+                      <span class="mr-4">Category: <%= course.category %></span>
+                      <span class="mr-4">Duration: <%= course.duration %></span>
+                      <span>Price: <%= course.formatted_price %></span>
+                    </div>
+                    <div class="mt-1 text-sm text-gray-500">
+                      Applications: <%= course.course_applications.count %>
+                      <% if course.max_students %>
+                        / <%= course.max_students %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <%= link_to "View", control_unit_course_path(course), 
+                              class: "text-blue-600 hover:text-blue-900" %>
+                  <%= link_to "Edit", edit_control_unit_course_path(course), 
+                              class: "text-indigo-600 hover:text-indigo-900" %>
+                  <%= link_to "Applications", applications_control_unit_course_path(course), 
+                              class: "text-green-600 hover:text-green-900" %>
+                  <%= link_to "Delete", control_unit_course_path(course), 
+                              method: :delete, 
+                              data: { confirm: "Are you sure you want to delete this course?" },
+                              class: "text-red-600 hover:text-red-900" %>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="mt-6">
+      <%= paginate @courses %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No courses</h3>
+      <p class="mt-1 text-sm text-gray-500">Get started by creating a new course.</p>
+      <div class="mt-6">
+        <%= link_to "Create Course", new_control_unit_course_path, 
+                    class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+      </div>
+    </div>
+  <% end %>
+</div> 

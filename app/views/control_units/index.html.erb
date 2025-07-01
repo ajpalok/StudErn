@@ -1,3 +1,95 @@
-<h1>Welcome, <%= current_control_unit.name %></h1>
-<p>Your email: <%= current_control_unit.email %></p>
-<p>Observe queues of the system <%= link_to "Sidekiq", :sidekiq, class: "btn btn-accent" %>
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Control Unit Dashboard</h1>
+    <p class="text-gray-600 mb-8">Welcome back, <%= current_control_unit.name || current_control_unit.email %></p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900">Total Courses</h3>
+        <p class="text-2xl font-semibold text-gray-900"><%= current_control_unit.courses.count %></p>
+      </div>
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900">Published Courses</h3>
+        <p class="text-2xl font-semibold text-gray-900"><%= current_control_unit.courses.published.count %></p>
+      </div>
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900">Total Applications</h3>
+        <p class="text-2xl font-semibold text-gray-900"><%= current_control_unit.courses.joins(:course_applications).count %></p>
+      </div>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <%= link_to control_unit_courses_path, class: "p-4 border border-gray-200 rounded-lg hover:bg-gray-50" do %>
+          <h3 class="font-medium text-gray-900">Manage Courses</h3>
+          <p class="text-sm text-gray-500">View, edit, and create courses</p>
+        <% end %>
+        <%= link_to new_control_unit_course_path, class: "p-4 border border-gray-200 rounded-lg hover:bg-gray-50" do %>
+          <h3 class="font-medium text-gray-900">Create New Course</h3>
+          <p class="text-sm text-gray-500">Add a new course to the platform</p>
+        <% end %>
+        <%= link_to sidekiq_path, class: "p-4 border border-gray-200 rounded-lg hover:bg-gray-50" do %>
+          <h3 class="font-medium text-gray-900">System Queues</h3>
+          <p class="text-sm text-gray-500">Monitor background jobs</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Recent Courses -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-gray-900">Recent Courses</h2>
+        <%= link_to "View All", control_unit_courses_path, class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
+      </div>
+      
+      <% recent_courses = current_control_unit.courses.order(created_at: :desc).limit(5) %>
+      <% if recent_courses.any? %>
+        <div class="space-y-4">
+          <% recent_courses.each do |course| %>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <% if course.image_url.present? %>
+                    <%= image_tag course.image_url, class: "h-10 w-10 rounded-lg object-cover" %>
+                  <% else %>
+                    <div class="h-10 w-10 bg-gray-300 rounded-lg flex items-center justify-center">
+                      <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                      </svg>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900"><%= course.title %></h3>
+                  <p class="text-sm text-gray-500"><%= course.instructor %> • <%= course.category %></p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                            <%= course.status == 'published' ? 'bg-green-100 text-green-800' : 
+                                course.status == 'draft' ? 'bg-gray-100 text-gray-800' : 
+                                course.status == 'archived' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' %>">
+                  <%= course.status_display %>
+                </span>
+                <%= link_to "View", control_unit_course_path(course), class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-8">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No courses yet</h3>
+          <p class="mt-1 text-sm text-gray-500">Get started by creating your first course.</p>
+          <div class="mt-6">
+            <%= link_to "Create Course", new_control_unit_course_path, 
+                        class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 

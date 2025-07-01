@@ -1,0 +1,175 @@
+<% content_for :title, "New Recruitment" %>
+
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Create New Recruitment</h1>
+          <p class="mt-1 text-gray-600">Fill in the details below to create a new recruitment</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <%= link_to "Back to Recruitments", recruiter_recruitments_path, 
+              class: "inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <%= form_with model: @recruitment, url: recruiter_create_recruitment_path, local: true, class: "space-y-8" do |form| %>
+      <% if @recruitment.errors.any? %>
+        <div class="bg-red-50 border border-red-200 rounded-md p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                <%= pluralize(@recruitment.errors.count, "error") %> prohibited this recruitment from being saved:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <% @recruitment.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="bg-white shadow rounded-lg p-6">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <!-- Basic Information -->
+          <div class="md:col-span-2">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= form.label :company_id, "Company", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :company_id, 
+                options_from_collection_for_select(@companies, :id, :name, @recruitment.company_id), 
+                { prompt: "Select Company" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :title, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500", placeholder: "Recruitment Title" %>
+          </div>
+
+          <div>
+            <%= form.label :recruitment_type, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :recruitment_type, 
+                options_for_select([
+                  ['Job', 'job'],
+                  ['Internship', 'internship'],
+                  ['Micro Job', 'micro_job'],
+                  ['Micro Internship', 'micro_internship']
+                ], @recruitment.recruitment_type), 
+                { prompt: "Select Type" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :work_type, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :work_type, 
+                options_for_select([
+                  ['Full-time', 'full_time'],
+                  ['Part-time', 'part_time'],
+                  ['Contract', 'contract'],
+                  ['Freelance', 'freelance']
+                ], @recruitment.work_type), 
+                { prompt: "Select Work Type" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :work_place, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :work_place, 
+                options_for_select([
+                  ['Remote', 'remote'],
+                  ['On-site', 'on_site'],
+                  ['Hybrid', 'hybrid']
+                ], @recruitment.work_place), 
+                { prompt: "Select Work Place" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :experience_level, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :experience_level, 
+                options_for_select([
+                  ['Entry Level', 'entry_level'],
+                  ['Mid Level', 'mid_level'],
+                  ['Senior Level', 'senior_level'],
+                  ['Executive', 'executive']
+                ], @recruitment.experience_level), 
+                { prompt: "Select Experience Level" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :number_of_vacancies, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.number_field :number_of_vacancies, min: 1, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+
+          <div>
+            <%= form.label :salary_type, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :salary_type, 
+                options_for_select([
+                  ['Fixed', 'fixed'],
+                  ['Range', 'range'],
+                  ['Negotiable', 'negotiable']
+                ], @recruitment.salary_type), 
+                { prompt: "Select Salary Type" }, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :salary_range, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :salary_range, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500", placeholder: "e.g., ৳30,000 - ৳50,000" %>
+          </div>
+
+          <!-- Description -->
+          <div class="md:col-span-2">
+            <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_area :description, rows: 6, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500", placeholder: "Describe the recruitment in detail..." %>
+          </div>
+
+          <!-- Application Settings -->
+          <div class="md:col-span-2">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Application Settings</h3>
+          </div>
+
+          <div>
+            <%= form.label :application_collection_status, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :application_collection_status, 
+                options_for_select([
+                  ['Draft', 'draft'],
+                  ['Open', 'open'],
+                  ['Closed', 'close']
+                ], @recruitment.application_collection_status), 
+                {}, 
+                { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          </div>
+
+          <div>
+            <%= form.label :application_collection_end_date, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.date_field :application_collection_end_date, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-3">
+        <%= link_to "Cancel", recruiter_recruitments_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        <%= form.submit "Create Recruitment", class: "bg-blue-600 border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      </div>
+    <% end %>
+  </div>
+</div>

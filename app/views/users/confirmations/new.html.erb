@@ -1,16 +1,51 @@
-<h2>Resend confirmation instructions</h2>
+<% content_for :title, "Confirm Your Email" %>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+<div class="max-w-screen-sm w-full block py-5 mx-auto">
+  <img src="/asset/img/icons/StudErn_Light_Long_Logo.svg" alt="Logo" class="w-25 mb-[25px] mx-auto" />
+  
+  <div class="flex flex-col my-5 border-1 border-solid border-[#c3c4c7] bg-white py-[26px] px-[24px]">
+    <h2 class="text-center text-[1.25rem] font-bold leading-[1.5] mb-4">
+      Check Your Email
+    </h2>
+    
+    <p class="text-center text-gray-600 mb-6">
+      We've sent you a confirmation email. Please check your inbox and click the confirmation link to activate your account.
+    </p>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+    <div class="bg-accent/2 border border-accent/60 rounded-lg p-4 mb-6">
+      <p class="text-sm text-accent">
+        <strong>Next steps:</strong><br>
+        1. Check your email inbox<br>
+        2. Click the confirmation link<br>
+        3. Complete your profile setup
+      </p>
+    </div>
+
+    <h3 class="text-lg font-semibold mb-4">Didn't receive the email?</h3>
+    
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "users/shared/error_messages", resource: resource %>
+
+      <div class="mb-4">
+        <%= f.label :email, class: "fs-[14px] leading-[1.5] inline-block mb-[3px]" %>
+        <%= f.email_field :email, 
+            autofocus: true, 
+            autocomplete: "email", 
+            value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
+            class: "fs-6 leading-[1.333333] w-full border-[.0625rem] border-[#8c8f94] me-[6px] mb-[16px] px-[.3125rem] min-h-10 max-h-none rounded-1" %>
+      </div>
+
+      <div class="submit flex justify-end">
+        <%= f.submit "Resend confirmation email", class: "btn btn-sm btn-primary" %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+  <p class="fs-[13px] text-gray-600 my-6 px-6">
+    <%= link_to "Log in", new_session_path(resource_name), class: "hover:text-primary" %>
+    |
+    <%= link_to "Register", new_registration_path(resource_name), class: "hover:text-primary" %>
+    <br>
+    <%= link_to "← Go to Home", root_path(), class: "hover:text-primary" %>
+  </p>
+</div>

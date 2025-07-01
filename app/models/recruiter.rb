@@ -27,6 +27,31 @@ class Recruiter < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  # Company access methods
+  def has_access_to?(company)
+    companies.include?(company)
+  end
+
+  def has_admin_access?(company)
+    permission = recruiter_permissions_on_companies.find_by(company: company)
+    permission&.role == "admin"
+  end
+
+  def can_manage_recruitments?(company)
+    permission = recruiter_permissions_on_companies.find_by(company: company)
+    permission&.can_manage_jobs == true
+  end
+
+  def can_manage_applications?(company)
+    permission = recruiter_permissions_on_companies.find_by(company: company)
+    permission&.can_manage_applicants == true
+  end
+
+  def can_manage_company_profile?(company)
+    permission = recruiter_permissions_on_companies.find_by(company: company)
+    permission&.can_manage_company_profile == true
+  end
+
   private
   def set_default_account_status
     self.account_status ||= 0 # Default to pending if not set

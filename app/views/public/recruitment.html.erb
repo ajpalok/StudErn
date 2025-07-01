@@ -45,13 +45,27 @@
                             <% end %>
 
                             <% if @recruitment.application_collection_method == "easy_apply" %>
-                            <a href="" class="btn btn-sm btn-accent my-2">
-                                Apply Now
-                            </a>
+                                <% if user_signed_in? %>
+                                    <% if @recruitment.user_can_apply?(current_user) %>
+                                        <%= button_to user_apply_to_recruitment_path(@recruitment), method: :post, class: "btn btn-sm btn-accent my-2", data: { confirm: "Are you sure you want to apply to this position?" } do %>
+                                            Apply Now
+                                        <% end %>
+                                    <% elsif current_user.recruitment_applies.exists?(recruitment: @recruitment) %>
+                                        <span class="btn btn-sm btn-disabled my-2">
+                                            Already Applied
+                                        </span>
+                                    <% else %>
+                                        <span class="btn btn-sm btn-disabled my-2">
+                                            Cannot Apply
+                                        </span>
+                                    <% end %>
+                                <% else %>
+                                    <%= link_to "Sign in to Apply", new_user_session_path, class: "btn btn-sm btn-accent my-2" %>
+                                <% end %>
                             <% end %>
 
                             <% if @recruitment.application_collection_method == "external_link" %>
-                            <a href="<%= @recruitment.application_link %>" class="btn btn-sm btn-accent my-2">
+                            <a href="<%= @recruitment.application_link %>" class="btn btn-sm btn-accent my-2" target="_blank">
                                 Apply Now
                             </a>
                             <% end %>
@@ -73,9 +87,9 @@
                     <h3 class="text-lg text-stone-900">
                         Details of the recruitment
                     </h3>
-                    <p>
-                        <%= @recruitment.description %>
-                    </p>
+                    <div>
+                        <%= simple_format(@recruitment.description) %>
+                    </div>
                 </div>
 
                 <hr class="text-secondary">
@@ -94,13 +108,27 @@
                 <hr class="text-secondary">
 
                 <% if @recruitment.application_collection_method == "easy_apply" %>
-                    <a href="" class="btn btn-lg btn-accent my-6 flex justify-center">
-                        Apply Now
-                    </a>
+                    <% if user_signed_in? %>
+                        <% if @recruitment.user_can_apply?(current_user) %>
+                            <%= button_to user_apply_to_recruitment_path(@recruitment), method: :post, class: "btn btn-lg btn-accent my-6 flex justify-center", data: { confirm: "Are you sure you want to apply to this position?" } do %>
+                                Apply Now
+                            <% end %>
+                        <% elsif current_user.recruitment_applies.exists?(recruitment: @recruitment) %>
+                            <span class="btn btn-lg btn-disabled my-6 flex justify-center">
+                                Already Applied
+                            </span>
+                        <% else %>
+                            <span class="btn btn-lg btn-disabled my-6 flex justify-center">
+                                Cannot Apply
+                            </span>
+                        <% end %>
+                    <% else %>
+                        <%= link_to "Sign in to Apply", new_user_session_path, class: "btn btn-lg btn-accent my-6 flex justify-center" %>
+                    <% end %>
                 <% end %>
 
                 <% if @recruitment.application_collection_method == "external_link" %>
-                    <a href="<%= @recruitment.application_link %>" class="btn btn-lg btn-accent my-6 flex justify-center">
+                    <a href="<%= @recruitment.application_link %>" class="btn btn-lg btn-accent my-6 flex justify-center" target="_blank">
                         Apply Now
                     </a>
                 <% end %>

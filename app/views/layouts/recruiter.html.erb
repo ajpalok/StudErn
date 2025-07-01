@@ -8,9 +8,9 @@
     <%= render 'includes/components/svg' %>
     <%= render 'includes/components/header',
                 navigation_nav_items: [
-                    { name: 'Dashboard', path: recruiter_index_path },
-                    { name: 'Manage Recruitments', path: "#" },
-                    { name: 'Company Details', path: "#" }
+                    { name: 'Dashboard', path: recruiter_dashboard_path },
+                    { name: 'Manage Recruitments', path: recruiter_recruitments_path },
+                    { name: 'Company Details', path: recruiter_company_path(current_recruiter.recruiter_permissions_on_companies.where(recruiter_status: 1).first&.company_id || 1) }
                 ],
                 navigation_right_nav_items: [
                     { name: 'Recruiters/Post Jobs →', path: recruiter_recruitment_publish_path }

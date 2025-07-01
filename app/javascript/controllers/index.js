@@ -10,20 +10,44 @@ application.register("all-recruitment", AllRecruitmentController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import HomeRecruitmentController from "./home_recruitment_controller"
+application.register("home-recruitment", HomeRecruitmentController)
+
 import MapController from "./map_controller"
 application.register("map", MapController)
 
 import MobileMenuController from "./mobile_menu_controller"
 application.register("mobile-menu", MobileMenuController)
 
+import NestedFormController from "./nested_form_controller"
+application.register("nested-form", NestedFormController)
+
+import OnboardingMapController from "./onboarding_map_controller"
+application.register("onboarding-map", OnboardingMapController)
+
 import RecruitmentController from "./recruitment_controller"
 application.register("recruitment", RecruitmentController)
+
+import RecruitmentFiltersController from "./recruitment_filters_controller"
+application.register("recruitment-filters", RecruitmentFiltersController)
 
 import ResumeController from "./resume_controller"
 application.register("resume", ResumeController)
 
+import ResumeFormController from "./resume_form_controller"
+application.register("resume-form", ResumeFormController)
+
+import ResumePreviewController from "./resume_preview_controller"
+application.register("resume-preview", ResumePreviewController)
+
 import SearchCompanyToJoinController from "./search_company_to_join_controller"
 application.register("search-company-to-join", SearchCompanyToJoinController)
+
+import SearchFiltersController from "./search_filters_controller"
+application.register("search-filters", SearchFiltersController)
+
+import SearchFormController from "./search_form_controller"
+application.register("search-form", SearchFormController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)

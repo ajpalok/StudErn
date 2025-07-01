@@ -1,0 +1,62 @@
+<section class="w-full my-6 md:my-12 bg-base-100">
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-base-content mb-2">My Applications</h1>
+                <p class="text-secondary">Track your job and internship applications</p>
+            </div>
+
+            <% if @applications.any? %>
+                <div class="space-y-4">
+                    <% @applications.each do |application| %>
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-base-content mb-2">
+                                        <%= link_to application.recruitment.title, recruitment_path(application.recruitment), class: "hover:text-accent" %>
+                                    </h3>
+                                    <p class="text-secondary mb-2">
+                                        <%= application.recruitment.company.name %> • 
+                                        <%= application.recruitment.work_place.humanize %> • 
+                                        <%= application.recruitment.recruitment_type.humanize %>
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-sm text-secondary">
+                                        <span>Applied: <%= application.created_at.strftime("%B %d, %Y") %></span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                                            <%= case application.status
+                                                when 'pending' then 'bg-yellow-100 text-yellow-800'
+                                                when 'accepted' then 'bg-green-100 text-green-800'
+                                                when 'rejected' then 'bg-red-100 text-red-800'
+                                                when 'withdrawn' then 'bg-gray-100 text-gray-800'
+                                                end %>">
+                                            <%= application.status.humanize %>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <% if application.status == 'pending' %>
+                                        <%= button_to user_withdraw_application_path(application), 
+                                            method: :patch, 
+                                            class: "btn btn-sm btn-outline btn-error",
+                                            data: { confirm: "Are you sure you want to withdraw this application?" } do %>
+                                            Withdraw
+                                        <% end %>
+                                    <% end %>
+                                    <%= link_to "View Details", recruitment_path(application.recruitment), 
+                                        class: "btn btn-sm btn-outline btn-primary" %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% else %>
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4">📝</div>
+                    <h3 class="text-xl font-semibold text-base-content mb-2">No Applications Yet</h3>
+                    <p class="text-secondary mb-6">Start applying to jobs and internships to see them here.</p>
+                    <%= link_to "Browse Opportunities", jobs_path, class: "btn btn-primary" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</section> 

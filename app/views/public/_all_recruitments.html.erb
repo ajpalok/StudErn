@@ -3,8 +3,12 @@
 
         <% if recruitments.any? %>
             <div class="grid grid-cols-1 md:grid-cols-12 mx-6 relative">
-                <!-- Filter Box -->
-                <form class="bg-white p-6 h-max mt-25 rounded-md w-full md:col-span-4 md:col-start-2 shadow md:sticky md:top-10 md:left-0">
+                <!-- Enhanced Filter Box -->
+                <form class="bg-white p-6 h-max mt-25 rounded-md w-full md:col-span-4 md:col-start-2 shadow md:sticky md:top-10 md:left-0" 
+                      data-controller="recruitment-filters" 
+                      data-action="change->recruitment-filters#applyFilters"
+                      method="GET"
+                      action="<%= request.path %>">
                     <div class="flex justify-center mb-4">
                         <div class="flex justify-center items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="text-primary">
@@ -14,30 +18,112 @@
                         </div>
                     </div>
 
+                    <!-- Search Input -->
                     <div class="mb-4">
-                        <h4 class="text-lg font-medium mb-2">Profile</h4>
-                        <input type="text" name="search" placeholder="e.g. Software Engineer" class="input input-bordered border-2 bg-white w-full" />
+                        <h4 class="text-lg font-medium mb-2">Search</h4>
+                        <input type="text" 
+                               name="search" 
+                               placeholder="e.g. Software Engineer, Company Name" 
+                               class="input input-bordered border-2 bg-white w-full"
+                               data-recruitment-filters-target="searchInput"
+                               data-action="input->recruitment-filters#debouncedSearch"
+                               value="<%= params[:search] %>" />
                     </div>
 
+                    <!-- Work Place Filter -->
                     <div class="mb-4">
-                        <fieldset>
-                            <label class="flex items-center gap-2 cursor-pointer mb-2">
-                                <input type="radio" class="radio radio-sm radio-primary" name="recruitment_type" value="on_site" />
-                                <span class="label-text text-sm">On site</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer mb-2">
-                                <input type="radio" class="radio radio-sm radio-primary" name="recruitment_type" value="remote" />
-                                <span class="label-text text-sm">Remote</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer mb-2">
-                                <input type="radio" class="radio radio-sm radio-primary" name="recruitment_type" value="hybrid" />
-                                <span class="label-text text-sm">Hybrid</span>
-                            </label>
-                        </fieldset>
-
+                        <h4 class="text-lg font-medium mb-2">Work Place</h4>
+                        <select name="work_place" 
+                                class="select select-bordered w-full"
+                                data-recruitment-filters-target="workPlaceSelect"
+                                data-action="change->recruitment-filters#applyFilters">
+                            <option value="">All Work Places</option>
+                            <option value="on_site" <%= 'selected' if params[:work_place] == 'on_site' %>>On Site</option>
+                            <option value="remote" <%= 'selected' if params[:work_place] == 'remote' %>>Remote</option>
+                            <option value="hybrid" <%= 'selected' if params[:work_place] == 'hybrid' %>>Hybrid</option>
+                        </select>
                     </div>
-                    <div class="mb-4 flex flex-row justify-end gap-2">
-                        <input type="reset" value="Reset" class="btn btn-sm btn-outline btn-primary" />
+
+                    <!-- Work Type Filter -->
+                    <div class="mb-4">
+                        <h4 class="text-lg font-medium mb-2">Work Type</h4>
+                        <select name="work_type" 
+                                class="select select-bordered w-full"
+                                data-recruitment-filters-target="workTypeSelect"
+                                data-action="change->recruitment-filters#applyFilters">
+                            <option value="">All Work Types</option>
+                            <option value="full_time" <%= 'selected' if params[:work_type] == 'full_time' %>>Full Time</option>
+                            <option value="part_time" <%= 'selected' if params[:work_type] == 'part_time' %>>Part Time</option>
+                            <option value="project" <%= 'selected' if params[:work_type] == 'project' %>>Project</option>
+                            <option value="freelance" <%= 'selected' if params[:work_type] == 'freelance' %>>Freelance</option>
+                        </select>
+                    </div>
+
+                    <!-- Experience Level Filter -->
+                    <div class="mb-4">
+                        <h4 class="text-lg font-medium mb-2">Experience Level</h4>
+                        <select name="experience_level" 
+                                class="select select-bordered w-full"
+                                data-recruitment-filters-target="experienceLevelSelect"
+                                data-action="change->recruitment-filters#applyFilters">
+                            <option value="">All Experience Levels</option>
+                            <option value="entry_level" <%= 'selected' if params[:experience_level] == 'entry_level' %>>Entry Level</option>
+                            <option value="mid_level" <%= 'selected' if params[:experience_level] == 'mid_level' %>>Mid Level</option>
+                            <option value="senior_level" <%= 'selected' if params[:experience_level] == 'senior_level' %>>Senior Level</option>
+                            <option value="expert_level" <%= 'selected' if params[:experience_level] == 'expert_level' %>>Expert Level</option>
+                        </select>
+                    </div>
+
+                    <!-- Salary Type Filter -->
+                    <div class="mb-4">
+                        <h4 class="text-lg font-medium mb-2">Salary Type</h4>
+                        <select name="salary_type" 
+                                class="select select-bordered w-full"
+                                data-recruitment-filters-target="salaryTypeSelect"
+                                data-action="change->recruitment-filters#applyFilters">
+                            <option value="">All Salary Types</option>
+                            <option value="fixed" <%= 'selected' if params[:salary_type] == 'fixed' %>>Fixed</option>
+                            <option value="negotiable" <%= 'selected' if params[:salary_type] == 'negotiable' %>>Negotiable</option>
+                            <option value="hourly" <%= 'selected' if params[:salary_type] == 'hourly' %>>Hourly</option>
+                            <option value="weekly" <%= 'selected' if params[:salary_type] == 'weekly' %>>Weekly</option>
+                            <option value="monthly" <%= 'selected' if params[:salary_type] == 'monthly' %>>Monthly</option>
+                            <option value="yearly" <%= 'selected' if params[:salary_type] == 'yearly' %>>Yearly</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="mb-4">
+                        <h4 class="text-lg font-medium mb-2">Posted Date</h4>
+                        <select name="date_range" 
+                                class="select select-bordered w-full"
+                                data-recruitment-filters-target="dateRangeSelect"
+                                data-action="change->recruitment-filters#applyFilters">
+                            <option value="">All Time</option>
+                            <option value="today" <%= 'selected' if params[:date_range] == 'today' %>>Today</option>
+                            <option value="week" <%= 'selected' if params[:date_range] == 'week' %>>This Week</option>
+                            <option value="month" <%= 'selected' if params[:date_range] == 'month' %>>This Month</option>
+                            <option value="3months" <%= 'selected' if params[:date_range] == '3months' %>>Last 3 Months</option>
+                            <option value="6months" <%= 'selected' if params[:date_range] == '6months' %>>Last 6 Months</option>
+                            <option value="year" <%= 'selected' if params[:date_range] == 'year' %>>Last Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Actions -->
+                    <div class="mb-4 flex flex-row justify-between gap-2">
+                        <button type="button" 
+                                class="btn btn-sm btn-outline btn-primary"
+                                data-action="click->recruitment-filters#clearFilters">
+                            Clear All
+                        </button>
+                        <button type="submit" 
+                                class="btn btn-sm btn-primary">
+                            Apply Filters
+                        </button>
+                    </div>
+
+                    <!-- Results Count -->
+                    <div class="text-sm text-gray-600 text-center" data-recruitment-filters-target="resultsCount">
+                        Showing <%= recruitments.count %> results
                     </div>
                 </form>
 
@@ -50,48 +136,60 @@
                         <%= description || "Search and Apply to Latest recruitment Vacancies & Openings" %>
                     </p>
 
-                    <% recruitments.each do |recruitment| %>
-                        <div class="card bg-white shadow-lg border-base-content/50">
-                            <a href="<%= recruitment_path(recruitment.id) %>" class="card-body">
-                                <div class="flex flex-col gap-2 mt-2">
-                                    <h2 class="card-title text-2xl text-accent flex justify-between leading-0">
-                                        <%= recruitment.title %>
-                                        <%# <div class="badge ">
-                                            <img src="images/logo/Pran.png" alt="">
-                                        </div> %>
-                                    </h2>
-                                    <p class="text-lg text-base-content/80">
-                                        <%= recruitment.company.name %>
-                                    </p>
-                                </div>
-                                <div class="card-actions gap-1 py-4 text-[0.85rem] opacity-80">
-                                    <div class="flex items-center gap-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="size-[1em] text-primary">
-                                            <g fill="none" fill-rule="evenodd">
-                                                <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/>
-                                                <path fill="currentColor" d="M12 2a9 9 0 0 1 9 9c0 3.074-1.676 5.59-3.442 7.395a20.4 20.4 0 0 1-2.876 2.416l-.426.29l-.2.133l-.377.24l-.336.205l-.416.242a1.87 1.87 0 0 1-1.854 0l-.416-.242l-.52-.32l-.192-.125l-.41-.273a20.6 20.6 0 0 1-3.093-2.566C4.676 16.589 3 14.074 3 11a9 9 0 0 1 9-9m0 2a7 7 0 0 0-7 7c0 2.322 1.272 4.36 2.871 5.996a18 18 0 0 0 2.222 1.91l.458.326q.222.155.427.288l.39.25l.343.209l.289.169l.455-.269l.367-.23q.293-.186.627-.417l.458-.326a18 18 0 0 0 2.222-1.91C17.728 15.361 19 13.322 19 11a7 7 0 0 0-7-7m0 3a4 4 0 1 1 0 8a4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4a2 2 0 0 0 0-4"/>
-                                            </g>
-                                        </svg>
-                                        <%= recruitment.work_place.humanize.capitalize %>
+                    <!-- Filtered Results Container -->
+                    <div data-recruitment-filters-target="resultsContainer">
+                        <% recruitments.each do |recruitment| %>
+                            <div class="card bg-white shadow-lg border-base-content/50 recruitment-card" 
+                                 data-recruitment-filters-target="card"
+                                 data-search-text="<%= recruitment.title.downcase %> <%= recruitment.company.name.downcase %> <%= recruitment.description.downcase %>"
+                                 data-work-place="<%= recruitment.work_place %>"
+                                 data-work-type="<%= recruitment.work_type %>"
+                                 data-experience-level="<%= recruitment.experience_level %>"
+                                 data-salary-type="<%= recruitment.salary_type %>"
+                                 data-created-date="<%= recruitment.created_at.to_date %>">
+                                <a href="<%= recruitment_path(recruitment.id) %>" class="card-body">
+                                    <div class="flex flex-col gap-2 mt-2">
+                                        <h2 class="card-title text-2xl text-accent flex justify-between leading-0">
+                                            <%= recruitment.title %>
+                                        </h2>
+                                        <p class="text-lg text-base-content/80">
+                                            <%= recruitment.company.name %>
+                                        </p>
                                     </div>
-                                    <% if recruitment.salary_range.present? %>
+                                    <div class="card-actions gap-1 py-4 text-[0.85rem] opacity-80">
                                         <div class="flex items-center gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="size-[1em] text-primary">
-                                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                                    <path d="M15.5 15.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M7 7a2 2 0 1 1 4 0v9a3 3 0 0 0 6 0v-.5M8 11h6"/>
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/>
+                                                    <path fill="currentColor" d="M12 2a9 9 0 0 1 9 9c0 3.074-1.676 5.59-3.442 7.395a20.4 20.4 0 0 1-2.876 2.416l-.426.29l-.2.133l-.377.24l-.336.205l-.416.242a1.87 1.87 0 0 1-1.854 0l-.416-.242l-.52-.32l-.192-.125l-.41-.273a20.6 20.6 0 0 1-3.093-2.566C4.676 16.589 3 14.074 3 11a9 9 0 0 1 9-9m0 2a7 7 0 0 0-7 7c0 2.322 1.272 4.36 2.871 5.996a18 18 0 0 0 2.222 1.91l.458.326q.222.155.427.288l.39.25l.343.209l.289.169l.455-.269l.367-.23q.293-.186.627-.417l.458-.326a18 18 0 0 0 2.222-1.91C17.728 15.361 19 13.322 19 11a7 7 0 0 0-7-7m0 3a4 4 0 1 1 0 8a4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4a2 2 0 0 0 0-4"/>
                                                 </g>
                                             </svg>
-                                            <%= recruitment.salary_range %>
+                                            <%= recruitment.work_place.humanize.capitalize %>
                                         </div>
-                                    <% end %>
-                                </div>
-                                <div class="badge badge-sm badge-outline badge-accent">
-                                    <%= recruitment.recruitment_type.humanize.capitalize %>
-                                </div>
-                            </a>
-                        </div>
-                    <% end %>
+                                        <% if recruitment.salary_range.present? %>
+                                            <div class="flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="size-[1em] text-primary">
+                                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                        <path d="M15.5 15.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M7 7a2 2 0 1 1 4 0v9a3 3 0 0 0 6 0v-.5M8 11h6"/>
+                                                    </g>
+                                                </svg>
+                                                <%= recruitment.salary_range %>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <div class="badge badge-sm badge-outline badge-accent">
+                                        <%= recruitment.recruitment_type.humanize.capitalize %>
+                                    </div>
+                                </a>
+                            </div>
+                        <% end %>
+                    </div>
 
+                    <!-- No Results Message -->
+                    <div class="hidden text-center py-8" data-recruitment-filters-target="noResults">
+                        <p class="text-gray-500 text-lg">No recruitments match your current filters.</p>
+                        <p class="text-gray-400 text-sm mt-2">Try adjusting your search criteria.</p>
+                    </div>
                 </div>
             </div>
         <% else %>

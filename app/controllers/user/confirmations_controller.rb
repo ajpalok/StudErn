@@ -25,7 +25,8 @@ class User::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # The path used after confirmation.
-  # def after_confirmation_path_for(resource_name, resource)
-  #   super(resource_name, resource)
-  # end
+  def after_confirmation_path_for(resource_name, resource)
+    # Redirect to onboarding after email confirmation
+    user_onboarding_path
+  end
 end

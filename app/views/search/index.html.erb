@@ -1,0 +1,328 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Search Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">Search Results</h1>
+      
+      <!-- Search Form -->
+      <div class="max-w-2xl mb-6">
+        <form action="<%= search_path %>" method="GET" data-controller="search-form" data-action="submit->search-form#submit">
+          <div class="relative">
+            <input 
+              type="text" 
+              name="q" 
+              value="<%= @query %>"
+              placeholder="Search for jobs, companies, or descriptions..."
+              class="w-full px-4 py-3 pl-12 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              data-search-form-target="input"
+              data-action="input->search-form#search"
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
+        <form action="<%= search_path %>" method="GET" data-controller="search-filters">
+          <!-- Hidden search query field -->
+          <input type="hidden" name="q" value="<%= @query %>">
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Work Place Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Work Place</label>
+              <select name="work_place" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Work Places</option>
+                <option value="on_site" <%= 'selected' if @filters[:work_place] == 'on_site' %>>On Site</option>
+                <option value="remote" <%= 'selected' if @filters[:work_place] == 'remote' %>>Remote</option>
+                <option value="hybrid" <%= 'selected' if @filters[:work_place] == 'hybrid' %>>Hybrid</option>
+              </select>
+            </div>
+
+            <!-- Work Type Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Work Type</label>
+              <select name="work_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Work Types</option>
+                <option value="full_time" <%= 'selected' if @filters[:work_type] == 'full_time' %>>Full Time</option>
+                <option value="part_time" <%= 'selected' if @filters[:work_type] == 'part_time' %>>Part Time</option>
+                <option value="project" <%= 'selected' if @filters[:work_type] == 'project' %>>Project</option>
+                <option value="freelance" <%= 'selected' if @filters[:work_type] == 'freelance' %>>Freelance</option>
+              </select>
+            </div>
+
+            <!-- Recruitment Type Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Recruitment Type</label>
+              <select name="recruitment_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Types</option>
+                <option value="job" <%= 'selected' if @filters[:recruitment_type] == 'job' %>>Job</option>
+                <option value="internship" <%= 'selected' if @filters[:recruitment_type] == 'internship' %>>Internship</option>
+                <option value="micro_job" <%= 'selected' if @filters[:recruitment_type] == 'micro_job' %>>Micro Job</option>
+                <option value="micro_internship" <%= 'selected' if @filters[:recruitment_type] == 'micro_internship' %>>Micro Internship</option>
+              </select>
+            </div>
+
+            <!-- Experience Level Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Experience Level</label>
+              <select name="experience_level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Levels</option>
+                <option value="entry_level" <%= 'selected' if @filters[:experience_level] == 'entry_level' %>>Entry Level</option>
+                <option value="mid_level" <%= 'selected' if @filters[:experience_level] == 'mid_level' %>>Mid Level</option>
+                <option value="senior_level" <%= 'selected' if @filters[:experience_level] == 'senior_level' %>>Senior Level</option>
+                <option value="expert_level" <%= 'selected' if @filters[:experience_level] == 'expert_level' %>>Expert Level</option>
+              </select>
+            </div>
+
+            <!-- Salary Type Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Salary Type</label>
+              <select name="salary_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Salary Types</option>
+                <option value="fixed" <%= 'selected' if @filters[:salary_type] == 'fixed' %>>Fixed</option>
+                <option value="negotiable" <%= 'selected' if @filters[:salary_type] == 'negotiable' %>>Negotiable</option>
+                <option value="hourly" <%= 'selected' if @filters[:salary_type] == 'hourly' %>>Hourly</option>
+                <option value="weekly" <%= 'selected' if @filters[:salary_type] == 'weekly' %>>Weekly</option>
+                <option value="monthly" <%= 'selected' if @filters[:salary_type] == 'monthly' %>>Monthly</option>
+                <option value="yearly" <%= 'selected' if @filters[:salary_type] == 'yearly' %>>Yearly</option>
+              </select>
+            </div>
+
+            <!-- Date Range Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Posted Date</label>
+              <select name="date_range" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Time</option>
+                <option value="today" <%= 'selected' if @filters[:date_range] == 'today' %>>Today</option>
+                <option value="week" <%= 'selected' if @filters[:date_range] == 'week' %>>This Week</option>
+                <option value="month" <%= 'selected' if @filters[:date_range] == 'month' %>>This Month</option>
+                <option value="3months" <%= 'selected' if @filters[:date_range] == '3months' %>>Last 3 Months</option>
+                <option value="6months" <%= 'selected' if @filters[:date_range] == '6months' %>>Last 6 Months</option>
+                <option value="year" <%= 'selected' if @filters[:date_range] == 'year' %>>Last Year</option>
+              </select>
+            </div>
+
+            <!-- User Experience Level Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">User Experience Level</label>
+              <select name="user_experience_level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" data-action="change->search-filters#apply">
+                <option value="">All Experience Levels</option>
+                <option value="entry_level" <%= 'selected' if @filters[:user_experience_level] == 'entry_level' %>>Entry Level (0-1 years)</option>
+                <option value="mid_level" <%= 'selected' if @filters[:user_experience_level] == 'mid_level' %>>Mid Level (2-3 years)</option>
+                <option value="senior_level" <%= 'selected' if @filters[:user_experience_level] == 'senior_level' %>>Senior Level (4-5 years)</option>
+                <option value="expert_level" <%= 'selected' if @filters[:user_experience_level] == 'expert_level' %>>Expert Level (5+ years)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+            <button type="button" class="text-sm text-gray-600 hover:text-gray-800" data-action="click->search-filters#clear">
+              Clear All Filters
+            </button>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              Apply Filters
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <% if @query.present? || filters_applied? %>
+      <!-- Results Summary -->
+      <div class="mb-6">
+        <p class="text-gray-600">
+          Found <%= @results[:recruitments].count %> recruitment<%= 's' unless @results[:recruitments].count == 1 %>, 
+          <%= @results[:companies].count %> compan<%= @results[:companies].count == 1 ? 'y' : 'ies' %>, and
+          <%= @results[:users].count %> job seeker<%= 's' unless @results[:users].count == 1 %>
+          <% if @query.present? %> for "<%= @query %>"<% end %>
+          <% if filters_applied? %> with applied filters<% end %>
+        </p>
+      </div>
+
+      <!-- Results Container -->
+      <div class="space-y-8">
+        <!-- Recruitment Results -->
+        <% if @results[:recruitments].any? %>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Recruitment Opportunities</h2>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <% @results[:recruitments].each do |recruitment| %>
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+                  <div class="p-6">
+                    <div class="flex items-start justify-between mb-3">
+                      <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
+                        <%= link_to recruitment.title, recruitment_path(recruitment), class: "hover:text-blue-600 transition-colors" %>
+                      </h3>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <p class="text-sm font-medium text-blue-600">
+                        <%= recruitment.company.name %>
+                      </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <p class="text-gray-600 text-sm line-clamp-3">
+                        <%= truncate(recruitment.description, length: 120) %>
+                      </p>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <%= recruitment.recruitment_type.humanize %>
+                      </span>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <%= recruitment.work_type.humanize %>
+                      </span>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <%= recruitment.work_place.humanize %>
+                      </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                      <span><%= recruitment.experience_level.humanize %></span>
+                      <span><%= time_ago_in_words(recruitment.created_at) %> ago</span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Company Results -->
+        <% if @results[:companies].any? %>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Companies</h2>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <% @results[:companies].each do |company| %>
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+                  <div class="p-6">
+                    <div class="mb-3">
+                      <h3 class="text-lg font-semibold text-gray-900">
+                        <%= company.name %>
+                      </h3>
+                      <% if company.tagline.present? %>
+                        <p class="text-sm text-gray-600 mt-1">
+                          <%= company.tagline %>
+                        </p>
+                      <% end %>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <p class="text-gray-600 text-sm line-clamp-3">
+                        <%= truncate(company.description, length: 120) %>
+                      </p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                      <span><%= company.recruitments.count %> active recruitments</span>
+                      <span><%= time_ago_in_words(company.created_at) %> ago</span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- User/Career Objective Results -->
+        <% if @results[:users].any? %>
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Job Seekers</h2>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <% @results[:users].each do |user| %>
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+                  <div class="p-6">
+                    <div class="mb-3">
+                      <h3 class="text-lg font-semibold text-gray-900">
+                        <%= "#{user.first_name} #{user.last_name}" %>
+                      </h3>
+                      <p class="text-sm text-gray-600 mt-1">
+                        <%= pluralize(user.user_work_experiences.count, 'year') %> of experience
+                      </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                      <p class="text-gray-600 text-sm line-clamp-3">
+                        <%= truncate(user.career_objective, length: 120) %>
+                      </p>
+                    </div>
+                    
+                    <!-- Skills -->
+                    <% if user.user_skills.any? %>
+                      <div class="mb-4">
+                        <div class="flex flex-wrap gap-1">
+                          <% user.user_skills.first(5).each do |skill| %>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <%= skill.skill_name %>
+                            </span>
+                          <% end %>
+                          <% if user.user_skills.count > 5 %>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              +<%= user.user_skills.count - 5 %> more
+                            </span>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+                    
+                    <!-- Experience Level Badge -->
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                      <span>
+                        <% case user.user_work_experiences.count %>
+                        <% when 0..1 %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Entry Level</span>
+                        <% when 2..3 %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Mid Level</span>
+                        <% when 4..5 %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Senior Level</span>
+                        <% else %>
+                          <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Expert Level</span>
+                        <% end %>
+                      </span>
+                      <span><%= time_ago_in_words(user.created_at) %> ago</span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- No Results -->
+        <% if @results[:recruitments].empty? && @results[:companies].empty? && @results[:users].empty? %>
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No results found</h3>
+            <p class="mt-1 text-sm text-gray-500">Try adjusting your search terms or filters to find more opportunities.</p>
+            <div class="mt-6">
+              <a href="<%= jobs_path %>" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                Browse Jobs
+              </a>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Empty State -->
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Search for opportunities</h3>
+        <p class="mt-1 text-sm text-gray-500">Enter keywords to find jobs, companies, or specific opportunities.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

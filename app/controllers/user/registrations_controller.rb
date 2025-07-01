@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class User::RegistrationsController < Devise::RegistrationsController
-  layout 'authentication', only: [:new, :create]
+  # layout 'authentication', only: [:new, :create]
+  layout :resolve_layout
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
@@ -43,18 +44,7 @@ class User::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :first_name, :last_name, :dob, :latitude, :longitude, :phone, :role, :status, :gender, :career_objective ])
-
-    # sanitize gender
-    if params[:user][:gender].present?
-      gender_value = params[:user][:gender].to_s
-      # Only allow integer digits
-      if gender_value.match?(/^\d+$/)
-        params[:user][:gender] = gender_value.to_i
-      else
-        params[:user][:gender] = nil # prevent error by invalid string
-      end
-    end
+    devise_parameter_sanitizer.permit(:sign_up, keys: [])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -75,12 +65,22 @@ class User::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    # super(resource)
-    user_index_path
+    # Redirect to confirmation page after registration
+    new_user_confirmation_path
   end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def resolve_layout
+    if %w[new create].include?(action_name)
+      "authentication"
+    else
+      "user"
+    end
+  end
 end

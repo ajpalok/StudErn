@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_28_075233) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_01_152112) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -108,6 +108,48 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_075233) do
     t.index ["reset_password_token"], name: "index_control_units_on_reset_password_token", unique: true
   end
 
+  create_table "course_applications", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "course_id", null: false
+    t.integer "status", default: 0, null: false
+    t.text "message"
+    t.datetime "applied_at", null: false
+    t.datetime "reviewed_at"
+    t.text "admin_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "bkash_payment_id"
+    t.index ["bkash_payment_id"], name: "index_course_applications_on_bkash_payment_id"
+    t.index ["course_id"], name: "index_course_applications_on_course_id"
+    t.index ["status"], name: "index_course_applications_on_status"
+    t.index ["user_id", "course_id"], name: "index_course_applications_on_user_id_and_course_id", unique: true
+    t.index ["user_id"], name: "index_course_applications_on_user_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "duration", null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0"
+    t.string "instructor", null: false
+    t.string "category", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "control_unit_id", null: false
+    t.string "image_url"
+    t.text "syllabus"
+    t.integer "max_students"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.boolean "featured", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_courses_on_category"
+    t.index ["control_unit_id"], name: "index_courses_on_control_unit_id"
+    t.index ["featured"], name: "index_courses_on_featured"
+    t.index ["status"], name: "index_courses_on_status"
+    t.index ["title"], name: "index_courses_on_title"
+  end
+
   create_table "recruiter_permissions_on_company", force: :cascade do |t|
     t.integer "company_id", null: false
     t.integer "recruiter_id", null: false
@@ -167,6 +209,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_075233) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["recruitment_id"], name: "index_recruitment_applies_on_recruitment_id"
+    t.index ["user_id", "recruitment_id"], name: "index_recruitment_applies_on_user_and_recruitment_unique", unique: true
     t.index ["user_id"], name: "index_recruitment_applies_on_user_id"
   end
 
@@ -290,6 +333,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_28_075233) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "companies", "companies", column: "parent_company_id"
+  add_foreign_key "course_applications", "courses"
+  add_foreign_key "course_applications", "users"
+  add_foreign_key "courses", "control_units"
   add_foreign_key "recruiter_permissions_on_company", "companies"
   add_foreign_key "recruiter_permissions_on_company", "recruiters"
   add_foreign_key "recruitment_applies", "recruitments"
