@@ -71,6 +71,6 @@ gem "redis", ">= 4.0.1"
 
 gem "psych", "~>4.0.0"
 gem "devise", "~> 4.9"
-gem "devise-i18n", "~> 1.13"
+gem "devise-i18n", "~> 1.14"
 gem "sidekiq", "~> 8.0"
 gem "kaminari", "~> 1.2"
