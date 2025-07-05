@@ -64,8 +64,8 @@ class Company < ApplicationRecord
     if description.length > 500
       return errors.add(:description, "must be at most 500 characters long")
     end
-    if !description.match?(/\A[\w.\-#&\s]*\z/)
-      errors.add(:description, "can only contain letters, numbers, spaces, and the characters . - # &")
+    if !description.match?(/\A[\w.,!\-#&\s]*\z/)
+      errors.add(:description, "can only contain letters, numbers, spaces, and the characters . , ! - # &")
     end
   end
 

@@ -9,4 +9,3 @@
 #   end
 
 load(Rails.root.join("db", "seeds", "#{Rails.env}.rb")) if File.exist?(Rails.root.join("db", "seeds", "#{Rails.env}.rb"))
-load(Rails.root.join('db', 'seeds', 'courses.rb'))
